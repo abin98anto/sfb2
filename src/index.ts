@@ -15,13 +15,14 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 
-connectDB();
-
 app.get("/", (req, res) => {
   res.send(comments.GET_COMM);
 });
 
 const PORT = 4000;
-app.listen(PORT, () => {
-  console.log(comments.SERVER_CONNECTED);
-});
+
+connectDB().then(() =>
+  app.listen(PORT, () => {
+    console.log(comments.SERVER_CONNECTED);
+  })
+);

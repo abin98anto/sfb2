@@ -1,17 +1,16 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-
+import { comments } from "../../shared/constants/comments";
 dotenv.config();
-console.log(process.env.MONGO_URI);
 
 const connectDB = async () => {
   try {
-    const mongoURI = process.env.MONGO_URI as string; // MongoDB connection string from .env
+    const mongoURI = process.env.MONGO_URI as string;
     await mongoose.connect(mongoURI);
-    console.log("MongoDB connected successfully!");
+    console.log(comments.MONGO_SUCC);
   } catch (error) {
-    console.error("MongoDB connection failed:", error);
-    process.exit(1); // Exit process with failure
+    console.error(comments.MONGO_FAIL, error);
+    process.exit(1);
   }
 };
 
