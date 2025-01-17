@@ -1,17 +1,23 @@
+import { ObjectId } from "mongoose";
 import { IUser } from "../../core/entities/IUser";
 import { UserInterface } from "../../core/interfaces/UserInterface";
+import { UserModel } from "../db/schemas/userSchema";
 
 export class UserRepository implements UserInterface {
-  add(user: IUser): Promise<IUser> {
-    throw new Error("Method not implemented.");
+  async add(user: IUser): Promise<IUser> {
+    const newuser = await new UserModel(user).save();
+    return newuser;
   }
-  findById(id: string): Promise<IUser | null> {
-    throw new Error("Method not implemented.");
+
+  async findById(id: string): Promise<IUser | null> {
+    return await UserModel.findById(id);
   }
-  findByEmail(email: string): Promise<IUser | null> {
-    throw new Error("Method not implemented.");
+
+  async findByEmail(email: string): Promise<IUser | null> {
+    return await UserModel.findOne({ email });
   }
-  update(user: Partial<IUser>): Promise<IUser> {
-    throw new Error("Method not implemented.");
+
+  async update(id: ObjectId, user: Partial<IUser>): Promise<void> {
+    await UserModel.findByIdAndUpdate(id, { $set: user }, { new: true });
   }
 }

@@ -1,20 +1,15 @@
-import { UserRole } from "./misc/enums";
-import { ratings } from "./misc/ratings";
-import { transaction } from "./misc/transaction";
-
 export interface IUser {
   name: string;
   email: string;
-  role: UserRole;
-  password?: string;
+  role: string;
+  password?: string | null;
   picture?: string;
   wallet?: number;
-  transactionHistory?: transaction[];
   isActive: boolean;
-  otp: number;
+  otp: string;
   otpExpiry: Date;
   resume?: string;
-  ratings?: ratings[];
+  ratings?: String;
   students?: string[];
   isVerified?: boolean;
 }
