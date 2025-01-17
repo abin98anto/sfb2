@@ -9,7 +9,6 @@ export interface IUser {
   otp: string;
   otpExpiry: Date;
   resume?: string;
-  ratings?: String;
   students?: string[];
   isVerified?: boolean;
 }

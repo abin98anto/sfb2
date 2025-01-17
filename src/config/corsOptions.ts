@@ -1,3 +1,6 @@
+import { API } from "../shared/constants/API";
+import { comments } from "../shared/constants/comments";
+
 export const corsOptions = {
   origin: function (
     origin: string | undefined,
@@ -5,11 +8,11 @@ export const corsOptions = {
   ) {
     if (!origin) return callback(null, true);
 
-    const allowedOrigins = ["http://localhost:5173"];
+    const allowedOrigins = [API.FRONT_END];
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      callback(new Error(comments.CORS_FAIL));
     }
   },
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],

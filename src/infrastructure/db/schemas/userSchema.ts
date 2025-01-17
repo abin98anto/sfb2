@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { UserRole } from "../../../core/entities/misc/enums";
+import { comments } from "../../../shared/constants/comments";
 
 const userSchema = new Schema({
   name: { type: String, required: true },
@@ -13,10 +14,9 @@ const userSchema = new Schema({
   picture: { type: String, default: "" },
   wallet: { type: Number, default: 0 },
   isActive: { type: Boolean, default: true },
-  otp: { type: String, default: "111111" },
+  otp: { type: String, default: comments.OTP_DFLT },
   otpExpiry: { type: Date, default: Date.now },
   resume: { type: String, default: "" },
-  ratings: { type: String, default: "" },
   students: [String],
   isVerified: { type: Boolean, default: false },
 });

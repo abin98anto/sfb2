@@ -1,3 +1,4 @@
+import { comments } from "../../../shared/constants/comments";
 import { createOTP } from "../../../shared/utils/createOTP";
 import { hashPassword } from "../../../shared/utils/hashPassword";
 import { IUser } from "../../entities/IUser";
@@ -14,7 +15,7 @@ export class SendOTPUserUseCase {
   async execute(user: IUser): Promise<UseCaseResponse> {
     const emailTaken = await this.userRepository.findByEmail(user.email);
     if (emailTaken) {
-      return { success: false, message: "Email already taken." };
+      return { success: false, message: comments.EMAIL_TAKEN };
     }
 
     const { otp, expiresAt } = createOTP();
@@ -32,6 +33,6 @@ export class SendOTPUserUseCase {
 
     await this.userRepository.add(user);
 
-    return { success: true, message: "OTP sent successfully!" };
+    return { success: true, message: comments.OTP_SUCC };
   }
 }

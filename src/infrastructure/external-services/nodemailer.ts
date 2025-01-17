@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { MailInterface } from "../../core/interfaces/misc/MailInterface";
+import { comments } from "../../shared/constants/comments";
 
 const MAIL = process.env.MAIL;
 const MAIL_PASS = process.env.MAIL_PASS;
@@ -33,7 +34,7 @@ export class EmailService implements MailInterface {
 
       await this.transporter.sendMail(mailOptions);
     } catch (error) {
-      console.log("error sending OTP mail", error);
+      console.log(comments.OTP_FAIL, error);
     }
   }
 }
