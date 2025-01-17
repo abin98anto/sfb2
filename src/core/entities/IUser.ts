@@ -11,4 +11,5 @@ export interface IUser {
   resume?: string;
   students?: string[];
   isVerified?: boolean;
+  _id?: string;
 }

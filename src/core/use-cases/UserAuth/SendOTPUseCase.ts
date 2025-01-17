@@ -13,26 +13,31 @@ export class SendOTPUserUseCase {
   ) {}
 
   async execute(user: IUser): Promise<UseCaseResponse> {
-    const emailTaken = await this.userRepository.findByEmail(user.email);
-    if (emailTaken) {
-      return { success: false, message: comments.EMAIL_TAKEN };
+    try {
+      const emailTaken = await this.userRepository.findByEmail(user.email);
+      if (emailTaken) {
+        return { success: false, message: comments.EMAIL_TAKEN };
+      }
+
+      const { otp, expiresAt } = createOTP();
+      user.password = await hashPassword(user.password as string);
+      user.otp = otp;
+      user.otpExpiry = expiresAt;
+
+      console.log(`OTP send to ${user.email} : ${otp}`);
+
+      await this.mailService.send(
+        user.email,
+        "SkillForge email verification",
+        `Verify your email. OTP : ${otp}`
+      );
+
+      await this.userRepository.add(user);
+
+      return { success: true, message: comments.OTP_SUCC };
+    } catch (error) {
+      console.log(comments.OTP_FAIL, error);
+      return { success: false, message: comments.OTP_FAIL, err: error };
     }
-
-    const { otp, expiresAt } = createOTP();
-    user.password = await hashPassword(user.password as string);
-    user.otp = otp;
-    user.otpExpiry = expiresAt;
-
-    console.log(`OTP send to ${user.email} : ${otp}`);
-
-    await this.mailService.send(
-      user.email,
-      "SkillForge email verification",
-      `Verify your email. OTP : ${otp}`
-    );
-
-    await this.userRepository.add(user);
-
-    return { success: true, message: comments.OTP_SUCC };
   }
 }

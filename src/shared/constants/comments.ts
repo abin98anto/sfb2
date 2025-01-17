@@ -12,7 +12,12 @@ export const comments = {
   OTP_DFLT: "111111",
   OTP_FAIL: "error sending OTP mail",
   OTP_CREATE_FAIL: "error creating OTP",
+  OTP_WRONG: "Enterd OTP is incorrect.",
+  OTP_EXPIRED: "OTP Expired",
   HASH_FAIL: "error hashing password",
   SERVER_ERR: "Internal server error",
   UNKOWN_ERR: "An unknown error occurred",
+  USER_NOT_FOUND: "User not found.",
+  USER_VERIFIED: "User Verified.",
+  VERIFY_OTP_FAIL: "Error verifying OTP",
 };
