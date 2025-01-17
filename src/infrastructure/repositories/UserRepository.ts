@@ -1,4 +1,3 @@
-import { ObjectId } from "mongoose";
 import { IUser } from "../../core/entities/IUser";
 import { UserInterface } from "../../core/interfaces/UserInterface";
 import { UserModel } from "../db/schemas/userSchema";
@@ -17,7 +16,7 @@ export class UserRepository implements UserInterface {
     return await UserModel.findOne({ email });
   }
 
-  async update(id: ObjectId, user: Partial<IUser>): Promise<void> {
+  async update(id: string, user: Partial<IUser>): Promise<void> {
     await UserModel.findByIdAndUpdate(id, { $set: user }, { new: true });
   }
 }
