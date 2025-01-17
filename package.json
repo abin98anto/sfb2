@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/abin98anto/sfb2#readme",
   "devDependencies": {
+    "@types/node": "^22.10.7",
     "typescript": "^5.7.3"
   }
 }
