@@ -4,8 +4,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
-import { corsOptions } from "./config/corsOptions";
 import connectDB from "./infrastructure/db/connection";
+import { corsOptions } from "./config/corsOptions";
 import { comments } from "./shared/constants/comments";
 
 dotenv.config();
