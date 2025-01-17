@@ -1,4 +1,3 @@
-console.log("hello world, this is SkillForge 2.0!!!");
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
