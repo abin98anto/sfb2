@@ -6,6 +6,7 @@ import cors from "cors";
 
 import { corsOptions } from "./config/corsOptions";
 import connectDB from "./infrastructure/db/connection";
+import { comments } from "./shared/constants/comments";
 
 dotenv.config();
 const app = express();
@@ -17,10 +18,10 @@ app.use(express.json());
 connectDB();
 
 app.get("/", (req, res) => {
-  res.send("API is running...");
+  res.send(comments.GET_COMM);
 });
 
 const PORT = 4000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(comments.SERVER_CONNECTED);
 });
