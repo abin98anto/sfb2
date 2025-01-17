@@ -8,8 +8,8 @@ export interface IUser {
   role: UserRole;
   password?: string;
   picture?: string;
-  wallet?: string;
-  transactionsHistory?: transaction[];
+  wallet?: number;
+  transactionHistory?: transaction[];
   isActive: boolean;
   otp: number;
   otpExpiry: Date;
