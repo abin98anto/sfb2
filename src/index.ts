@@ -23,6 +23,6 @@ const PORT = 4000;
 
 connectDB().then(() =>
   app.listen(PORT, () => {
-    console.log(comments.SERVER_CONNECTED);
+    console.log(comments.SERVER_SUCC);
   })
 );

@@ -3,7 +3,7 @@ dotenv.config();
 
 export const comments = {
   GET_COMM: "API is running...",
-  SERVER_CONNECTED: `Server running on port http://localhost:${process.env.PORT}`,
+  SERVER_SUCC: `Server running on port http://localhost:${process.env.PORT}`,
   MONGO_SUCC: "MongoDB connected successfully!",
   MONGO_FAIL: "MongoDB connection failed:",
 };
