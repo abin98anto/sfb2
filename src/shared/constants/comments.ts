@@ -13,4 +13,6 @@ export const comments = {
   OTP_FAIL: "error sending OTP mail",
   OTP_CREATE_FAIL: "error creating OTP",
   HASH_FAIL: "error hashing password",
+  SERVER_ERR: "Internal server error",
+  UNKOWN_ERR: "An unknown error occurred",
 };

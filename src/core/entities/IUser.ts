@@ -5,9 +5,9 @@ export interface IUser {
   password?: string | null;
   picture?: string;
   wallet?: number;
-  isActive: boolean;
-  otp: string;
-  otpExpiry: Date;
+  isActive?: boolean;
+  otp?: string;
+  otpExpiry?: Date;
   resume?: string;
   students?: string[];
   isVerified?: boolean;
