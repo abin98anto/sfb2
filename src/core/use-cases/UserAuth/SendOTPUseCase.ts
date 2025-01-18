@@ -3,13 +3,13 @@ import { createOTP } from "../../../shared/utils/createOTP";
 import { hashPassword } from "../../../shared/utils/hashPassword";
 import { IUser } from "../../entities/IUser";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
-import { MailInterface } from "../../interfaces/misc/MailInterface";
+import { NodemailerInterface } from "../../interfaces/misc/NodemailerInterface";
 import { UserInterface } from "../../interfaces/UserInterface";
 
-export class SendOTPUserUseCase {
+export class SendOTPUseCase {
   constructor(
     private userRepository: UserInterface,
-    private mailService: MailInterface
+    private nodemailerService: NodemailerInterface
   ) {}
 
   async execute(user: IUser): Promise<UseCaseResponse> {
@@ -26,7 +26,7 @@ export class SendOTPUserUseCase {
 
       console.log(`OTP send to ${user.email} : ${otp}`);
 
-      await this.mailService.send(
+      await this.nodemailerService.send(
         user.email,
         "SkillForge email verification",
         `Verify your email. OTP : ${otp}`

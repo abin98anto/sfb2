@@ -2,13 +2,13 @@ import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();
 
-import { MailInterface } from "../../core/interfaces/misc/MailInterface";
+import { NodemailerInterface } from "../../core/interfaces/misc/NodemailerInterface";
 import { comments } from "../../shared/constants/comments";
 
 const MAIL = process.env.MAIL;
 const MAIL_PASS = process.env.MAIL_PASS;
 
-export class EmailService implements MailInterface {
+export class NodemailerService implements NodemailerInterface {
   private transporter;
 
   constructor() {

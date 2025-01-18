@@ -26,7 +26,7 @@ export class VerifyOTPUseCase {
         : (user.isActive = false);
       user.otp = undefined;
       user.otpExpiry = undefined;
-      await this.userRepository.update(user._id as string, user);
+      await this.userRepository.update(user._id!, user);
 
       return { success: true, message: comments.USER_VERIFIED };
     } catch (error) {

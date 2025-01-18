@@ -1,12 +1,12 @@
 import { Response, Request } from "express";
-import { SendOTPUserUseCase } from "../../../core/use-cases/UserAuth/SendOTPUseCase";
+import { SendOTPUseCase } from "../../../core/use-cases/UserAuth/SendOTPUseCase";
 import { comments } from "../../../shared/constants/comments";
 import { IUser } from "../../../core/entities/IUser";
 import { VerifyOTPUseCase } from "../../../core/use-cases/UserAuth/VerifyOTPUseCase";
 
 export class UserAuthController {
   constructor(
-    private sendOTPUseCase: SendOTPUserUseCase,
+    private sendOTPUseCase: SendOTPUseCase,
     private verifyOTPUseCase: VerifyOTPUseCase
   ) {}
 
