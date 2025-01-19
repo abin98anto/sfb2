@@ -8,8 +8,8 @@ export interface IUser {
   picture?: string;
   wallet?: number;
   isActive?: boolean;
-  otp?: string;
-  otpExpiry?: Date;
+  otp?: string | null;
+  otpExpiry?: Date | null;
   resume?: string;
   students?: string[];
   isVerified?: boolean;

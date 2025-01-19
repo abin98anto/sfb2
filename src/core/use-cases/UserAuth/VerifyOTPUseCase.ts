@@ -24,8 +24,8 @@ export class VerifyOTPUseCase {
       user.role === UserRole.USER
         ? (user.isActive = true)
         : (user.isActive = false);
-      user.otp = undefined;
-      user.otpExpiry = undefined;
+      user.otp = null;
+      user.otpExpiry = null;
       await this.userRepository.update(user._id!, user);
 
       return { success: true, message: comments.USER_VERIFIED };
