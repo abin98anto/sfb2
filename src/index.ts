@@ -7,6 +7,8 @@ import connectDB from "./infrastructure/db/connection";
 import { corsOptions } from "./config/corsOptions";
 import { comments } from "./shared/constants/comments";
 
+import userRouter from "./presentation/routes/userRoutes";
+
 dotenv.config();
 const app = express();
 
@@ -18,8 +20,9 @@ app.get("/", (req, res) => {
   res.send(comments.GET_COMM);
 });
 
-const PORT = 4000;
+app.use("/", userRouter);
 
+const PORT = 4000;
 connectDB().then(() =>
   app.listen(PORT, () => {
     console.log(comments.SERVER_SUCC);

@@ -20,4 +20,8 @@ export class UserRepository implements UserInterface {
   async update(id: Types.ObjectId, user: Partial<IUser>): Promise<void> {
     await UserModel.findByIdAndUpdate(id, { $set: user }, { new: true });
   }
+
+  async delete(id: string): Promise<void> {
+    await UserModel.findByIdAndDelete(id);
+  }
 }

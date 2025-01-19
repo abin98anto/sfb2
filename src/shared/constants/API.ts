@@ -4,4 +4,5 @@ export const API = {
   // User Auth
   OTP_SENT: "/send-otp",
   OTP_VERIFY: "/verify-otp",
+  USER_DELETE: "/delete-user",
 };

@@ -20,4 +20,7 @@ export const comments = {
   USER_NOT_FOUND: "User not found.",
   USER_VERIFIED: "User Verified.",
   VERIFY_OTP_FAIL: "Error verifying OTP",
+  USER_DEL_USECASE_FAIL: "Error Deleting User in UseCase.",
+  USER_DEL_SUCC: "Deleted User Successfully.",
+  USER_DEL_FAIL: "Error Deleting User.",
 };

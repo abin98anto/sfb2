@@ -10,18 +10,22 @@ import { NodemailerInterface } from "../../core/interfaces/misc/NodemailerInterf
 import { VerifyOTPUseCase } from "../../core/use-cases/UserAuth/VerifyOTPUseCase";
 import { UserAuthController } from "../controllers/userController/UserAuthController";
 import { API } from "../../shared/constants/API";
+import { DeleteUserUseCase } from "../../core/use-cases/UserAuth/DeleteUserUseCase";
 
 const userRepository: UserInterface = new UserRepository();
 const nodemailerService: NodemailerInterface = new NodemailerService();
 const sendOTPUseCase = new SendOTPUseCase(userRepository, nodemailerService);
 const verifyOTPUseCase = new VerifyOTPUseCase(userRepository);
+const deleteUserUseCase = new DeleteUserUseCase(userRepository);
 
 const userAuthController = new UserAuthController(
   sendOTPUseCase,
-  verifyOTPUseCase
+  verifyOTPUseCase,
+  deleteUserUseCase
 );
 
 userRouter.post(API.OTP_SENT, userAuthController.sendOTP);
 userRouter.post(API.OTP_VERIFY, userAuthController.verifyOTP);
+userRouter.delete(API.USER_DELETE, userAuthController.deleteUser);
 
 export default userRouter;

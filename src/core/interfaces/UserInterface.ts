@@ -6,4 +6,5 @@ export interface UserInterface {
   findById(id: string): Promise<IUser | null>;
   findByEmail(email: string): Promise<IUser | null>;
   update(id: Types.ObjectId, user: Partial<IUser>): Promise<void>;
+  delete(id: string): Promise<void>;
 }
