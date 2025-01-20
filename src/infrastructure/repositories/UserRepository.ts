@@ -22,7 +22,7 @@ export class UserRepository implements UserInterface {
     await UserModel.findByIdAndUpdate(id, { $set: user }, { new: true });
   }
 
-  async delete(id: string): Promise<void> {
-    await UserModel.findByIdAndDelete(id);
+  async delete(email: string): Promise<void> {
+    await UserModel.deleteOne({ email });
   }
 }
