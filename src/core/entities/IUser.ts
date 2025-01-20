@@ -1,5 +1,3 @@
-import { Types } from "mongoose";
-
 export interface IUser {
   name: string;
   email: string;
@@ -13,5 +11,5 @@ export interface IUser {
   resume?: string;
   students?: string[];
   isVerified?: boolean;
-  _id?: Types.ObjectId;
+  _id?: string;
 }

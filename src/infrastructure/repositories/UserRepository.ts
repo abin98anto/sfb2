@@ -5,8 +5,9 @@ import { UserModel } from "../db/schemas/userSchema";
 
 export class UserRepository implements UserInterface {
   async add(user: IUser): Promise<IUser> {
-    const newuser = await new UserModel(user).save();
-    return newuser;
+    let { _id, ...newuser } = await new UserModel(user).save();
+    const id = _id.toString();
+    return { ...newuser, _id: id };
   }
 
   async findById(id: string): Promise<IUser | null> {
@@ -17,7 +18,7 @@ export class UserRepository implements UserInterface {
     return await UserModel.findOne({ email });
   }
 
-  async update(id: Types.ObjectId, user: Partial<IUser>): Promise<void> {
+  async update(id: string, user: Partial<IUser>): Promise<void> {
     await UserModel.findByIdAndUpdate(id, { $set: user }, { new: true });
   }
 
