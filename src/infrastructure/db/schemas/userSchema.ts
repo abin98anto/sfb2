@@ -10,7 +10,7 @@ const userSchema = new Schema({
     required: true,
     default: UserRole.USER,
   },
-  password: { type: String, default: undefined },
+  password: { type: String, default: null },
   picture: { type: String, default: "" },
   wallet: { type: Number, default: 0 },
   isActive: { type: Boolean, default: true },

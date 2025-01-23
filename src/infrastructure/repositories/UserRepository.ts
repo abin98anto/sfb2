@@ -1,4 +1,3 @@
-import { Types } from "mongoose";
 import { IUser } from "../../core/entities/IUser";
 import { UserInterface } from "../../core/interfaces/UserInterface";
 import { UserModel } from "../db/schemas/userSchema";

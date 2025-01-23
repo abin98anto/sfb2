@@ -24,6 +24,7 @@ const userAuthController = new UserAuthController(
   deleteUserUseCase
 );
 
+// Signup routes.
 userRouter.post(API.OTP_SENT, userAuthController.sendOTP);
 userRouter.post(API.OTP_VERIFY, userAuthController.verifyOTP);
 userRouter.delete(API.USER_DELETE, userAuthController.deleteUser);
