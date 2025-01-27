@@ -30,4 +30,7 @@ export const comments = {
   UPDATE_USR_UC_FAIL: "Error in update user details use case",
   UPDATE_USR_SUCC: "Updated User!",
   LOGIN_SUCC: "Login Successfull",
+  LOGIN_C_FAIL: "Error in login controller.",
+  LOGOUT_C_FAIL: "Error in logout controller.",
+  LOGOUT_SUCC: "Logout Successfull.",
 };

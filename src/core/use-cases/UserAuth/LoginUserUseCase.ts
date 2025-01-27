@@ -21,15 +21,20 @@ export class LoginUserUseCase {
   ): Promise<UseCaseResponse> => {
     try {
       const user = await this.userRepository.findByEmail(email);
+      //   console.log("first", user);
+      //   console.log("second", role);
 
-      //   No user scenario & Wrong password scenario.
+      // No user scenario & Wrong password scenario.
       if (!user || !(await bcrypt.compare(password, user.password as string))) {
-        throw new Error(comments.INVALID_CRED);
+        console.log("pass not correct....");
+        // throw new Error(comments.INVALID_CRED);
+        return { success: false, message: comments.INVALID_CRED };
       }
 
-      //   Wrong user in selected login page scenario.
-      if (role === user.role) {
-        throw new Error(`${role}s are not permited.`);
+      // Wrong user in selected login page scenario.
+      if (role !== user.role) {
+        // throw new Error(`${role}s are not permitted.`);
+        return { success: false, message: `${role}s are not permitted.` };
       }
 
       let payload: JwtData = { _id: user._id, role: user.role as UserRole };
@@ -41,14 +46,8 @@ export class LoginUserUseCase {
         refreshToken,
       });
 
-      const {
-        _id,
-        password: pass,
-        refreshToken: rT,
-        otp,
-        otpExpiry,
-        ...userData
-      } = user;
+      const plainUser = JSON.parse(JSON.stringify(user));
+      const { _id, password: pass, refreshToken: rT, ...userData } = plainUser;
 
       const data = { accessToken, userData };
 

@@ -4,12 +4,14 @@ import { comments } from "../../../shared/constants/comments";
 import { IUser } from "../../../core/entities/IUser";
 import { VerifyOTPUseCase } from "../../../core/use-cases/UserAuth/VerifyOTPUseCase";
 import { DeleteUserUseCase } from "../../../core/use-cases/UserAuth/DeleteUserUseCase";
+import { LoginUserUseCase } from "../../../core/use-cases/UserAuth/LoginUserUseCase";
 
 export class UserAuthController {
   constructor(
     private sendOTPUseCase: SendOTPUseCase,
     private verifyOTPUseCase: VerifyOTPUseCase,
-    private deleteUserUseCase: DeleteUserUseCase
+    private deleteUserUseCase: DeleteUserUseCase,
+    private loginUserUseCase: LoginUserUseCase
   ) {}
 
   sendOTP = async (req: Request, res: Response): Promise<void> => {
@@ -40,7 +42,7 @@ export class UserAuthController {
   verifyOTP = async (req: Request, res: Response): Promise<void> => {
     try {
       const { email, otp } = req.body.data;
-      
+
       const result = await this.verifyOTPUseCase.execute(
         otp as string,
         email as string
@@ -81,6 +83,56 @@ export class UserAuthController {
     } catch (error) {
       console.error(comments.USER_DEL_FAIL, error);
       res.status(400).json({ success: false, message: comments.SERVER_ERR });
+    }
+  };
+
+  login = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { email, password, role } = req.body.userData;
+
+      const result = await this.loginUserUseCase.execute(email, password, role);
+      // console.log("cotroller", result);
+      if (result.success) {
+        res
+          .cookie("access-token", result.data.accessToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            maxAge: 15 * 60 * 1000,
+          })
+          .status(200)
+          .json({
+            message: comments.LOGIN_SUCC,
+            data: result.data.userData,
+          });
+        return;
+      } else {
+        console.log("yudddammm.", result);
+        res.status(401).json({ message: comments.INVALID_CRED });
+        return;
+      }
+    } catch (error) {
+      console.error(comments.LOGIN_C_FAIL, error);
+      res.status(400).json({ success: false, message: comments.LOGIN_C_FAIL });
+      return;
+    }
+  };
+
+  logout = async (req: Request, res: Response): Promise<void> => {
+    try {
+      res
+        .clearCookie("accessToken", {
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+        })
+        .status(200)
+        .json({ message: comments.LOGOUT_SUCC });
+      return;
+    } catch (error) {
+      console.log(comments.LOGOUT_C_FAIL, error);
+      res.status(400).json({ success: false, message: comments.LOGIN_C_FAIL });
+      return;
     }
   };
 }
