@@ -19,6 +19,7 @@ const userSchema = new Schema({
   resume: { type: String, default: "" },
   students: [String],
   isVerified: { type: Boolean, default: false },
+  refreshToken: { type: String, default: null },
 });
 
 export const UserModel = mongoose.model("User", userSchema);

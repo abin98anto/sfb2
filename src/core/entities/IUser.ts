@@ -12,4 +12,5 @@ export interface IUser {
   students?: string[];
   isVerified?: boolean;
   _id?: string;
+  refreshToken?: string;
 }

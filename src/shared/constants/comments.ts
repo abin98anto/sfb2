@@ -23,4 +23,11 @@ export const comments = {
   USER_DEL_USECASE_FAIL: "Error Deleting User in UseCase.",
   USER_DEL_SUCC: "Deleted User Successfully.",
   USER_DEL_FAIL: "Error Deleting User.",
+  ACCESS_INVLD: "Invalid access token",
+  REFRESH_INVLD: "Invalid refresh token",
+  LOGIN_UC_ERR: "Error in Login use case",
+  INVALID_CRED: "Invalid credentials",
+  UPDATE_USR_UC_FAIL: "Error in update user details use case",
+  UPDATE_USR_SUCC: "Updated User!",
+  LOGIN_SUCC: "Login Successfull",
 };
