@@ -40,6 +40,7 @@ export class UserAuthController {
   verifyOTP = async (req: Request, res: Response): Promise<void> => {
     try {
       const { email, otp } = req.body.data;
+      
       const result = await this.verifyOTPUseCase.execute(
         otp as string,
         email as string
