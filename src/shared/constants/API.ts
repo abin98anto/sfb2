@@ -7,4 +7,7 @@ export const API = {
   USER_DELETE: "/delete-user",
   USER_LOGIN: "/login",
   USER_LOGOUT: "/logout",
+
+  // Refresh Access Token
+  USER_REFRESH: "/refresh-token",
 };

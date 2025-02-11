@@ -5,13 +5,15 @@ import { IUser } from "../../../core/entities/IUser";
 import { VerifyOTPUseCase } from "../../../core/use-cases/UserAuth/VerifyOTPUseCase";
 import { DeleteUserUseCase } from "../../../core/use-cases/UserAuth/DeleteUserUseCase";
 import { LoginUserUseCase } from "../../../core/use-cases/UserAuth/LoginUserUseCase";
+import { RefreshTokenUseCase } from "../../../core/use-cases/UserAuth/RefreshTokenUseCase";
 
 export class UserAuthController {
   constructor(
     private sendOTPUseCase: SendOTPUseCase,
     private verifyOTPUseCase: VerifyOTPUseCase,
     private deleteUserUseCase: DeleteUserUseCase,
-    private loginUserUseCase: LoginUserUseCase
+    private loginUserUseCase: LoginUserUseCase,
+    private refreshTokenUseCase: RefreshTokenUseCase
   ) {}
 
   sendOTP = async (req: Request, res: Response): Promise<void> => {
@@ -142,6 +144,31 @@ export class UserAuthController {
       console.log(comments.LOGOUT_C_FAIL, error);
       res.status(400).json({ success: false, message: comments.LOGIN_C_FAIL });
       return;
+    }
+  };
+
+  refreshAccessToken = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const refreshToken = req.cookies["refreshToken"];
+
+      const { data } = await this.refreshTokenUseCase.execute(refreshToken);
+
+      // Set cookies
+      res.cookie("accessToken", data.newAccessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 15 * 60 * 1000,
+      });
+
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(401).json({
+        success: false,
+        message:
+          error instanceof Error ? error.message : "Token refresh failed",
+        err: error,
+      });
     }
   };
 }
