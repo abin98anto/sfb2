@@ -35,4 +35,7 @@ export const comments = {
   LOGOUT_SUCC: "Logout Successfull.",
   USR_DETAILS_UC_FAIL: "Error in get user details use case",
   USR_DETAILS_SUCC: "User details fetched successfully.",
+  ACCSS_INVLD: "Invalid access token",
+  JWT_PAYLOAD_INVLD: "Invalid token payload",
+  ACCSS_NOT_FOUND: "Access token not found",
 };

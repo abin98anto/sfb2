@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { JwtService } from "../../infrastructure/external-services/JwtService";
 import { GetUserDetailsUseCase } from "../../core/use-cases/UserAuth/GetUserDetailsUseCase";
 import { JwtData } from "../../core/entities/misc/JwtData";
+import { comments } from "../../shared/constants/comments";
 
 export class AuthMiddleware {
   static create(
@@ -33,26 +34,28 @@ export class AuthMiddleware {
       const accessToken = this.req.cookies["accessToken"];
 
       if (!accessToken) {
-        return this.res.status(401).json({ message: "Access token not found" });
+        return this.res.status(401).json({ message: comments.ACCSS_NOT_FOUND });
       }
 
       const decoded: JwtData | null =
         this.jwtService.verifyAccessToken(accessToken);
 
       if (!decoded?._id) {
-        return this.res.status(401).json({ message: "Invalid token payload" });
+        return this.res
+          .status(401)
+          .json({ message: comments.JWT_PAYLOAD_INVLD });
       }
 
       const { data } = await this.getUserDetailsUseCase.execute(decoded._id);
 
       if (!data.user) {
-        return this.res.status(401).json({ message: "User not found" });
+        return this.res.status(401).json({ message: comments.USER_NOT_FOUND });
       }
 
       this.req.user = data.user;
       this.next();
     } catch (error) {
-      return this.res.status(401).json({ message: "Invalid access token" });
+      return this.res.status(401).json({ message: comments.ACCESS_INVLD });
     }
   };
 }
