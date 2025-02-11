@@ -91,7 +91,6 @@ export class UserAuthController {
       const { email, password, role } = req.body.userData;
 
       const result = await this.loginUserUseCase.execute(email, password, role);
-      // console.log("cotroller", result);
       if (result.success) {
         res
           .cookie("access-token", result.data.accessToken, {
@@ -100,6 +99,12 @@ export class UserAuthController {
             sameSite: "strict",
             maxAge: 15 * 60 * 1000,
           })
+          .cookie("refresh-token", result.data.refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+          })
           .status(200)
           .json({
             message: comments.LOGIN_SUCC,
@@ -107,7 +112,6 @@ export class UserAuthController {
           });
         return;
       } else {
-        console.log("yudddammm.", result);
         res.status(401).json({ message: comments.INVALID_CRED });
         return;
       }
@@ -121,7 +125,12 @@ export class UserAuthController {
   logout = async (req: Request, res: Response): Promise<void> => {
     try {
       res
-        .clearCookie("accessToken", {
+        .clearCookie("access-token", {
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+        })
+        .clearCookie("refresh-token", {
           httpOnly: true,
           secure: true,
           sameSite: "strict",
