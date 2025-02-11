@@ -22,7 +22,6 @@ const nodemailerService: NodemailerInterface = new NodemailerService();
 const sendOTPUseCase = new SendOTPUseCase(userRepository, nodemailerService);
 const verifyOTPUseCase = new VerifyOTPUseCase(userRepository);
 const deleteUserUseCase = new DeleteUserUseCase(userRepository);
-const updateDetailsUseCase = new UpdateDetailsUseCase(userRepository);
 const loginUserUseCase = new LoginUserUseCase(userRepository, jwtService);
 
 const userAuthController = new UserAuthController(

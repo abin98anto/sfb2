@@ -38,4 +38,8 @@ export const comments = {
   ACCSS_INVLD: "Invalid access token",
   JWT_PAYLOAD_INVLD: "Invalid token payload",
   ACCSS_NOT_FOUND: "Access token not found",
+  RFTKN_NOT_FOUND: "Refresh token not found",
+  RFTKN_INVLD: "Invalid refresh token",
+  RFTKN_SUCC:"New Access created successfully",
+  RFTKN_FAIL:"Error in creating new access token",
 };
