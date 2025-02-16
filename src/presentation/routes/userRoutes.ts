@@ -13,7 +13,6 @@ import { API } from "../../shared/constants/API";
 import { DeleteUserUseCase } from "../../core/use-cases/UserAuth/DeleteUserUseCase";
 import { LoginUserUseCase } from "../../core/use-cases/UserAuth/LoginUserUseCase";
 import { JwtService } from "../../infrastructure/external-services/JwtService";
-import { UpdateDetailsUseCase } from "../../core/use-cases/UserAuth/UpdateDetailsUseCase";
 import { RefreshTokenUseCase } from "../../core/use-cases/UserAuth/RefreshTokenUseCase";
 
 const userRepository: UserInterface = new UserRepository();
