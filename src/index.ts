@@ -8,6 +8,7 @@ import { corsOptions } from "./config/corsOptions";
 import { comments } from "./shared/constants/comments";
 
 import userRouter from "./presentation/routes/userRoutes";
+import categoryRouter from "./presentation/routes/categoryRoutes";
 
 dotenv.config();
 const app = express();
@@ -17,6 +18,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/", userRouter);
+app.use("/categorites", categoryRouter);
 
 const PORT = 4000;
 connectDB().then(() =>

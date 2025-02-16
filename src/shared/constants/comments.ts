@@ -42,4 +42,8 @@ export const comments = {
   RFTKN_INVLD: "Invalid refresh token",
   RFTKN_SUCC:"New Access created successfully",
   RFTKN_FAIL:"Error in creating new access token",
+  CAT_FETCH_FAIL:"Error in fetching categories",
+  CAT_ADD_FAIL:"Error in adding category",
+  CAT_UPDATE_FAIL:"Error in updating category",
+  CAT_DELETE_FAIL:"Error in deleting category"
 };

@@ -1,11 +1,11 @@
 import { Response, Request } from "express";
-import { SendOTPUseCase } from "../../../core/use-cases/UserAuth/SendOTPUseCase";
+import { SendOTPUseCase } from "../../../core/use-cases/user-usecases/SendOTPUseCase";
 import { comments } from "../../../shared/constants/comments";
 import { IUser } from "../../../core/entities/IUser";
-import { VerifyOTPUseCase } from "../../../core/use-cases/UserAuth/VerifyOTPUseCase";
-import { DeleteUserUseCase } from "../../../core/use-cases/UserAuth/DeleteUserUseCase";
-import { LoginUserUseCase } from "../../../core/use-cases/UserAuth/LoginUserUseCase";
-import { RefreshTokenUseCase } from "../../../core/use-cases/UserAuth/RefreshTokenUseCase";
+import { VerifyOTPUseCase } from "../../../core/use-cases/user-usecases/VerifyOTPUseCase";
+import { DeleteUserUseCase } from "../../../core/use-cases/user-usecases/DeleteUserUseCase";
+import { LoginUserUseCase } from "../../../core/use-cases/user-usecases/LoginUserUseCase";
+import { RefreshTokenUseCase } from "../../../core/use-cases/user-usecases/RefreshTokenUseCase";
 
 export class UserAuthController {
   constructor(

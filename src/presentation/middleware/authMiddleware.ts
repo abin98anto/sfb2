@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { JwtService } from "../../infrastructure/external-services/JwtService";
-import { GetUserDetailsUseCase } from "../../core/use-cases/UserAuth/GetUserDetailsUseCase";
+import { GetUserDetailsUseCase } from "../../core/use-cases/user-usecases/GetUserDetailsUseCase";
 import { JwtData } from "../../core/entities/misc/JwtData";
 import { comments } from "../../shared/constants/comments";
 

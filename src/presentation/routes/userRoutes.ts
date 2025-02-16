@@ -5,15 +5,15 @@ const userRouter = express.Router();
 import { UserInterface } from "../../core/interfaces/UserInterface";
 import { UserRepository } from "../../infrastructure/repositories/UserRepository";
 import { NodemailerService } from "../../infrastructure/external-services/NodemailerService";
-import { SendOTPUseCase } from "../../core/use-cases/UserAuth/SendOTPUseCase";
+import { SendOTPUseCase } from "../../core/use-cases/user-usecases/SendOTPUseCase";
 import { NodemailerInterface } from "../../core/interfaces/misc/NodemailerInterface";
-import { VerifyOTPUseCase } from "../../core/use-cases/UserAuth/VerifyOTPUseCase";
-import { UserAuthController } from "../controllers/userController/UserAuthController";
+import { VerifyOTPUseCase } from "../../core/use-cases/user-usecases/VerifyOTPUseCase";
+import { UserAuthController } from "../controllers/user-controllers/UserAuthController";
 import { API } from "../../shared/constants/API";
-import { DeleteUserUseCase } from "../../core/use-cases/UserAuth/DeleteUserUseCase";
-import { LoginUserUseCase } from "../../core/use-cases/UserAuth/LoginUserUseCase";
+import { DeleteUserUseCase } from "../../core/use-cases/user-usecases/DeleteUserUseCase";
+import { LoginUserUseCase } from "../../core/use-cases/user-usecases/LoginUserUseCase";
 import { JwtService } from "../../infrastructure/external-services/JwtService";
-import { RefreshTokenUseCase } from "../../core/use-cases/UserAuth/RefreshTokenUseCase";
+import { RefreshTokenUseCase } from "../../core/use-cases/user-usecases/RefreshTokenUseCase";
 
 const userRepository: UserInterface = new UserRepository();
 
