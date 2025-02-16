@@ -153,7 +153,6 @@ export class UserAuthController {
 
       const { data } = await this.refreshTokenUseCase.execute(refreshToken);
 
-      // Set cookies
       res.cookie("accessToken", data.newAccessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
