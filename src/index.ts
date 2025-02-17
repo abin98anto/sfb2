@@ -18,7 +18,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/", userRouter);
-app.use("/categorites", categoryRouter);
+app.use("/categories", categoryRouter);
 
 const PORT = 4000;
 connectDB().then(() =>

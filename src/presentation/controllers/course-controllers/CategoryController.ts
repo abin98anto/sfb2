@@ -16,8 +16,16 @@ export class CategoryController {
 
   getAll = async (req: Request, res: Response): Promise<void> => {
     try {
-      const categories = await this.getCategoriesUseCase.execute();
-      res.status(200).json({ success: true, data: categories });
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+      const search = (req.query.search as string) || "";
+
+      const result = await this.getCategoriesUseCase.execute({
+        page,
+        limit,
+        search,
+      });
+      res.status(200).json({ success: true, data: result });
     } catch (error) {
       console.log(comments.CAT_FETCH_FAIL, error);
       res
@@ -41,7 +49,7 @@ export class CategoryController {
 
   update = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { category } = req.body;
+      const { body: category } = req;
       const result = await this.updateCategoryUseCase.execute(category);
       res.status(200).json({ success: true, data: result });
     } catch (error) {
@@ -61,13 +69,11 @@ export class CategoryController {
       res.status(200).json({ success: true, data: result });
     } catch (error) {
       console.log(comments.CAT_DELETE_FAIL, error);
-      res
-        .status(500)
-        .json({
-          success: false,
-          message: comments.CAT_DELETE_FAIL,
-          err: error,
-        });
+      res.status(500).json({
+        success: false,
+        message: comments.CAT_DELETE_FAIL,
+        err: error,
+      });
     }
   };
 }
