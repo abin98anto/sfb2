@@ -38,8 +38,8 @@ export class CategoryController {
       category.name = category.name.trim().toLowerCase();
       const result = await this.createCategoryUseCase.execute(category);
       result.success
-        ? res.status(201).json({ success: true, data: result })
-        : res.status(409).json({ success: false, data: result });
+        ? res.status(201).json(result)
+        : res.status(409).json(result);
     } catch (error) {
       console.log(comments.CAT_ADD_FAIL, error);
       res

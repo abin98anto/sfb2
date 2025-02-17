@@ -52,4 +52,7 @@ export const comments = {
   COURSE_FETCH_FAIL: "Fetching Course details failed.",
   COURSE_UPDATE_FAIL: "Error updating course",
   COURSES_FETCH_FAIL: "Error fetching all courses.",
+  COURSE_ADD_C_FAIL: "Add course failed in controller",
+  COURSE_DETAILS_FETCH_C_FAIL: "Error fetching course detailes in controller",
+  COURSE_UPDATE_C_FAIL: "Error updating course in controller.",
 };

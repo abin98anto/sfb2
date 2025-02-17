@@ -55,4 +55,27 @@ export class CourseRepository implements CourseInterface {
   getAll = async (): Promise<ICourse[]> => {
     return await Course.find();
   };
+
+  getPaginated = async ({
+    skip,
+    limit,
+    search,
+  }: {
+    skip: number;
+    limit: number;
+    search: string;
+  }): Promise<any[]> => {
+    const query = search ? { name: { $regex: search, $options: "i" } } : {};
+
+    return await Course.find(query)
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
+  };
+
+  getCount = async (search: string): Promise<number> => {
+    const query = search ? { name: { $regex: search, $options: "i" } } : {};
+
+    return await Course.countDocuments(query);
+  };
 }
