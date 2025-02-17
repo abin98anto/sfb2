@@ -14,14 +14,9 @@ export class GetCategoriesUseCase {
   execute = async (params: PaginationParams = {}): Promise<UseCaseResponse> => {
     try {
       const { page = 1, limit = 10, search = "" } = params;
-
-      // Calculate skip value for pagination
       const skip = (page - 1) * limit;
-
-      // Get total count of categories (considering search)
+      
       const totalCount = await this.categoryRepository.getCount(search);
-
-      // Get paginated and filtered results
       const categories = await this.categoryRepository.getPaginated({
         skip,
         limit,

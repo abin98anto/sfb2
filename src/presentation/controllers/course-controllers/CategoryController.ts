@@ -1,6 +1,5 @@
 import { CreateCategoryUseCase } from "../../../core/use-cases/course-usecases/category-usecases/CreateCategoryUseCase";
 import { GetCategoriesUseCase } from "../../../core/use-cases/course-usecases/category-usecases/GetCategoriesUseCase";
-import { RemoveCategoryUseCase } from "../../../core/use-cases/course-usecases/category-usecases/RemoveCategoryUseCase";
 import { UpdateCategoryUseCase } from "../../../core/use-cases/course-usecases/category-usecases/UpdateCategoryUseCase";
 
 import { Request, Response } from "express";
@@ -10,8 +9,7 @@ export class CategoryController {
   constructor(
     private getCategoriesUseCase: GetCategoriesUseCase,
     private createCategoryUseCase: CreateCategoryUseCase,
-    private updateCategoryUseCase: UpdateCategoryUseCase,
-    private removeCategoryUseCase: RemoveCategoryUseCase
+    private updateCategoryUseCase: UpdateCategoryUseCase
   ) {}
 
   getAll = async (req: Request, res: Response): Promise<void> => {
@@ -37,8 +35,11 @@ export class CategoryController {
   add = async (req: Request, res: Response): Promise<void> => {
     try {
       const category = req.body;
+      category.name = category.name.trim().toLowerCase();
       const result = await this.createCategoryUseCase.execute(category);
-      res.status(201).json({ success: true, data: result });
+      result.success
+        ? res.status(201).json({ success: true, data: result })
+        : res.status(409).json({ success: false, data: result });
     } catch (error) {
       console.log(comments.CAT_ADD_FAIL, error);
       res
@@ -62,10 +63,14 @@ export class CategoryController {
     }
   };
 
-  delete = async (req: Request, res: Response): Promise<void> => {
+  softDelete = async (req: Request, res: Response): Promise<void> => {
     try {
+      console.log("deleting ", req.body);
       const { _id } = req.body;
-      const result = await this.removeCategoryUseCase.execute(_id);
+      const result = await this.updateCategoryUseCase.execute({
+        _id,
+        isDeleted: true,
+      });
       res.status(200).json({ success: true, data: result });
     } catch (error) {
       console.log(comments.CAT_DELETE_FAIL, error);

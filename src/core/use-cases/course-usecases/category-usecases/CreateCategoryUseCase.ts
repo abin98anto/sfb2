@@ -8,6 +8,13 @@ export class CreateCategoryUseCase {
 
   execute = async (category: ICategory): Promise<UseCaseResponse> => {
     try {
+      const isDuplicate = await this.categoryRepository.findDuplicates(
+        category.name
+      );
+      if (isDuplicate) {
+        return { success: false, message: comments.CAT_EXISTS };
+      }
+
       const result = await this.categoryRepository.add(category);
       return { success: true, data: result };
     } catch (error) {

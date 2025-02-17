@@ -4,7 +4,7 @@ import { CategoryModel } from "../db/schemas/categorySchema";
 
 export class CategoryRepository implements CategoryInterface {
   getAll = async (): Promise<ICategory[]> => {
-    return await CategoryModel.find();
+    return await CategoryModel.find({ isDeleted: false });
   };
 
   add = async (category: ICategory): Promise<ICategory> => {
@@ -13,17 +13,14 @@ export class CategoryRepository implements CategoryInterface {
     return newCategory as ICategory;
   };
 
-  update = async (category: ICategory): Promise<ICategory | null> => {
+  update = async (category: Partial<ICategory>): Promise<ICategory | null> => {
     const result = await CategoryModel.findByIdAndUpdate(
       category._id,
       { $set: category },
       { new: true }
     );
+    console.log("the repo sres", result);
     return result;
-  };
-
-  delete = async (_id: string): Promise<void> => {
-    await CategoryModel.deleteOne({ _id });
   };
 
   getPaginated = async ({
@@ -35,7 +32,9 @@ export class CategoryRepository implements CategoryInterface {
     limit: number;
     search: string;
   }): Promise<any[]> => {
-    const query = search ? { name: { $regex: search, $options: "i" } } : {};
+    const query = search
+      ? { name: { $regex: search, $options: "i" }, isDeleted: false }
+      : { isDeleted: false };
 
     return await CategoryModel.find(query)
       .skip(skip)
@@ -44,8 +43,18 @@ export class CategoryRepository implements CategoryInterface {
   };
 
   getCount = async (search: string): Promise<number> => {
-    const query = search ? { name: { $regex: search, $options: "i" } } : {};
+    const query = search
+      ? { name: { $regex: search, $options: "i" }, isDeleted: false }
+      : {};
 
     return await CategoryModel.countDocuments(query);
+  };
+
+  findDuplicates = async (name: string): Promise<boolean> => {
+    const existingCategory = await CategoryModel.findOne({
+      name,
+      isDeleted: false,
+    });
+    return !!existingCategory;
   };
 }

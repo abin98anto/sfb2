@@ -40,10 +40,11 @@ export const comments = {
   ACCSS_NOT_FOUND: "Access token not found",
   RFTKN_NOT_FOUND: "Refresh token not found",
   RFTKN_INVLD: "Invalid refresh token",
-  RFTKN_SUCC:"New Access created successfully",
-  RFTKN_FAIL:"Error in creating new access token",
-  CAT_FETCH_FAIL:"Error in fetching categories",
-  CAT_ADD_FAIL:"Error in adding category",
-  CAT_UPDATE_FAIL:"Error in updating category",
-  CAT_DELETE_FAIL:"Error in deleting category"
+  RFTKN_SUCC: "New Access created successfully",
+  RFTKN_FAIL: "Error in creating new access token",
+  CAT_FETCH_FAIL: "Error in fetching categories",
+  CAT_ADD_FAIL: "Error in adding category",
+  CAT_UPDATE_FAIL: "Error in updating category",
+  CAT_DELETE_FAIL: "Error in deleting category",
+  CAT_EXISTS: "Category already exists",
 };
