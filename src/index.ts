@@ -9,6 +9,7 @@ import { comments } from "./shared/constants/comments";
 
 import userRouter from "./presentation/routes/userRoutes";
 import categoryRouter from "./presentation/routes/categoryRoutes";
+import courseRouter from "./presentation/routes/courseRouter";
 
 dotenv.config();
 const app = express();
@@ -19,6 +20,7 @@ app.use(express.json());
 
 app.use("/", userRouter);
 app.use("/categories", categoryRouter);
+app.use("/course", courseRouter);
 
 const PORT = 4000;
 connectDB().then(() =>
