@@ -1,5 +1,6 @@
 import { ICourse } from "../../core/entities/ICourse";
 import { CourseInterface } from "../../core/interfaces/CourseInterface";
+import { comments } from "../../shared/constants/comments";
 import { Course } from "../db/schemas/courseSchema";
 
 export class CourseRepository implements CourseInterface {
@@ -16,7 +17,7 @@ export class CourseRepository implements CourseInterface {
   update = async (updates: Partial<ICourse>): Promise<ICourse | null> => {
     const existingCourse = await Course.findById(updates._id).exec();
     if (!existingCourse) {
-      throw new Error("Course not found.");
+      throw new Error(comments.COURSE_NOT_FOUND);
     }
 
     for (const [key, value] of Object.entries(updates)) {
@@ -43,7 +44,7 @@ export class CourseRepository implements CourseInterface {
   toggleStatus = async (courseId: string): Promise<boolean> => {
     const course = await Course.findById(courseId);
     if (!course) {
-      throw new Error("Course not found");
+      throw new Error(comments.COURSE_NOT_FOUND);
     }
 
     course.isActive = !course.isActive;
@@ -51,7 +52,7 @@ export class CourseRepository implements CourseInterface {
     return true;
   };
 
-  all = async (): Promise<ICourse[]> => {
+  getAll = async (): Promise<ICourse[]> => {
     return await Course.find();
   };
 }

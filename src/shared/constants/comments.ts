@@ -47,4 +47,9 @@ export const comments = {
   CAT_UPDATE_FAIL: "Error in updating category",
   CAT_DELETE_FAIL: "Error in deleting category",
   CAT_EXISTS: "Category already exists",
+  COURSE_ADD_ERR: "Error creating Course",
+  COURSE_NOT_FOUND: "Course not found.",
+  COURSE_FETCH_FAIL: "Fetching Course details failed.",
+  COURSE_UPDATE_FAIL: "Error updating course",
+  COURSES_FETCH_FAIL: "Error fetching all courses.",
 };

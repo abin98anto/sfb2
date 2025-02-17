@@ -5,5 +5,5 @@ export interface CourseInterface {
   getById(_id: string): Promise<ICourse | null>;
   update(updates: Partial<ICourse>): Promise<ICourse | null>;
   toggleStatus(courseId: string): Promise<boolean>;
-  all(): Promise<ICourse[]>;
+  getAll(): Promise<ICourse[]>;
 }
