@@ -10,4 +10,7 @@ export const API = {
 
   // Refresh Access Token
   USER_REFRESH: "/refresh-token",
+
+  // Courses
+  
 };

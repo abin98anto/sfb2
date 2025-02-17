@@ -55,4 +55,5 @@ export const comments = {
   COURSE_ADD_C_FAIL: "Add course failed in controller",
   COURSE_DETAILS_FETCH_C_FAIL: "Error fetching course detailes in controller",
   COURSE_UPDATE_C_FAIL: "Error updating course in controller.",
+  COURSE_TOGGLE_FAIL: "Error toggling course status",
 };

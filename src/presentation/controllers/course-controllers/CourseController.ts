@@ -5,6 +5,7 @@ import { UpdateCourseUseCase } from "../../../core/use-cases/course-usecases/Upd
 
 import { Request, Response } from "express";
 import { comments } from "../../../shared/constants/comments";
+import { ICourse } from "../../../core/entities/ICourse";
 
 export class CourseController {
   constructor(
@@ -31,7 +32,7 @@ export class CourseController {
 
   getCourseDetails = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { courseId } = req.query;
+      const { courseId } = req.params;
       const result = this.getCourseDetailsUseCase.execute(courseId as string);
       res.status(200).json(result);
     } catch (error) {
@@ -76,6 +77,22 @@ export class CourseController {
       res.status(500).json({
         success: false,
         message: comments.COURSES_FETCH_FAIL,
+        err: error,
+      });
+    }
+  };
+
+  toggleStatus = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const course: ICourse = req.body;
+      course.isActive = false;
+      const result = this.updateCourseUseCase.execute(course);
+      res.status(200).json(result);
+    } catch (error) {
+      console.log(comments.COURSE_TOGGLE_FAIL, error);
+      res.status(500).json({
+        success: false,
+        message: comments.COURSE_TOGGLE_FAIL,
         err: error,
       });
     }

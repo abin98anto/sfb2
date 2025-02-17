@@ -41,17 +41,6 @@ export class CourseRepository implements CourseInterface {
     return await existingCourse.save();
   };
 
-  toggleStatus = async (courseId: string): Promise<boolean> => {
-    const course = await Course.findById(courseId);
-    if (!course) {
-      throw new Error(comments.COURSE_NOT_FOUND);
-    }
-
-    course.isActive = !course.isActive;
-    await course.save();
-    return true;
-  };
-
   getAll = async (): Promise<ICourse[]> => {
     return await Course.find();
   };
