@@ -50,11 +50,11 @@ export class CategoryRepository implements CategoryInterface {
     return await CategoryModel.countDocuments(query);
   };
 
-  findDuplicates = async (name: string): Promise<boolean> => {
+  findDuplicates = async (name: string): Promise<ICategory | null> => {
     const existingCategory = await CategoryModel.findOne({
       name,
       isDeleted: false,
     });
-    return !!existingCategory;
+    return existingCategory;
   };
 }

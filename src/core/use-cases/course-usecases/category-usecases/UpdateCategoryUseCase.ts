@@ -8,6 +8,12 @@ export class UpdateCategoryUseCase {
 
   execute = async (category: Partial<ICategory>): Promise<UseCaseResponse> => {
     try {
+      const isDuplicate: ICategory | null =
+        await this.categoryRepository.findDuplicates(category.name as string);
+      if (isDuplicate?._id !== category._id) {
+        return { success: false, message: comments.CAT_EXISTS };
+      }
+
       const result = await this.categoryRepository.update(category);
       return { success: true, data: result };
     } catch (error) {

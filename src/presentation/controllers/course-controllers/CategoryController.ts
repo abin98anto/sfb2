@@ -52,7 +52,9 @@ export class CategoryController {
     try {
       const { body: category } = req;
       const result = await this.updateCategoryUseCase.execute(category);
-      res.status(200).json({ success: true, data: result });
+      result.success
+        ? res.status(201).json({ success: true, data: result })
+        : res.status(409).json({ success: false, data: result });
     } catch (error) {
       console.log(comments.CAT_UPDATE_FAIL, error);
       res.status(500).json({
