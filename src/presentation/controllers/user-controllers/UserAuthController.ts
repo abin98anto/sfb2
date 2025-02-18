@@ -6,6 +6,7 @@ import { VerifyOTPUseCase } from "../../../core/use-cases/user-usecases/VerifyOT
 import { DeleteUserUseCase } from "../../../core/use-cases/user-usecases/DeleteUserUseCase";
 import { LoginUserUseCase } from "../../../core/use-cases/user-usecases/LoginUserUseCase";
 import { RefreshTokenUseCase } from "../../../core/use-cases/user-usecases/RefreshTokenUseCase";
+import { UpdateDetailsUseCase } from "../../../core/use-cases/user-usecases/UpdateDetailsUseCase";
 
 export class UserAuthController {
   constructor(
@@ -13,7 +14,8 @@ export class UserAuthController {
     private verifyOTPUseCase: VerifyOTPUseCase,
     private deleteUserUseCase: DeleteUserUseCase,
     private loginUserUseCase: LoginUserUseCase,
-    private refreshTokenUseCase: RefreshTokenUseCase
+    private refreshTokenUseCase: RefreshTokenUseCase,
+    private updateDetailsUseCase: UpdateDetailsUseCase
   ) {}
 
   sendOTP = async (req: Request, res: Response): Promise<void> => {
@@ -166,6 +168,26 @@ export class UserAuthController {
         success: false,
         message:
           error instanceof Error ? error.message : "Token refresh failed",
+        err: error,
+      });
+    }
+  };
+
+  update = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { body } = req;
+      const { id } = req.query;
+
+      const result = await this.updateDetailsUseCase.execute(
+        id as string,
+        body
+      );
+
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(401).json({
+        success: false,
+        message: comments.USER_UPDATE_FAIL,
         err: error,
       });
     }

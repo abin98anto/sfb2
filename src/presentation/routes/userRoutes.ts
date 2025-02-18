@@ -14,6 +14,7 @@ import { DeleteUserUseCase } from "../../core/use-cases/user-usecases/DeleteUser
 import { LoginUserUseCase } from "../../core/use-cases/user-usecases/LoginUserUseCase";
 import { JwtService } from "../../infrastructure/external-services/JwtService";
 import { RefreshTokenUseCase } from "../../core/use-cases/user-usecases/RefreshTokenUseCase";
+import { UpdateDetailsUseCase } from "../../core/use-cases/user-usecases/UpdateDetailsUseCase";
 
 const userRepository: UserInterface = new UserRepository();
 
@@ -24,13 +25,15 @@ const verifyOTPUseCase = new VerifyOTPUseCase(userRepository);
 const deleteUserUseCase = new DeleteUserUseCase(userRepository);
 const loginUserUseCase = new LoginUserUseCase(userRepository, jwtService);
 const refreshTokenUseCase = new RefreshTokenUseCase(jwtService, userRepository);
+const updateDetailsUseCase = new UpdateDetailsUseCase(userRepository);
 
 const userAuthController = new UserAuthController(
   sendOTPUseCase,
   verifyOTPUseCase,
   deleteUserUseCase,
   loginUserUseCase,
-  refreshTokenUseCase
+  refreshTokenUseCase,
+  updateDetailsUseCase
 );
 
 // Signup routes.
@@ -44,5 +47,8 @@ userRouter.post(API.USER_LOGOUT, userAuthController.logout);
 
 // Refresh Access Token routes.
 userRouter.post(API.USER_REFRESH, userAuthController.refreshAccessToken);
+
+// Update user details routes.
+userRouter.put(API.USER_UPDATE, userAuthController.update);
 
 export default userRouter;
