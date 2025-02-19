@@ -9,53 +9,41 @@ export class AuthMiddleware {
     jwtService: JwtService,
     getUserDetailsUseCase: GetUserDetailsUseCase
   ) {
-    return (req: Request, res: Response, next: NextFunction) => {
-      const middleware = new AuthMiddleware(
-        req,
-        res,
-        next,
-        jwtService,
-        getUserDetailsUseCase
-      );
-      return middleware.authenticateToken();
+    return async (
+      req: Request,
+      res: Response,
+      next: NextFunction
+    ): Promise<void> => {
+      try {
+        const accessToken = req.cookies["accessToken"];
+
+        if (!accessToken) {
+          res.status(401).json({ message: comments.ACCSS_NOT_FOUND });
+          return;
+        }
+
+        const decoded: JwtData | null =
+          jwtService.verifyAccessToken(accessToken);
+
+        if (!decoded?._id) {
+          res.status(401).json({ message: comments.JWT_PAYLOAD_INVLD });
+          return;
+        }
+
+        const { data } = await getUserDetailsUseCase.execute(
+          decoded?._id as string
+        );
+
+        if (!data) {
+          res.status(401).json({ message: comments.USER_NOT_FOUND });
+          return;
+        }
+
+        req.user = data;
+        next();
+      } catch (error) {
+        res.status(401).json({ message: comments.ACCESS_INVLD });
+      }
     };
   }
-
-  private constructor(
-    private req: Request,
-    private res: Response,
-    private next: NextFunction,
-    private jwtService: JwtService,
-    private getUserDetailsUseCase: GetUserDetailsUseCase
-  ) {}
-
-  private authenticateToken = async () => {
-    try {
-      const accessToken = this.req.cookies["accessToken"];
-
-      if (!accessToken) {
-        return this.res.status(401).json({ message: comments.ACCSS_NOT_FOUND });
-      }
-
-      const decoded: JwtData | null =
-        this.jwtService.verifyAccessToken(accessToken);
-
-      if (!decoded?._id) {
-        return this.res
-          .status(401)
-          .json({ message: comments.JWT_PAYLOAD_INVLD });
-      }
-
-      const { data } = await this.getUserDetailsUseCase.execute(decoded._id);
-
-      if (!data.user) {
-        return this.res.status(401).json({ message: comments.USER_NOT_FOUND });
-      }
-
-      this.req.user = data.user;
-      this.next();
-    } catch (error) {
-      return this.res.status(401).json({ message: comments.ACCESS_INVLD });
-    }
-  };
 }

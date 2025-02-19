@@ -42,6 +42,7 @@ export const comments = {
   RFTKN_INVLD: "Invalid refresh token",
   RFTKN_SUCC: "New Access created successfully",
   RFTKN_FAIL: "Error in creating new access token",
+  ACCESS_FAIL: "JWT Access Verification Failed",
   CAT_FETCH_FAIL: "Error in fetching categories",
   CAT_ADD_FAIL: "Error in adding category",
   CAT_UPDATE_FAIL: "Error in updating category",

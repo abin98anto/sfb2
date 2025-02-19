@@ -11,8 +11,8 @@ export class UpdateDetailsUseCase {
     user: Partial<IUser>
   ): Promise<UseCaseResponse> => {
     try {
-      await this.userRepository.update(_id, user);
-      return { success: true, message: comments.UPDATE_USR_SUCC };
+      let result = await this.userRepository.update(_id, user);
+      return { success: true, message: comments.UPDATE_USR_SUCC, data: result };
     } catch (error) {
       console.log(comments.UPDATE_USR_UC_FAIL, error);
       return {

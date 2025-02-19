@@ -17,8 +17,8 @@ export class UserRepository implements UserInterface {
     return await UserModel.findOne({ email });
   };
 
-  update = async (id: string, user: Partial<IUser>): Promise<void> => {
-    await UserModel.findByIdAndUpdate(
+  update = async (id: string, user: Partial<IUser>): Promise<IUser | null> => {
+    return await UserModel.findByIdAndUpdate(
       id,
       { $set: user },
       { new: true, runValidators: true }

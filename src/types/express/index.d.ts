@@ -1,9 +1,10 @@
 import { IUser } from "../../core/entities/IUser";
+import { JwtData } from "../../core/entities/misc/JwtData";
 
 declare global {
   namespace Express {
     interface Request {
-      user?: IUser;
+      user: JwtData | IUser;
     }
   }
 }

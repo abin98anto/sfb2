@@ -97,13 +97,13 @@ export class UserAuthController {
       const result = await this.loginUserUseCase.execute(email, password, role);
       if (result.success) {
         res
-          .cookie("access-token", result.data.accessToken, {
+          .cookie("accessToken", result.data.accessToken, {
             httpOnly: true,
             secure: true,
             sameSite: "strict",
             maxAge: 15 * 60 * 1000,
           })
-          .cookie("refresh-token", result.data.refreshToken, {
+          .cookie("refreshToken", result.data.refreshToken, {
             httpOnly: true,
             secure: true,
             sameSite: "strict",
@@ -129,12 +129,12 @@ export class UserAuthController {
   logout = async (req: Request, res: Response): Promise<void> => {
     try {
       res
-        .clearCookie("access-token", {
+        .clearCookie("accessToken", {
           httpOnly: true,
           secure: true,
           sameSite: "strict",
         })
-        .clearCookie("refresh-token", {
+        .clearCookie("refreshToken", {
           httpOnly: true,
           secure: true,
           sameSite: "strict",
@@ -175,14 +175,13 @@ export class UserAuthController {
 
   update = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { body } = req;
-      const { id } = req.query;
+      const { user, body } = req;
 
       const result = await this.updateDetailsUseCase.execute(
-        id as string,
-        body
+        user._id as string,
+        body as Partial<IUser>
       );
-
+      
       res.status(200).json(result);
     } catch (error) {
       res.status(401).json({

@@ -15,6 +15,8 @@ import { LoginUserUseCase } from "../../core/use-cases/user-usecases/LoginUserUs
 import { JwtService } from "../../infrastructure/external-services/JwtService";
 import { RefreshTokenUseCase } from "../../core/use-cases/user-usecases/RefreshTokenUseCase";
 import { UpdateDetailsUseCase } from "../../core/use-cases/user-usecases/UpdateDetailsUseCase";
+import { AuthMiddleware } from "../middleware/authMiddleware";
+import { GetUserDetailsUseCase } from "../../core/use-cases/user-usecases/GetUserDetailsUseCase";
 
 const userRepository: UserInterface = new UserRepository();
 
@@ -27,6 +29,8 @@ const loginUserUseCase = new LoginUserUseCase(userRepository, jwtService);
 const refreshTokenUseCase = new RefreshTokenUseCase(jwtService, userRepository);
 const updateDetailsUseCase = new UpdateDetailsUseCase(userRepository);
 
+const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
+
 const userAuthController = new UserAuthController(
   sendOTPUseCase,
   verifyOTPUseCase,
@@ -35,6 +39,8 @@ const userAuthController = new UserAuthController(
   refreshTokenUseCase,
   updateDetailsUseCase
 );
+
+const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 
 // Signup routes.
 userRouter.post(API.OTP_SENT, userAuthController.sendOTP);
@@ -49,6 +55,6 @@ userRouter.post(API.USER_LOGOUT, userAuthController.logout);
 userRouter.post(API.USER_REFRESH, userAuthController.refreshAccessToken);
 
 // Update user details routes.
-userRouter.put(API.USER_UPDATE, userAuthController.update);
+userRouter.put(API.USER_UPDATE, authMiddleware, userAuthController.update);
 
 export default userRouter;
