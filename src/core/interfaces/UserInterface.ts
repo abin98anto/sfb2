@@ -6,4 +6,5 @@ export interface UserInterface {
   findByEmail(email: string): Promise<IUser | null>;
   update(id: string, user: Partial<IUser>): Promise<IUser | null>;
   delete(email: string): Promise<void>;
+  getAll(role: string): Promise<IUser[]>;
 }

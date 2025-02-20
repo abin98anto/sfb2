@@ -5,14 +5,12 @@ export interface ILesson {
   videoUrl: string;
   pdfUrls: string[];
   duration: number;
-  order: number;
 }
 
 export interface ISection {
   name: string;
   lessons: ILesson[];
-  description: string;
-  order: number;
+  // description: string;
 }
 
 export interface ICourse {
@@ -25,8 +23,6 @@ export interface ICourse {
     language: string;
     level: string;
     prerequisites: string;
-  };
-  advanceInfo: {
     thumbnail: string;
     description: string;
   };

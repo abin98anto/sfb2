@@ -11,34 +11,39 @@ export class CourseRepository implements CourseInterface {
   };
 
   getById = async (_id: string): Promise<ICourse | null> => {
-    return await Course.findById(_id);
+    return await Course.findById(_id).lean<ICourse>();
   };
 
   update = async (updates: Partial<ICourse>): Promise<ICourse | null> => {
+    // console.log("upd", updates);
     const existingCourse = await Course.findById(updates._id).exec();
     if (!existingCourse) {
       throw new Error(comments.COURSE_NOT_FOUND);
     }
 
+    const typedCourse = existingCourse.toObject() as ICourse; // Convert to plain object
+
     for (const [key, value] of Object.entries(updates)) {
       if (value !== undefined && key !== "_id") {
-        if (key === "basicInfo" || key === "advanceInfo") {
+        if (key === "basicInfo") {
           for (const [nestedKey, nestedValue] of Object.entries(
             value as Record<string, unknown>
           )) {
             if (nestedValue !== undefined) {
-              (existingCourse[key] as any)[nestedKey] = nestedValue;
+              typedCourse.basicInfo[nestedKey as keyof ICourse["basicInfo"]] =
+                nestedValue as never;
             }
           }
         } else if (key === "curriculum") {
-          existingCourse.curriculum = value as ICourse["curriculum"];
+          typedCourse.curriculum = value as ICourse["curriculum"];
         } else {
-          (existingCourse as any)[key] = value;
+          (typedCourse as any)[key] = value;
         }
       }
     }
 
-    return await existingCourse.save();
+    await Course.updateOne({ _id: updates._id }, typedCourse);
+    return typedCourse;
   };
 
   getAll = async (): Promise<ICourse[]> => {

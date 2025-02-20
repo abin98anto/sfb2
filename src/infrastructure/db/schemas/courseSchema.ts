@@ -14,17 +14,13 @@ const LessonSchema = new Schema<ILesson>(
     },
     duration: {
       type: Number,
-      required: true,
+      // required: true,
     },
     pdfUrls: [
       {
         type: String,
       },
     ],
-    order: {
-      type: Number,
-      required: true,
-    },
   },
   { timestamps: true }
 );
@@ -36,14 +32,10 @@ const SectionSchema = new Schema<ISection>(
       required: true,
       trim: true,
     },
-    description: {
-      type: String,
-      trim: true,
-    },
-    order: {
-      type: Number,
-      required: true,
-    },
+    // description: {
+    //   type: String,
+    //   trim: true,
+    // },
     lessons: [LessonSchema],
   },
   { timestamps: true }
@@ -56,7 +48,6 @@ const CourseSchema = new Schema<ICourse>(
         type: String,
         required: true,
         trim: true,
-        minlength: 5,
         maxlength: 100,
       },
       subtitle: {
@@ -87,8 +78,6 @@ const CourseSchema = new Schema<ICourse>(
           trim: true,
         },
       ],
-    },
-    advanceInfo: {
       thumbnail: {
         type: String,
         required: true,
@@ -96,7 +85,6 @@ const CourseSchema = new Schema<ICourse>(
       description: {
         type: String,
         required: true,
-        minlength: 50,
         maxlength: 2000,
       },
     },

@@ -58,4 +58,6 @@ export const comments = {
   COURSE_UPDATE_C_FAIL: "Error updating course in controller.",
   COURSE_TOGGLE_FAIL: "Error toggling course status",
   USER_UPDATE_FAIL: "Error updating user details",
+  USERS_FETCH_FAIL: "Error fetching users",
+  USERS_FETCH_SUCC:"Users fetched successfully",
 };

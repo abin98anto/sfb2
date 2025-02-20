@@ -28,4 +28,8 @@ export class UserRepository implements UserInterface {
   delete = async (email: string): Promise<void> => {
     await UserModel.deleteOne({ email });
   };
+
+  getAll = async (role: string): Promise<IUser[]> => {
+    return await UserModel.find({ role });
+  };
 }

@@ -47,8 +47,10 @@ export class CourseController {
 
   update = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { course } = req.body;
-      const result = this.updateCourseUseCase.execute(course);
+      // console.log("trying to udpate", req.body);
+      const { body: updates } = req;
+      const result = await this.updateCourseUseCase.execute(updates);
+      // console.log("he reslt ", result);
       res.status(200).json(result);
     } catch (error) {
       console.log(comments.COURSE_UPDATE_C_FAIL, error);
@@ -65,13 +67,12 @@ export class CourseController {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
       const search = (req.query.search as string) || "";
-
       const result = await this.getAllCoursesUseCase.execute({
         page,
         limit,
         search,
       });
-      res.status(200).json({ success: true, data: result });
+      res.status(200).json(result);
     } catch (error) {
       console.log(comments.COURSES_FETCH_FAIL, error);
       res.status(500).json({
