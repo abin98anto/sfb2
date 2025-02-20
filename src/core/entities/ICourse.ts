@@ -10,7 +10,6 @@ export interface ILesson {
 export interface ISection {
   name: string;
   lessons: ILesson[];
-  // description: string;
 }
 
 export interface ICourse {

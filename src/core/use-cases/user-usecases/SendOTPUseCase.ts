@@ -1,6 +1,6 @@
 import { comments } from "../../../shared/constants/comments";
 import { createOTP } from "../../../shared/utils/createOTP";
-import { hashPassword } from "../../../shared/utils/hashPassword";
+import hashPassword from "../../../shared/utils/hashPassword";
 import { IUser } from "../../entities/IUser";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
 import { NodemailerInterface } from "../../interfaces/misc/NodemailerInterface";
@@ -12,7 +12,7 @@ export class SendOTPUseCase {
     private nodemailerService: NodemailerInterface
   ) {}
 
-  async execute(user: IUser): Promise<UseCaseResponse> {
+  execute = async (user: IUser): Promise<UseCaseResponse> => {
     try {
       const emailTaken = await this.userRepository.findByEmail(user.email);
       if (emailTaken) {
@@ -39,5 +39,5 @@ export class SendOTPUseCase {
       console.log(comments.OTP_FAIL, error);
       return { success: false, message: comments.OTP_FAIL, err: error };
     }
-  }
+  };
 }

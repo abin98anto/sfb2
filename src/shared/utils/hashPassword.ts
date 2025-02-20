@@ -1,15 +1,18 @@
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
-import { comments } from "../constants/comments";
 dotenv.config();
+
+import { comments } from "../constants/comments";
 
 const SALT = Number(process.env.SALT!);
 
-export async function hashPassword(password: string): Promise<string> {
+const hashPassword = async (password: string): Promise<string> => {
   try {
     return await bcrypt.hash(password, SALT);
   } catch (error) {
     console.log(comments.HASH_FAIL, error);
     return "";
   }
-}
+};
+
+export default hashPassword;

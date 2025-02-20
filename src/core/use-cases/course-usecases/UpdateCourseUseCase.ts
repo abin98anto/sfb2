@@ -8,7 +8,6 @@ export class UpdateCourseUseCase {
 
   execute = async (updates: Partial<ICourse>): Promise<UseCaseResponse> => {
     try {
-      // console.log("course", updates);
       const result = await this.courseRepository.update(updates);
       return { success: true, data: result };
     } catch (error) {

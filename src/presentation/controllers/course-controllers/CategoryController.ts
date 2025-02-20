@@ -67,7 +67,6 @@ export class CategoryController {
 
   softDelete = async (req: Request, res: Response): Promise<void> => {
     try {
-      console.log("deleting ", req.body);
       const { _id } = req.body;
       const result = await this.updateCategoryUseCase.execute({
         _id,

@@ -6,7 +6,7 @@ import { UserInterface } from "../../interfaces/UserInterface";
 export class VerifyOTPUseCase {
   constructor(private userRepository: UserInterface) {}
 
-  async execute(otp: string, email: string): Promise<UseCaseResponse> {
+  execute = async (otp: string, email: string): Promise<UseCaseResponse> => {
     try {
       const user = await this.userRepository.findByEmail(email);
       if (!user) {
@@ -33,5 +33,5 @@ export class VerifyOTPUseCase {
       console.log(comments.VERIFY_OTP_FAIL, error);
       return { success: false, message: comments.VERIFY_OTP_FAIL, err: error };
     }
-  }
+  };
 }

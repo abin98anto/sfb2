@@ -15,13 +15,12 @@ export class CourseRepository implements CourseInterface {
   };
 
   update = async (updates: Partial<ICourse>): Promise<ICourse | null> => {
-    // console.log("upd", updates);
     const existingCourse = await Course.findById(updates._id).exec();
     if (!existingCourse) {
       throw new Error(comments.COURSE_NOT_FOUND);
     }
 
-    const typedCourse = existingCourse.toObject() as ICourse; // Convert to plain object
+    const typedCourse = existingCourse.toObject() as ICourse;
 
     for (const [key, value] of Object.entries(updates)) {
       if (value !== undefined && key !== "_id") {

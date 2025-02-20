@@ -1,10 +1,11 @@
+import bcrypt from "bcryptjs";
+
 import { JwtService } from "../../../infrastructure/external-services/JwtService";
 import { comments } from "../../../shared/constants/comments";
 import { UserRole } from "../../entities/misc/enums";
 import { JwtData } from "../../entities/misc/JwtData";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
 import { UserInterface } from "../../interfaces/UserInterface";
-import bcrypt from "bcryptjs";
 
 export class LoginUserUseCase {
   constructor(
@@ -20,11 +21,9 @@ export class LoginUserUseCase {
     try {
       const user = await this.userRepository.findByEmail(email);
 
-      // No user scenario & Wrong password scenario.
       if (!user || !(await bcrypt.compare(password, user.password as string))) {
         return { success: false, message: comments.INVALID_CRED };
       }
-      // Wrong user in selected login page scenario.
       if (role !== user.role) {
         return { success: false, message: `${role}s are not permitted.` };
       }

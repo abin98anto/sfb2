@@ -32,10 +32,6 @@ const SectionSchema = new Schema<ISection>(
       required: true,
       trim: true,
     },
-    // description: {
-    //   type: String,
-    //   trim: true,
-    // },
     lessons: [LessonSchema],
   },
   { timestamps: true }

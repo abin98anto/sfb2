@@ -47,10 +47,8 @@ export class CourseController {
 
   update = async (req: Request, res: Response): Promise<void> => {
     try {
-      // console.log("trying to udpate", req.body);
       const { body: updates } = req;
       const result = await this.updateCourseUseCase.execute(updates);
-      // console.log("he reslt ", result);
       res.status(200).json(result);
     } catch (error) {
       console.log(comments.COURSE_UPDATE_C_FAIL, error);
