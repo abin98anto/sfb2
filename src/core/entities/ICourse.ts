@@ -14,17 +14,15 @@ export interface ISection {
 
 export interface ICourse {
   _id?: string;
-  basicInfo: {
-    title: string;
-    subtitle: string;
-    category: string;
-    topic: string;
-    language: string;
-    level: string;
-    prerequisites: string;
-    thumbnail: string;
-    description: string;
-  };
+  title: string;
+  subtitle: string;
+  category: string;
+  topic: string;
+  language: string;
+  level: string;
+  prerequisites: string;
+  thumbnail: string;
+  description: string;
   curriculum: ISection[];
   tutors?: IUser[];
   totalDuration: number;

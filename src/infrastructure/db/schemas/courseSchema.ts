@@ -14,7 +14,6 @@ const LessonSchema = new Schema<ILesson>(
     },
     duration: {
       type: Number,
-      // required: true,
     },
     pdfUrls: [
       {
@@ -39,50 +38,48 @@ const SectionSchema = new Schema<ISection>(
 
 const CourseSchema = new Schema<ICourse>(
   {
-    basicInfo: {
-      title: {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+      maxlength: 100,
+    },
+    subtitle: {
+      type: String,
+      trim: true,
+      maxlength: 200,
+    },
+    category: {
+      type: String,
+      required: true,
+      ref: "Category",
+    },
+    topic: {
+      type: String,
+      required: true,
+    },
+    language: {
+      type: String,
+      required: true,
+    },
+    level: {
+      type: String,
+      required: true,
+    },
+    prerequisites: [
+      {
         type: String,
-        required: true,
         trim: true,
-        maxlength: 100,
       },
-      subtitle: {
-        type: String,
-        trim: true,
-        maxlength: 200,
-      },
-      category: {
-        type: String,
-        required: true,
-        ref: "Category",
-      },
-      topic: {
-        type: String,
-        required: true,
-      },
-      language: {
-        type: String,
-        required: true,
-      },
-      level: {
-        type: String,
-        required: true,
-      },
-      prerequisites: [
-        {
-          type: String,
-          trim: true,
-        },
-      ],
-      thumbnail: {
-        type: String,
-        required: true,
-      },
-      description: {
-        type: String,
-        required: true,
-        maxlength: 2000,
-      },
+    ],
+    thumbnail: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+      maxlength: 2000,
     },
     curriculum: [SectionSchema],
     tutors: [

@@ -24,17 +24,10 @@ export class CourseRepository implements CourseInterface {
 
     for (const [key, value] of Object.entries(updates)) {
       if (value !== undefined && key !== "_id") {
-        if (key === "basicInfo") {
-          for (const [nestedKey, nestedValue] of Object.entries(
-            value as Record<string, unknown>
-          )) {
-            if (nestedValue !== undefined) {
-              typedCourse.basicInfo[nestedKey as keyof ICourse["basicInfo"]] =
-                nestedValue as never;
-            }
-          }
-        } else if (key === "curriculum") {
+        if (key === "curriculum") {
           typedCourse.curriculum = value as ICourse["curriculum"];
+        } else if (key === "tutors") {
+          typedCourse.tutors = value as ICourse["tutors"];
         } else {
           (typedCourse as any)[key] = value;
         }
