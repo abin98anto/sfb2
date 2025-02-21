@@ -1,6 +1,7 @@
 import { IUser } from "./IUser";
 
 export interface ILesson {
+  _id?: string;
   name: string;
   videoUrl: string;
   pdfUrls: string[];
@@ -8,8 +9,10 @@ export interface ILesson {
 }
 
 export interface ISection {
+  _id?: string;
   name: string;
   lessons: ILesson[];
+  duration: number;
 }
 
 export interface ICourse {
