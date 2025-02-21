@@ -19,7 +19,6 @@ export class CategoryRepository implements CategoryInterface {
       { $set: category },
       { new: true }
     );
-    console.log("the repo sres", result);
     return result;
   };
 
@@ -56,5 +55,9 @@ export class CategoryRepository implements CategoryInterface {
       isDeleted: false,
     });
     return existingCategory;
+  };
+
+  findById = async (id: string): Promise<ICategory | null> => {
+    return await CategoryModel.findById(id);
   };
 }

@@ -11,4 +11,5 @@ export interface CategoryInterface {
   }): Promise<any[]>;
   getCount(search: string): Promise<number>;
   findDuplicates(name: string): Promise<ICategory | null>;
+  findById(id: string): Promise<ICategory | null>;
 }

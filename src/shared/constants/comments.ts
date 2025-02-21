@@ -59,5 +59,7 @@ export const comments = {
   COURSE_TOGGLE_FAIL: "Error toggling course status",
   USER_UPDATE_FAIL: "Error updating user details",
   USERS_FETCH_FAIL: "Error fetching users",
-  USERS_FETCH_SUCC:"Users fetched successfully",
+  USERS_FETCH_SUCC: "Users fetched successfully",
+  CAT_NOT_FOUND: "Category not found",
+  ALL_FIELDS_REQ:"All fields are required",
 };
