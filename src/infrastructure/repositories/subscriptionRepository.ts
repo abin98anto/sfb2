@@ -16,7 +16,7 @@ export default class SubscriptionRepository implements SubscriptionInterface {
     })) as ISubscription;
   };
 
-  get = async (id: string): Promise<ISubscription> => {
+  findById = async (id: string): Promise<ISubscription> => {
     return (await SubscriptionModel.findOne({
       isDeleted: false,
       _id: id,

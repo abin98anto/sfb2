@@ -8,7 +8,7 @@ export interface CategoryInterface {
     skip: number;
     limit: number;
     search: string;
-  }): Promise<any[]>;
+  }): Promise<ICategory[]>;
   getCount(search: string): Promise<number>;
   findDuplicates(name: string): Promise<ICategory | null>;
   findById(id: string): Promise<ICategory | null>;

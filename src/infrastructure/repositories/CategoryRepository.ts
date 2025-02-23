@@ -30,7 +30,7 @@ export class CategoryRepository implements CategoryInterface {
     skip: number;
     limit: number;
     search: string;
-  }): Promise<any[]> => {
+  }): Promise<ICategory[]> => {
     const query = search
       ? { name: { $regex: search, $options: "i" }, isDeleted: false }
       : { isDeleted: false };
