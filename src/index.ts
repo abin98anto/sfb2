@@ -10,6 +10,7 @@ import { comments } from "./shared/constants/comments";
 import userRouter from "./presentation/routes/userRoutes";
 import categoryRouter from "./presentation/routes/categoryRoutes";
 import courseRouter from "./presentation/routes/courseRouter";
+import adminRouter from "./presentation/routes/adminRoutes";
 
 dotenv.config();
 const app = express();
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use("/", userRouter);
 app.use("/categories", categoryRouter);
 app.use("/course", courseRouter);
+app.use("/admin", adminRouter);
 
 const PORT = 4000;
 connectDB().then(() =>

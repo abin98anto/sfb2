@@ -103,7 +103,7 @@ const CourseSchema = new Schema<ICourse>(
     },
     isActive: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   {

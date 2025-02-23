@@ -13,3 +13,5 @@ const getUsersUseCase = new GetUsersUseCase(userRepository);
 const adminController = new AdminController(getUsersUseCase);
 
 adminRouter.get("/users/:role", adminController.getUsersBasedOnRole);
+
+export default adminRouter;
