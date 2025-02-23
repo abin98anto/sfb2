@@ -5,6 +5,7 @@ export interface CourseInterface {
   getById(_id: string): Promise<ICourse | null>;
   update(updates: Partial<ICourse>): Promise<ICourse | null>;
   getAll(): Promise<ICourse[]>;
+
   getPaginated(params: {
     skip: number;
     limit: number;

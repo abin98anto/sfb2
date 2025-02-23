@@ -44,7 +44,7 @@ export class CategoryRepository implements CategoryInterface {
   getCount = async (search: string): Promise<number> => {
     const query = search
       ? { name: { $regex: search, $options: "i" }, isDeleted: false }
-      : {};
+      : { isDeleted: false };
 
     return await CategoryModel.countDocuments(query);
   };
