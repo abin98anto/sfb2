@@ -9,6 +9,6 @@ export interface UserInterface {
   delete(email: string): Promise<void>;
   getAll(role: string): Promise<IUser[]>;
 
-  getPaginated(params: IParams): Promise<Partial<IUser>[]>;
-  getCount(search: string): Promise<number>;
+  getPaginated(role: string, params: IParams): Promise<Partial<IUser>[]>;
+  getCount(role: string, search: string): Promise<number>;
 }

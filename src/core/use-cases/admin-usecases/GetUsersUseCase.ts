@@ -15,8 +15,8 @@ export class GetUsersUseCase {
       const { page = 1, limit = 10, search = "" } = params;
       const skip = (page - 1) * limit;
 
-      const totalCount = await this.userRepository.getCount(search);
-      const categories = await this.userRepository.getPaginated({
+      const totalCount = await this.userRepository.getCount(role, search);
+      const categories = await this.userRepository.getPaginated(role, {
         skip,
         limit,
         search,

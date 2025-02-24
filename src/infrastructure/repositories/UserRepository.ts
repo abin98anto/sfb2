@@ -34,12 +34,13 @@ export class UserRepository implements UserInterface {
     return await UserModel.find({ role });
   };
 
-  getPaginated = async ({
-    skip,
-    limit,
-    search,
-  }: IParams): Promise<Partial<IUser>[]> => {
-    const query = search ? { name: { $regex: search, $options: "i" } } : {};
+  getPaginated = async (
+    role: string,
+    { skip, limit, search }: IParams
+  ): Promise<Partial<IUser>[]> => {
+    const query = search
+      ? { role, name: { $regex: search, $options: "i" } }
+      : { role };
 
     const users = await UserModel.find(query)
       .skip(skip)
@@ -53,8 +54,10 @@ export class UserRepository implements UserInterface {
     }));
   };
 
-  getCount = async (search: string): Promise<number> => {
-    const query = search ? { name: { $regex: search, $options: "i" } } : {};
+  getCount = async (role: string, search: string): Promise<number> => {
+    const query = search
+      ? { role, name: { $regex: search, $options: "i" } }
+      : { role };
 
     return await UserModel.countDocuments(query);
   };
