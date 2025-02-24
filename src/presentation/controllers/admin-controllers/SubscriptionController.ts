@@ -48,9 +48,9 @@ export default class SubscriptionController {
 
   update = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { body: subscription } = req.body;
+      const { body } = req;
       const result = await this.updateSubscriptionUseCase.execute(
-        subscription as Partial<ISubscription>
+        body as Partial<ISubscription>
       );
       result.success
         ? res.status(200).json(result)

@@ -9,6 +9,7 @@ interface ISubscription {
   };
   price?: number;
   discountPrice?: number;
+  discountStartDate?: Date;
   discountValidity?: Date;
   users: Array<{
     userId: string;
