@@ -1,4 +1,5 @@
 import { IUser } from "../entities/IUser";
+import IParams from "../entities/misc/IParams";
 
 export interface UserInterface {
   add(user: IUser): Promise<IUser>;
@@ -7,4 +8,7 @@ export interface UserInterface {
   update(id: string, user: Partial<IUser>): Promise<IUser | null>;
   delete(email: string): Promise<void>;
   getAll(role: string): Promise<IUser[]>;
+
+  getPaginated(params: IParams): Promise<Partial<IUser>[]>;
+  getCount(search: string): Promise<number>;
 }

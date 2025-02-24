@@ -6,7 +6,10 @@ export class AdminController {
 
   getUsersBasedOnRole = async (req: any, res: any) => {
     try {
-      const users = await this.getUsersUseCase.execute(req.params.role);
+      const users = await this.getUsersUseCase.execute(
+        req.params.role,
+        req.body
+      );
       return res.status(200).json(users);
     } catch (error) {
       console.log(comments.USERS_FETCH_FAIL, error);

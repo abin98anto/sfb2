@@ -1,4 +1,5 @@
 import { ICourse } from "../entities/ICourse";
+import IParams from "../entities/misc/IParams";
 
 export interface CourseInterface {
   add(course: Partial<ICourse>): Promise<ICourse>;
@@ -6,10 +7,6 @@ export interface CourseInterface {
   update(updates: Partial<ICourse>): Promise<ICourse | null>;
   getAll(): Promise<ICourse[]>;
 
-  getPaginated(params: {
-    skip: number;
-    limit: number;
-    search: string;
-  }): Promise<any[]>;
+  getPaginated(params: IParams): Promise<ICourse[]>;
   getCount(search: string): Promise<number>;
 }

@@ -1,4 +1,5 @@
 import { ICourse } from "../../core/entities/ICourse";
+import IParams from "../../core/entities/misc/IParams";
 import { CourseInterface } from "../../core/interfaces/CourseInterface";
 import { comments } from "../../shared/constants/comments";
 import { Course } from "../db/schemas/courseSchema";
@@ -49,11 +50,7 @@ export class CourseRepository implements CourseInterface {
     skip,
     limit,
     search,
-  }: {
-    skip: number;
-    limit: number;
-    search: string;
-  }): Promise<any[]> => {
+  }: IParams): Promise<ICourse[]> => {
     const query = search ? { name: { $regex: search, $options: "i" } } : {};
 
     return await Course.find(query)
