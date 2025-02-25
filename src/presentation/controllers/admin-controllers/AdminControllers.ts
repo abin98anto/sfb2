@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 
 import { GetUsersUseCase } from "../../../core/use-cases/admin-usecases/GetUsersUseCase";
-import { UpdateDetailsUseCase } from "../../../core/use-cases/user-usecases/UpdateDetailsUseCase";
 import { comments } from "../../../shared/constants/comments";
+import { IUser } from "../../../core/entities/IUser";
+import BlockUsersUseCase from "../../../core/use-cases/admin-usecases/BlockUsersUseCase";
 
 export class AdminController {
   constructor(
     private getUsersUseCase: GetUsersUseCase,
-    private updateDetailsUseCase: UpdateDetailsUseCase
+    private blockUsersUseCase: BlockUsersUseCase
   ) {}
 
   getUsersBasedOnRole = async (req: Request, res: Response) => {
@@ -16,7 +17,18 @@ export class AdminController {
         req.params.role,
         req.query
       );
-      res.status(200).json(users);
+
+      let filteredUsers = users.data.data;
+
+      if (req.query?.isVerified && req.params.role === "tutor") {
+        const isVerifiedValue = req.query.isVerified === "true";
+
+        filteredUsers = users.data.data.filter(
+          (user: IUser) => user.isVerified === isVerifiedValue
+        );
+      }
+
+      res.status(200).json(filteredUsers);
     } catch (error) {
       console.log(comments.USERS_FETCH_FAIL, error);
       res.status(500).json({ message: comments.USERS_FETCH_FAIL, err: error });
@@ -26,9 +38,7 @@ export class AdminController {
   blockUser = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
-      const result = await this.updateDetailsUseCase.execute(id, {
-        isActive: false,
-      });
+      const result = await this.blockUsersUseCase.execute(id);
 
       res.status(200).json(result);
     } catch (error) {

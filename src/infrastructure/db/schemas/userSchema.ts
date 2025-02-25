@@ -19,6 +19,8 @@ const userSchema = new Schema(
     otpExpiry: { type: Date, default: Date.now },
     resume: { type: String, default: "" },
     students: [String],
+    reviewsTaken: { type: Number, default: 0 },
+    sessionsTaken: { type: Number, default: 0 },
     isVerified: { type: Boolean, default: false },
     refreshToken: { type: String, default: null },
   },

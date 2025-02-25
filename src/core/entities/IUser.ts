@@ -1,5 +1,3 @@
-import mongoose from "mongoose";
-
 export interface IUser {
   name: string;
   email: string;
@@ -12,6 +10,8 @@ export interface IUser {
   otpExpiry?: Date | null;
   resume?: string;
   students?: string[];
+  reviewsTaken?: number;
+  sessionsTaken?: number;
   isVerified?: boolean;
   _id?: string;
   refreshToken?: string;
