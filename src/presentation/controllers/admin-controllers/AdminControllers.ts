@@ -4,11 +4,15 @@ import { GetUsersUseCase } from "../../../core/use-cases/admin-usecases/GetUsers
 import { comments } from "../../../shared/constants/comments";
 import { IUser } from "../../../core/entities/IUser";
 import BlockUsersUseCase from "../../../core/use-cases/admin-usecases/BlockUsersUseCase";
+import ApproveTutorUseCase from "../../../core/use-cases/admin-usecases/ApproveTutorUseCase";
+import DenyTutorUseCase from "../../../core/use-cases/admin-usecases/DenyTutorUseCase";
 
 export class AdminController {
   constructor(
     private getUsersUseCase: GetUsersUseCase,
-    private blockUsersUseCase: BlockUsersUseCase
+    private blockUsersUseCase: BlockUsersUseCase,
+    private approveTutorUseCase: ApproveTutorUseCase,
+    private denyTutorUserCase: DenyTutorUseCase
   ) {}
 
   getUsersBasedOnRole = async (req: Request, res: Response) => {
@@ -44,6 +48,33 @@ export class AdminController {
     } catch (error) {
       console.log("error blocking user", error);
       res.status(500).json({ message: "error blocking user", err: error });
+    }
+  };
+
+  approveTutor = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { id } = req.params;
+      const result = await this.approveTutorUseCase.execute(id);
+      res.status(200).json(result);
+    } catch (error) {
+      console.log("error blocking user", error);
+      res
+        .status(500)
+        .json({ success: false, message: "error blocking user", err: error });
+    }
+  };
+
+  denyTutor = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { id } = req.params;
+      const { message } = req.body;
+      const result = await this.denyTutorUserCase.execute(id, message);
+      res.status(200).json(result);
+    } catch (error) {
+      console.log("error blocking user", error);
+      res
+        .status(500)
+        .json({ success: false, message: "error blocking user", err: error });
     }
   };
 }
