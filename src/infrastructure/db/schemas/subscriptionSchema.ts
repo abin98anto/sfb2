@@ -3,6 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const SubscriptionSchema = new Schema(
   {
     name: { type: String, required: true },
+    description: { type: String, required: true },
     features: {
       type: {
         hasVideoCall: { type: Boolean, required: true },

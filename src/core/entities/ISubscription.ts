@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 interface ISubscription {
   name: string;
+  description: string;
   features: {
     hasVideoCall: boolean;
     hasChat: boolean;
