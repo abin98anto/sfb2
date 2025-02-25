@@ -19,15 +19,11 @@ export class UserRepository implements UserInterface {
   };
 
   update = async (id: string, user: Partial<IUser>): Promise<IUser | null> => {
-    return await UserModel.findByIdAndUpdate(
-      id,
-      { $set: user },
-      { new: true, runValidators: true }
-    );
+    return await UserModel.findByIdAndUpdate(id, { $set: user }, { new: true });
   };
 
-  delete = async (email: string): Promise<void> => {
-    await UserModel.deleteOne({ email });
+  delete = async (id: string): Promise<void> => {
+    await UserModel.findByIdAndDelete(id as string);
   };
 
   getAll = async (role: string): Promise<IUser[]> => {

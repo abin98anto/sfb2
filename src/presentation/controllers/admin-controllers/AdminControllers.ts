@@ -67,8 +67,8 @@ export class AdminController {
   denyTutor = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
-      const { message } = req.body;
-      const result = await this.denyTutorUserCase.execute(id, message);
+      const { reason } = req.body;
+      const result = await this.denyTutorUserCase.execute(id, reason);
       res.status(200).json(result);
     } catch (error) {
       console.log("error blocking user", error);
