@@ -40,10 +40,16 @@ export class CourseRepository implements CourseInterface {
   };
 
   getAll = async (): Promise<ICourse[]> => {
-    return await Course.find().populate({
-      path: "tutors",
-      select: "_id name",
-    });
+    return await Course.find().populate([
+      {
+        path: "tutors",
+        select: "_id name",
+      },
+      {
+        path: "category",
+        select: "_id name",
+      },
+    ]);
   };
 
   getPaginated = async ({
@@ -57,10 +63,16 @@ export class CourseRepository implements CourseInterface {
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: -1 })
-      .populate({
-        path: "tutors",
-        select: "_id name",
-      });
+      .populate([
+        {
+          path: "tutors",
+          select: "_id name",
+        },
+        {
+          path: "category",
+          select: "_id name",
+        },
+      ]);
   };
 
   getCount = async (search: string): Promise<number> => {
