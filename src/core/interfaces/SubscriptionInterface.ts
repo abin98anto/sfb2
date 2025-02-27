@@ -1,3 +1,4 @@
+import IOrder from "../entities/IOrder";
 import ISubscription from "../entities/ISubscription";
 
 interface SubscriptionInterface {
@@ -6,7 +7,7 @@ interface SubscriptionInterface {
   findById(id: string): Promise<ISubscription>;
   getAll(): Promise<ISubscription[]>;
   update(data: Partial<ISubscription>): Promise<ISubscription>;
-  addUser(id: string, userId: string): Promise<ISubscription>;
+  addUser(order: IOrder): Promise<ISubscription | null>;
 
   getPaginated(params: {
     skip: number;

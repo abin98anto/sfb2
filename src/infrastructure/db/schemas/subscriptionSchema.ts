@@ -18,7 +18,7 @@ const SubscriptionSchema = new Schema(
     discountValidity: { type: Date },
     users: [
       {
-        userId: { type: String },
+        userEmail: { type: String },
         startDate: { type: Date, required: true },
         endDate: { type: Date },
       },

@@ -1,3 +1,4 @@
+import IOrder from "../../core/entities/IOrder";
 import ISubscription from "../../core/entities/ISubscription";
 import SubscriptionInterface from "../../core/interfaces/SubscriptionInterface";
 import SubscriptionModel from "../db/schemas/subscriptionSchema";
@@ -35,24 +36,30 @@ export default class SubscriptionRepository implements SubscriptionInterface {
     )) as ISubscription;
   };
 
-  addUser = async (id: string, userId: string): Promise<ISubscription> => {
-    const startDate = new Date();
-    const endDate = new Date(startDate);
-    endDate.setMonth(startDate.getMonth() + 1);
+  addUser = async (order: IOrder): Promise<ISubscription | null> => {
+    console.log("Finding subscription with plan name:", order.plan);
 
-    return (await SubscriptionModel.findByIdAndUpdate(
-      id,
-      {
-        $push: {
-          users: {
-            userId,
-            startDate,
-            endDate,
+    try {
+      const result = (await SubscriptionModel.findOneAndUpdate(
+        { name: order.plan }, // Find subscription by plan name instead of ID
+        {
+          $push: {
+            users: {
+              userEmail: order.userEmail,
+              startDate: order.startDate,
+              endDate: order.endDate,
+            },
           },
         },
-      },
-      { new: true }
-    )) as ISubscription;
+        { new: true }
+      )) as ISubscription;
+
+      console.log("the result add user:", result);
+      return result;
+    } catch (error) {
+      console.error("Error updating subscription:", error);
+      throw error;
+    }
   };
 
   getPaginated = async (params: {

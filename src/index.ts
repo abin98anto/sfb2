@@ -12,6 +12,7 @@ import categoryRouter from "./presentation/routes/categoryRoutes";
 import courseRouter from "./presentation/routes/courseRouter";
 import adminRouter from "./presentation/routes/adminRoutes";
 import subscriptionRoutes from "./presentation/routes/subscriptionRoutes";
+import orderRouter from "./presentation/routes/orderRoutes";
 
 dotenv.config();
 const app = express();
@@ -25,6 +26,7 @@ app.use("/categories", categoryRouter);
 app.use("/course", courseRouter);
 app.use("/admin", adminRouter);
 app.use("/subsciption", subscriptionRoutes);
+app.use("/order", orderRouter);
 
 const PORT = 4000;
 connectDB().then(() =>

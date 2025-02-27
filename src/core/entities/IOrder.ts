@@ -1,5 +1,5 @@
 export default interface IOrder {
-  userId: string;
+  userEmail: string;
   plan: string;
   startDate: Date;
   endDate: Date;

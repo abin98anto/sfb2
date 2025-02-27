@@ -13,7 +13,7 @@ interface ISubscription {
   discountStartDate?: Date;
   discountValidity?: Date;
   users: Array<{
-    userId: string;
+    userEmail: string;
     startDate: Date;
     endDate?: Date;
   }>;

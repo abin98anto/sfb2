@@ -62,18 +62,18 @@ export default class SubscriptionController {
   };
 
   addSubscriber = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const { subscriptionId, userId } = req.body;
-      const result = await this.newSubscriberUseCase.execute(
-        subscriptionId,
-        userId
-      );
-      result.success
-        ? res.status(200).json(result)
-        : res.status(409).json(result);
-    } catch (error) {
-      console.log("error in add subscriber", error);
-      res.status(500).json({ message: "error adding new subscriber" });
-    }
+    // try {
+    //   const { subscriptionId, userId } = req.body;
+    //   const result = await this.newSubscriberUseCase.execute(
+    //     subscriptionId,
+    //     userId
+    //   );
+    //   result.success
+    //     ? res.status(200).json(result)
+    //     : res.status(409).json(result);
+    // } catch (error) {
+    //   console.log("error in add subscriber", error);
+    //   res.status(500).json({ message: "error adding new subscriber" });
+    // }
   };
 }
