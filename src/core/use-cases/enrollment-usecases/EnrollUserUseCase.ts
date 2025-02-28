@@ -12,12 +12,14 @@ class EnrollUserUseCase {
 
   execute = async (enrollment: IEnrollment) => {
     const course = await this.getCourseDetailsUseCase.execute(
-      enrollment.courseId
+      enrollment.courseId as string
     );
+
+    // const
 
     const updatedEnrollmentCount = course.data.enrollmentCount + 1;
     await this.updateCourseUseCase.execute({
-      _id: enrollment.courseId,
+      _id: enrollment.courseId as string,
       enrollmentCount: updatedEnrollmentCount,
     });
     return await this.enrollmentRepository.add(enrollment);

@@ -1,5 +1,4 @@
 import IEnrollment from "../../core/entities/IEnrollment";
-import IParams from "../../core/entities/misc/IParams";
 import EnrollmentInterface from "../../core/interfaces/EnrollmentInterface";
 import EnrollmentModel from "../db/schemas/enrollmentSchema";
 
@@ -16,10 +15,15 @@ class EnrollmentRepository implements EnrollmentInterface {
       .lean<IEnrollment>();
   };
 
-  findByUserId = async (userId: string): Promise<IEnrollment | null> => {
-    return await EnrollmentModel.findOne({ userId })
-      .populate(["courseId", "userId"])
-      .lean<IEnrollment>();
+  findByUserId = async (userId: string): Promise<IEnrollment[] | null> => {
+    const enrollments = await EnrollmentModel.find({ userId })
+      .populate("courseId")
+      .lean();
+    if (!enrollments) return null;
+    return enrollments.map((doc) => ({
+      ...doc,
+      userId: doc.userId as string,
+    })) as IEnrollment[];
   };
 
   getAll = async (): Promise<IEnrollment[]> => {
