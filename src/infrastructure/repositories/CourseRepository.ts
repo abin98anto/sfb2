@@ -12,7 +12,7 @@ export class CourseRepository implements CourseInterface {
   };
 
   getById = async (_id: string): Promise<ICourse | null> => {
-    return await Course.findById(_id).lean<ICourse>();
+    return await Course.findById(_id).populate("category").lean<ICourse>();
   };
 
   update = async (updates: Partial<ICourse>): Promise<ICourse | null> => {

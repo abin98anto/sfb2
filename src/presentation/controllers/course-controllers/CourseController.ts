@@ -32,8 +32,12 @@ export class CourseController {
 
   getCourseDetails = async (req: Request, res: Response): Promise<void> => {
     try {
+      // console.log("the params in course details", req.params);
       const { courseId } = req.params;
-      const result = this.getCourseDetailsUseCase.execute(courseId as string);
+      const result = await this.getCourseDetailsUseCase.execute(
+        courseId as string
+      );
+      // console.log("the result in controleler", result);
       res.status(200).json(result);
     } catch (error) {
       console.log(comments.COURSE_DETAILS_FETCH_C_FAIL);

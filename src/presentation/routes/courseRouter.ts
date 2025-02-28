@@ -18,11 +18,11 @@ const courseController = new CourseController(
   createCourseUseCase,
   getCourseDetailsUseCase,
   updateCourseUseCase,
-  getAllCoursesUseCase
+  getAllCoursesUseCase  
 );
 
 courseRouter.get("/", courseController.getCourses);
-courseRouter.get("/:id", courseController.getCourseDetails);
+courseRouter.get("/:courseId", courseController.getCourseDetails);
 courseRouter.post("/add", courseController.add);
 courseRouter.put("/update", courseController.update);
 courseRouter.put("/toggle", courseController.toggleStatus);
