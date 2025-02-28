@@ -13,6 +13,7 @@ import courseRouter from "./presentation/routes/courseRouter";
 import adminRouter from "./presentation/routes/adminRoutes";
 import subscriptionRoutes from "./presentation/routes/subscriptionRoutes";
 import orderRouter from "./presentation/routes/orderRoutes";
+import enrollmentRoutes from "./presentation/routes/enrollmentRoutes";
 
 dotenv.config();
 const app = express();
@@ -27,6 +28,7 @@ app.use("/course", courseRouter);
 app.use("/admin", adminRouter);
 app.use("/subsciption", subscriptionRoutes);
 app.use("/order", orderRouter);
+app.use("/enrollment", enrollmentRoutes);
 
 const PORT = 4000;
 connectDB().then(() =>

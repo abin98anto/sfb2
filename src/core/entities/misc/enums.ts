@@ -16,3 +16,14 @@ export type levels =
   | CourseLevels.BEGINNER
   | CourseLevels.INTERMEDIATE
   | CourseLevels.ADVANCED;
+
+export enum EnrollStatus {
+  PENDING = "pending",
+  COMPLETED = "completed",
+  QUIT = "quit",
+}
+
+export type enrollStatus =
+  | EnrollStatus.PENDING
+  | EnrollStatus.COMPLETED
+  | EnrollStatus.QUIT;

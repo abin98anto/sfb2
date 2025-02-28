@@ -2,7 +2,7 @@ import express from "express";
 const subscriptionRoutes = express.Router();
 
 import SubscriptionInterface from "../../core/interfaces/SubscriptionInterface";
-import SubscriptionRepository from "../../infrastructure/repositories/subscriptionRepository";
+import SubscriptionRepository from "../../infrastructure/repositories/SubscriptionRepository";
 import GetAllSubscriptionsUseCase from "../../core/use-cases/subscription-usecases/GetAllSubscriptionsUseCase";
 import CreateSubscriptionUseCase from "../../core/use-cases/subscription-usecases/CreateSubscriptionUseCase";
 import UpdateSubscriptionUseCase from "../../core/use-cases/subscription-usecases/UpdateSubscriptionUseCase";

@@ -14,7 +14,7 @@ import { GetUserDetailsUseCase } from "../../core/use-cases/user-usecases/GetUse
 import { UserInterface } from "../../core/interfaces/UserInterface";
 import { UserRepository } from "../../infrastructure/repositories/UserRepository";
 import SubscriptionInterface from "../../core/interfaces/SubscriptionInterface";
-import SubscriptionRepository from "../../infrastructure/repositories/subscriptionRepository";
+import SubscriptionRepository from "../../infrastructure/repositories/SubscriptionRepository";
 import NewSubscriberUseCase from "../../core/use-cases/subscription-usecases/NewSubscriberUseCase";
 
 const orderRepository: OrderInterface = new OrderRepository();
