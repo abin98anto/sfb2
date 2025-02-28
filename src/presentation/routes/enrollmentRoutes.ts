@@ -13,6 +13,11 @@ import GetAllUseCase from "../../core/use-cases/enrollment-usecases/GetAllUseCas
 import UpdateEnrollmentUseCase from "../../core/use-cases/enrollment-usecases/UpdateEnrollmentUseCase";
 import UsersCoursesUseCase from "../../core/use-cases/enrollment-usecases/UsersCoursesUseCase";
 import EnrollmentController from "../controllers/enrollment-controllers/EnrollmentController";
+import { JwtService } from "../../infrastructure/external-services/JwtService";
+import { GetUserDetailsUseCase } from "../../core/use-cases/user-usecases/GetUserDetailsUseCase";
+import { UserInterface } from "../../core/interfaces/UserInterface";
+import { UserRepository } from "../../infrastructure/repositories/UserRepository";
+import { AuthMiddleware } from "../middleware/authMiddleware";
 
 const enrollmentRepository: EnrollmentInterface = new EnrollmentRepository();
 
@@ -41,9 +46,14 @@ const enrollmentController = new EnrollmentController(
   usersCoursesUseCase
 );
 
+const jwtService = new JwtService();
+const userRepository: UserInterface = new UserRepository();
+const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
+const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
+
 enrollmentRoutes.get("/", enrollmentController.getAll);
 enrollmentRoutes.get("/:id", enrollmentController.getDetails);
-enrollmentRoutes.post("/add", enrollmentController.add);
+enrollmentRoutes.post("/add", authMiddleware, enrollmentController.add);
 enrollmentRoutes.get(
   "/user-enrollments/:id",
   enrollmentController.getUserCourses
