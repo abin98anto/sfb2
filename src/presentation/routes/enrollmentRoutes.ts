@@ -18,6 +18,7 @@ import { GetUserDetailsUseCase } from "../../core/use-cases/user-usecases/GetUse
 import { UserInterface } from "../../core/interfaces/UserInterface";
 import { UserRepository } from "../../infrastructure/repositories/UserRepository";
 import { AuthMiddleware } from "../middleware/authMiddleware";
+import GetEnrollmentWithoutIdUseCase from "../../core/use-cases/enrollment-usecases/GetEnrollmentWithoutIdUseCase";
 
 const enrollmentRepository: EnrollmentInterface = new EnrollmentRepository();
 
@@ -37,13 +38,17 @@ const getAllUseCase = new GetAllUseCase(enrollmentRepository);
 const updateEnrollmentUseCase = new UpdateEnrollmentUseCase(
   enrollmentRepository
 );
+const getEnrollmentWithoutIdUseCase = new GetEnrollmentWithoutIdUseCase(
+  enrollmentRepository
+);
 const usersCoursesUseCase = new UsersCoursesUseCase(enrollmentRepository);
 const enrollmentController = new EnrollmentController(
   enrollUserUseCase,
   enrollmentDetailsUseCase,
   getAllUseCase,
   updateEnrollmentUseCase,
-  usersCoursesUseCase
+  usersCoursesUseCase,
+  getEnrollmentWithoutIdUseCase
 );
 
 const jwtService = new JwtService();
@@ -59,5 +64,6 @@ enrollmentRoutes.get(
   enrollmentController.getUserCourses
 );
 enrollmentRoutes.put("/update", enrollmentController.update);
+enrollmentRoutes.post("/without-id", enrollmentController.getWithoutId);
 
 export default enrollmentRoutes;
