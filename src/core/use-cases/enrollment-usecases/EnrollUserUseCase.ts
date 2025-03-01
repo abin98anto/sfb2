@@ -15,7 +15,13 @@ class EnrollUserUseCase {
       enrollment.courseId as string
     );
 
-    // const
+    const existingEnrollment = await this.enrollmentRepository.findExisting(
+      enrollment.userId as string,
+      enrollment.courseId as string
+    );
+    if (existingEnrollment) {
+      return existingEnrollment;
+    }
 
     const updatedEnrollmentCount = course.data.enrollmentCount + 1;
     await this.updateCourseUseCase.execute({

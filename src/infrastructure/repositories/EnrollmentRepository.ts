@@ -26,6 +26,10 @@ class EnrollmentRepository implements EnrollmentInterface {
     })) as IEnrollment[];
   };
 
+  findExisting(userId: string, courseId: string): Promise<IEnrollment | null> {
+    return EnrollmentModel.findOne({ userId, courseId });
+  }
+
   getAll = async (): Promise<IEnrollment[]> => {
     return await EnrollmentModel.find();
   };
