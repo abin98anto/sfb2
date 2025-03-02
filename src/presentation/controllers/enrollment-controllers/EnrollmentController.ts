@@ -81,8 +81,8 @@ class EnrollmentController {
 
   getUserCourses = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { userId } = req.params;
-      const result = await this.usersCoursesUseCase.execute(userId);
+      const userId = req.user._id;
+      const result = await this.usersCoursesUseCase.execute(userId as string);
       res.status(200).json(result);
     } catch (error) {
       console.log("error getting user's courses in controller", error);

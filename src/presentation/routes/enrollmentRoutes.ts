@@ -56,11 +56,10 @@ const userRepository: UserInterface = new UserRepository();
 const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
 const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 
-enrollmentRoutes.get("/", enrollmentController.getAll);
-enrollmentRoutes.get("/:id", enrollmentController.getDetails);
 enrollmentRoutes.post("/add", authMiddleware, enrollmentController.add);
 enrollmentRoutes.get(
-  "/user-enrollments/:id",
+  "/user-enrollments",
+  authMiddleware,
   enrollmentController.getUserCourses
 );
 enrollmentRoutes.put("/update", enrollmentController.update);
@@ -69,5 +68,7 @@ enrollmentRoutes.post(
   authMiddleware,
   enrollmentController.getWithoutId
 );
+enrollmentRoutes.get("/", enrollmentController.getAll);
+enrollmentRoutes.get("/:id", enrollmentController.getDetails);
 
 export default enrollmentRoutes;
