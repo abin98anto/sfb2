@@ -66,8 +66,8 @@ class EnrollmentController {
 
   update = async (req: Request, res: Response): Promise<void> => {
     try {
-      const enrollment = req.body;
-      const result = await this.updateEnrollmentUseCase.execute(enrollment);
+      const { updates } = req.body;
+      const result = await this.updateEnrollmentUseCase.execute(updates);
       res.status(200).json(result);
     } catch (error) {
       console.log("error updating in controller", error);
@@ -96,7 +96,8 @@ class EnrollmentController {
 
   getWithoutId = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { userId, courseId } = req.body;
+      const userId = req.user._id as string;
+      const { courseId } = req.body;
       const result = await this.getEnrollmentWithoutIdUseCase.execute(
         userId,
         courseId

@@ -4,7 +4,7 @@ import { JwtInterface } from "../../core/interfaces/misc/JwtInterface";
 import { comments } from "../../shared/constants/comments";
 
 const ACCESS_SECRET = process.env.JWT_ACCESS!;
-const ACCESS_EXPIRY = "15m";
+const ACCESS_EXPIRY = "50m";
 const REFRESH_SECRET = process.env.JWT_REFRESH!;
 const REFRESH_EXPIRY = "7d";
 

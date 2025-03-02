@@ -64,6 +64,10 @@ enrollmentRoutes.get(
   enrollmentController.getUserCourses
 );
 enrollmentRoutes.put("/update", enrollmentController.update);
-enrollmentRoutes.post("/without-id", enrollmentController.getWithoutId);
+enrollmentRoutes.post(
+  "/without-id",
+  authMiddleware,
+  enrollmentController.getWithoutId
+);
 
 export default enrollmentRoutes;
