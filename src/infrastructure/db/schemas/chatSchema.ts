@@ -14,12 +14,5 @@ const chatSchema = new Schema<IChat>(
   }
 );
 
-chatSchema.pre("save", function (next) {
-  if (!this._id) {
-    this._id = `${this.studentId}-${this.tutorId}-${this.courseId}`;
-  }
-  next();
-});
-
 const ChatModel = mongoose.model("Chat", chatSchema);
 export default ChatModel;

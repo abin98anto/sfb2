@@ -19,17 +19,27 @@ import { UserInterface } from "../../core/interfaces/UserInterface";
 import { UserRepository } from "../../infrastructure/repositories/UserRepository";
 import { AuthMiddleware } from "../middleware/authMiddleware";
 import GetEnrollmentWithoutIdUseCase from "../../core/use-cases/enrollment-usecases/GetEnrollmentWithoutIdUseCase";
+import ChatInterface from "../../core/interfaces/ChatInterface";
+import ChatRepository from "../../infrastructure/repositories/ChatRepository";
 
 const enrollmentRepository: EnrollmentInterface = new EnrollmentRepository();
+const chatRepository: ChatInterface = new ChatRepository();
+const jwtService = new JwtService();
+const userRepository: UserInterface = new UserRepository();
 
 const courseRepository: CourseInterface = new CourseRepository();
 const updateCourseUseCase = new UpdateCourseUseCase(courseRepository);
 const getCourseDetailsUseCase = new GetCourseDetailsUseCase(courseRepository);
 
+const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
+const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
+
 const enrollUserUseCase = new EnrollUserUseCase(
   enrollmentRepository,
   updateCourseUseCase,
-  getCourseDetailsUseCase
+  getCourseDetailsUseCase,
+  chatRepository,
+  getUserDetailsUseCase
 );
 const enrollmentDetailsUseCase = new EnrollmentDetailsUseCase(
   enrollmentRepository
@@ -50,11 +60,6 @@ const enrollmentController = new EnrollmentController(
   usersCoursesUseCase,
   getEnrollmentWithoutIdUseCase
 );
-
-const jwtService = new JwtService();
-const userRepository: UserInterface = new UserRepository();
-const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
-const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 
 enrollmentRoutes.post("/add", authMiddleware, enrollmentController.add);
 enrollmentRoutes.get(
