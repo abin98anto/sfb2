@@ -61,5 +61,7 @@ export const comments = {
   USERS_FETCH_FAIL: "Error fetching users",
   USERS_FETCH_SUCC: "Users fetched successfully",
   CAT_NOT_FOUND: "Category not found",
-  ALL_FIELDS_REQ:"All fields are required",
+  ALL_FIELDS_REQ: "All fields are required",
+  MSG_SENT_SUCC: "Message sent successfully",
+  MSG_SENT_FAIL: "Error sending message",
 };

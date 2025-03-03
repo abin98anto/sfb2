@@ -14,9 +14,16 @@ import adminRouter from "./presentation/routes/adminRoutes";
 import subscriptionRoutes from "./presentation/routes/subscriptionRoutes";
 import orderRouter from "./presentation/routes/orderRoutes";
 import enrollmentRoutes from "./presentation/routes/enrollmentRoutes";
+import chatRouter from "./presentation/routes/chatRoutes";
+import { createServer } from "http";
+import { initializeSocket } from "./infrastructure/external-services/SocketService";
 
 dotenv.config();
 const app = express();
+
+const server = createServer(app);
+const io = initializeSocket(server);
+app.set("io", io);
 
 app.use(cors(corsOptions));
 app.use(cookieParser());
@@ -29,10 +36,11 @@ app.use("/admin", adminRouter);
 app.use("/subsciption", subscriptionRoutes);
 app.use("/order", orderRouter);
 app.use("/enrollment", enrollmentRoutes);
+app.use("/chat", chatRouter);
 
 const PORT = 4000;
 connectDB().then(() =>
-  app.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log(comments.SERVER_SUCC);
   })
 );
