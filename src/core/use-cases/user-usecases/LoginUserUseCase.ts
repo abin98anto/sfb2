@@ -34,7 +34,7 @@ export class LoginUserUseCase {
       const refreshToken = this.jwtService.generateRefreshToken(payload);
 
       const plainUser = JSON.parse(JSON.stringify(user));
-      const { _id, password: pass, ...userData } = plainUser;
+      const { password: pass, ...userData } = plainUser;
 
       const data = { accessToken, refreshToken, userData };
 
