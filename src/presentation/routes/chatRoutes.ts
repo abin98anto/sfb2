@@ -5,6 +5,8 @@ import CreateChatUseCase from "../../core/use-cases/chat-usecases/CreateChatUseC
 import SendMessageUseCase from "../../core/use-cases/chat-usecases/SendMessageUseCase";
 import GetAllChatsUseCase from "../../core/use-cases/chat-usecases/GetAllChatsUseCase";
 import ChatController from "../controllers/chat-controller/ChatController";
+import FindChatUseCase from "../../core/use-cases/chat-usecases/FindChatUseCase";
+import GetByUserIdAndCourseId from "../../core/use-cases/chat-usecases/GetByUserIdAndCourseId";
 
 const chatRouter = Router();
 
@@ -13,17 +15,21 @@ const messageRepository = new MessageRepository();
 const createChatUseCase = new CreateChatUseCase(chatRepository);
 const sendMessageUseCase = new SendMessageUseCase(messageRepository);
 const getAllChatsUseCase = new GetAllChatsUseCase(chatRepository);
-
-const chatController = new ChatController(
-  messageRepository,
-  chatRepository,
-  createChatUseCase,
-  sendMessageUseCase,
-  getAllChatsUseCase
+const findChatUseCase = new FindChatUseCase(chatRepository);
+const getByUserIdAndCourseIdUseCase = new GetByUserIdAndCourseId(
+  chatRepository
 );
 
-chatRouter.post("/send", chatController.sendMessage);
-chatRouter.post("/history", chatController.getUserChats);
+const chatController = new ChatController(
+  createChatUseCase,
+  sendMessageUseCase,
+  getAllChatsUseCase,
+  findChatUseCase,
+  getByUserIdAndCourseIdUseCase
+);
+
+chatRouter.get("/messages/:chatId", chatController.getMessages);
 chatRouter.get("/list", chatController.getChatList);
+chatRouter.post("/send", chatController.sendMessage);
 
 export default chatRouter;

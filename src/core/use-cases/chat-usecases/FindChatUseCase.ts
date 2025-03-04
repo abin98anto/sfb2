@@ -6,6 +6,7 @@ class FindChatUseCase {
 
   execute = async (chatId: string): Promise<UseCaseResponse> => {
     try {
+      // console.log("the chat id in use cae", chatId);
       const data = await this.chatRepository.getChatHistory(chatId);
       return { success: true, data };
     } catch (error) {

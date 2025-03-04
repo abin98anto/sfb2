@@ -101,7 +101,7 @@ export class UserAuthController {
             httpOnly: true,
             secure: true,
             sameSite: "strict",
-            maxAge: 15 * 60 * 1000,
+            maxAge: 24 * 60 * 60 * 1000,
           })
           .cookie("refreshToken", result.data.refreshToken, {
             httpOnly: true,
@@ -181,7 +181,7 @@ export class UserAuthController {
         user._id as string,
         body as Partial<IUser>
       );
-      
+
       res.status(200).json(result);
     } catch (error) {
       res.status(401).json({
