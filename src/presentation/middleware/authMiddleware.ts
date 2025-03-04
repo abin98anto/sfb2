@@ -38,7 +38,6 @@ export class AuthMiddleware {
           res.status(401).json({ message: comments.USER_NOT_FOUND });
           return;
         }
-
         req.user = data;
         next();
       } catch (error) {

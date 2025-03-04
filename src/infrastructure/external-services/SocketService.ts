@@ -1,7 +1,5 @@
-// infrastructure/external-services/SocketService.ts
 import { Server } from "socket.io";
 import { Server as HTTPServer } from "http";
-import IMessage from "../../core/entities/IMessage";
 
 export const initializeSocket = (httpServer: HTTPServer) => {
   const io = new Server(httpServer, {
@@ -18,7 +16,6 @@ export const initializeSocket = (httpServer: HTTPServer) => {
 
     socket.on("joinRoom", (chatId: string) => {
       socket.join(chatId);
-      // console.log(`Client joined room: ${chatId}`);
     });
 
     socket.on("disconnect", () => {

@@ -9,6 +9,7 @@ import IMessage from "../../../core/entities/IMessage";
 import { comments } from "../../../shared/constants/comments";
 import FindChatUseCase from "../../../core/use-cases/chat-usecases/FindChatUseCase";
 import GetByUserIdAndCourseId from "../../../core/use-cases/chat-usecases/GetByUserIdAndCourseId";
+import MarkAsReadUseCase from "../../../core/use-cases/chat-usecases/MarkAsReadUseCase";
 
 class ChatController {
   constructor(
@@ -16,7 +17,8 @@ class ChatController {
     private sendMessageUseCase: SendMessageUseCase,
     private GetAllChatsUseCase: GetAllChatsUseCase,
     private findChatUseCase: FindChatUseCase,
-    private getByUserIdAndCourseIdUseCase: GetByUserIdAndCourseId
+    private getByUserIdAndCourseIdUseCase: GetByUserIdAndCourseId,
+    private markAsReadUseCase: MarkAsReadUseCase
   ) {}
 
   createChat = async (req: Request, res: Response) => {
@@ -29,13 +31,22 @@ class ChatController {
     }
   };
 
-  // presentation/controllers/chat-controller/ChatController.ts
   sendMessage = async (req: Request, res: Response) => {
     const message: IMessage = req.body;
     try {
       await this.sendMessageUseCase.execute(message);
       const io = req.app.get("io");
       io.to(message.chatId).emit("receive_message", message);
+
+      // console.log("the message", message);
+      io.emit("messageNotification", {
+        chatId: message.chatId,
+        sender: req.user.name,
+        senderId: req.user._id,
+        receiverId: message.receiverId,
+        content: message.content,
+        timestamp: message.timestamp,
+      });
       res.status(200).json({ message: comments.MSG_SENT_SUCC });
     } catch (error) {
       res.status(500).json({ message: comments.MSG_SENT_FAIL });
@@ -44,10 +55,8 @@ class ChatController {
 
   getMessages = async (req: Request, res: Response) => {
     try {
-      // console.log("the params", req.params);
       const chatId = req.params.chatId;
       const messages = await this.findChatUseCase.execute(chatId);
-      // console.log("the messages", messages);
       res.status(200).json(messages);
     } catch (error) {
       res.status(500).json({ message: "error fetching messages in the chat" });
@@ -56,7 +65,7 @@ class ChatController {
 
   getByUserIdAndCourseId = async (
     req: Request,
-    res: Response 
+    res: Response
   ): Promise<void> => {
     try {
       const { courseId, userId } = req.body;
@@ -73,14 +82,23 @@ class ChatController {
 
   getChatList = async (req: Request, res: Response): Promise<void> => {
     try {
-      // console.log("the list of " , req.query);
       const { userId } = req.query;
       const result = await this.GetAllChatsUseCase.execute(userId as string);
-      // console.log("the result in get list chat", result);
       res.status(200).json(result);
     } catch (error) {
       console.log("error fetching chat list", error);
       res.status(500).json({ message: "error fetching chat list" });
+    }
+  };
+
+  markAsRead = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { messageId } = req.body;
+      const result = await this.markAsReadUseCase.execute(messageId);
+      res.status(200).json(result);
+    } catch (error) {
+      console.log("error in mark as read", error);
+      res.status(500).json({ message: "error in mark as read" });
     }
   };
 }

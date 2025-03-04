@@ -48,6 +48,7 @@
     "mongoose": "^8.9.5",
     "nodemailer": "^6.9.16",
     "razorpay": "^2.9.6",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "sweetalert2": "^11.17.2"
   }
 }
