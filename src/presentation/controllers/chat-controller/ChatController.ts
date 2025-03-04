@@ -47,7 +47,7 @@ class ChatController {
       // console.log("the params", req.params);
       const chatId = req.params.chatId;
       const messages = await this.findChatUseCase.execute(chatId);
-      console.log("the messages", messages);
+      // console.log("the messages", messages);
       res.status(200).json(messages);
     } catch (error) {
       res.status(500).json({ message: "error fetching messages in the chat" });
@@ -56,7 +56,7 @@ class ChatController {
 
   getByUserIdAndCourseId = async (
     req: Request,
-    res: Response
+    res: Response 
   ): Promise<void> => {
     try {
       const { courseId, userId } = req.body;

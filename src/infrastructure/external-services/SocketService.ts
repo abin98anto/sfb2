@@ -18,7 +18,7 @@ export const initializeSocket = (httpServer: HTTPServer) => {
 
     socket.on("joinRoom", (chatId: string) => {
       socket.join(chatId);
-      console.log(`Client joined room: ${chatId}`);
+      // console.log(`Client joined room: ${chatId}`);
     });
 
     socket.on("disconnect", () => {
