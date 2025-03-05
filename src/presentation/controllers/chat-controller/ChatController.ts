@@ -102,7 +102,7 @@ class ChatController {
 
   videoCallInvitation = async (req: Request, res: Response): Promise<void> => {
     try {
-      console.log("sending invite", req.body);
+      // console.log("sending invite", req.body);
       const { roomID, userId, studentId } = req.body;
       const io = req.app.get("io");
       io.emit("callInvite", { roomID, userId, studentId });
