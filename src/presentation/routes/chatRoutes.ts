@@ -14,7 +14,6 @@ import { MessageInterface } from "../../core/interfaces/MessageInterface";
 import ChatInterface from "../../core/interfaces/ChatInterface";
 import { UserInterface } from "../../core/interfaces/UserInterface";
 import { UserRepository } from "../../infrastructure/repositories/UserRepository";
-import { UpdateDetailsUseCase } from "../../core/use-cases/user-usecases/UpdateDetailsUseCase";
 import { GetUserDetailsUseCase } from "../../core/use-cases/user-usecases/GetUserDetailsUseCase";
 
 const chatRouter = Router();
@@ -49,5 +48,6 @@ chatRouter.get("/messages/:chatId", chatController.getMessages);
 chatRouter.get("/list", chatController.getChatList);
 chatRouter.post("/send", authMiddleware, chatController.sendMessage);
 chatRouter.put("/mark-as-read", chatController.markAsRead);
+chatRouter.post("/video-call", chatController.videoCallInvitation);
 
 export default chatRouter;

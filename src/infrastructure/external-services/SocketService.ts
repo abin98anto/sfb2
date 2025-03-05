@@ -18,6 +18,29 @@ export const initializeSocket = (httpServer: HTTPServer) => {
       socket.join(chatId);
     });
 
+    // Handle tutor-initiated video call invitation
+    // socket.on("videoCallInvite", (data) => {
+    //   const { chatId, senderId, receiverId, roomId } = data;
+    //   console.log(
+    //     `Video call invitation from ${senderId} to ${receiverId} for room ${roomId}`
+    //   );
+    //   io.to(receiverId).emit("videoCallInvitation", {
+    //     chatId,
+    //     senderId,
+    //     receiverId,
+    //     roomId,
+    //     timestamp: new Date().toISOString(),
+    //   });
+    // });
+
+    // socket.on("acceptVideoCall", ({ roomId, userId }) => {
+    //   io.to(roomId).emit("callAccepted", { userId });
+    // });
+
+    // socket.on("rejectVideoCall", ({ roomId, userId }) => {
+    //   io.to(roomId).emit("callRejected", { userId });
+    // });
+
     socket.on("disconnect", () => {
       console.log("Client disconnected");
     });

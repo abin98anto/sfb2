@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import CreateChatUseCase from "../../../core/use-cases/chat-usecases/CreateChatUseCase";
 import SendMessageUseCase from "../../../core/use-cases/chat-usecases/SendMessageUseCase";
-import MessageRepository from "../../../infrastructure/repositories/MessageRepository";
-import ChatRepository from "../../../infrastructure/repositories/ChatRepository";
 import GetAllChatsUseCase from "../../../core/use-cases/chat-usecases/GetAllChatsUseCase";
 import IChat from "../../../core/entities/IChat";
 import IMessage from "../../../core/entities/IMessage";
@@ -99,6 +97,19 @@ class ChatController {
     } catch (error) {
       console.log("error in mark as read", error);
       res.status(500).json({ message: "error in mark as read" });
+    }
+  };
+
+  videoCallInvitation = async (req: Request, res: Response): Promise<void> => {
+    try {
+      console.log("sending invite", req.body);
+      const { roomID, userId, studentId } = req.body;
+      const io = req.app.get("io");
+      io.emit("callInvite", { roomID, userId, studentId });
+      res.status(200).json({ message: "call invite sent." });
+    } catch (error) {
+      console.log("error sending video call invite", error);
+      res.status(500).json({ message: "error sending video call invite" });
     }
   };
 }
