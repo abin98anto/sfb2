@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 import { EnrollStatus } from "../../../core/entities/misc/enums";
 
 const EnrollmentSchema = new mongoose.Schema(

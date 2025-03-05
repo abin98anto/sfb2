@@ -7,6 +7,7 @@ import { DeleteUserUseCase } from "../../../core/use-cases/user-usecases/DeleteU
 import { LoginUserUseCase } from "../../../core/use-cases/user-usecases/LoginUserUseCase";
 import { RefreshTokenUseCase } from "../../../core/use-cases/user-usecases/RefreshTokenUseCase";
 import { UpdateDetailsUseCase } from "../../../core/use-cases/user-usecases/UpdateDetailsUseCase";
+import ChangePasswordUseCase from "../../../core/use-cases/user-usecases/ChangePasswordUseCase";
 
 export class UserAuthController {
   constructor(
@@ -15,7 +16,8 @@ export class UserAuthController {
     private deleteUserUseCase: DeleteUserUseCase,
     private loginUserUseCase: LoginUserUseCase,
     private refreshTokenUseCase: RefreshTokenUseCase,
-    private updateDetailsUseCase: UpdateDetailsUseCase
+    private updateDetailsUseCase: UpdateDetailsUseCase,
+    private changePasswordUseCase: ChangePasswordUseCase
   ) {}
 
   sendOTP = async (req: Request, res: Response): Promise<void> => {
@@ -187,6 +189,23 @@ export class UserAuthController {
       res.status(401).json({
         success: false,
         message: comments.USER_UPDATE_FAIL,
+        err: error,
+      });
+    }
+  };
+
+  changePassword = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { currentPassword, newPassword } = req.body;
+      const data = await this.changePasswordUseCase.execute(req.user, {
+        currentPassword,
+        newPassword,
+      });
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(501).json({
+        success: false,
+        message: "error changing password",
         err: error,
       });
     }
