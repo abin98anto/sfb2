@@ -196,7 +196,7 @@ export class UserAuthController {
 
   changePassword = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { currentPassword, newPassword } = req.body;
+      const { newPassword, currentPassword } = req.body;
       const data = await this.changePasswordUseCase.execute(req.user, {
         currentPassword,
         newPassword,

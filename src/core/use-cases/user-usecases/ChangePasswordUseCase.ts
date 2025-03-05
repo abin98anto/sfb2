@@ -30,7 +30,6 @@ class ChangePasswordUseCase {
 
       const newHashedPassword = await hashPassword(data.newPassword);
 
-      // Update the password in the database
       await this.userRepository.update(user._id as string, {
         password: newHashedPassword,
       });
