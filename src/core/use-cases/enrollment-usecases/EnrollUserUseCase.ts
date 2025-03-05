@@ -1,21 +1,31 @@
+// import { UserRepository } from "../../../infrastructure/repositories/UserRepository";
 import IChat from "../../entities/IChat";
 import IEnrollment from "../../entities/IEnrollment";
+import { IUser } from "../../entities/IUser";
 import ChatInterface from "../../interfaces/ChatInterface";
 import EnrollmentInterface from "../../interfaces/EnrollmentInterface";
+import CreateChatUseCase from "../chat-usecases/CreateChatUseCase";
+import FindChatUseCase from "../chat-usecases/FindChatUseCase";
 import { GetCourseDetailsUseCase } from "../course-usecases/GetCourseDetailsUseCase";
 import { UpdateCourseUseCase } from "../course-usecases/UpdateCourseUseCase";
 import { GetUserDetailsUseCase } from "../user-usecases/GetUserDetailsUseCase";
+import { UpdateDetailsUseCase } from "../user-usecases/UpdateDetailsUseCase";
+// import GetEnrollmentWithoutIdUseCase from "./GetEnrollmentWithoutIdUseCase";
 
 class EnrollUserUseCase {
   constructor(
     private enrollmentRepository: EnrollmentInterface,
+    private chatRepository: ChatInterface,
+    // private getEnrollmentWithoutIdUseCase: GetEnrollmentWithoutIdUseCase,
     private updateCourseUseCase: UpdateCourseUseCase,
     private getCourseDetailsUseCase: GetCourseDetailsUseCase,
-    private chatRepository: ChatInterface,
-    private getUserDetailsUseCase: GetUserDetailsUseCase
+    // private findChatUseCase: FindChatUseCase,
+    // private createChatUseCase: CreateChatUseCase,
+    private getUserDetailsUseCase: GetUserDetailsUseCase,
+    private updateDetailsUseCase: UpdateDetailsUseCase
   ) {}
 
-  execute = async (enrollment: IEnrollment) => {
+  execute = async (enrollment: IEnrollment, user: IUser) => {
     const { data: course } = await this.getCourseDetailsUseCase.execute(
       enrollment.courseId as string
     );
@@ -24,6 +34,10 @@ class EnrollUserUseCase {
       enrollment.userId as string,
       enrollment.courseId as string
     );
+    // const existingEnrollment = await this.getEnrollmentWithoutIdUseCase.execute(
+    //   enrollment.userId as string,
+    //   enrollment.courseId as string
+    // );
     if (existingEnrollment) {
       return existingEnrollment;
     }
@@ -64,6 +78,7 @@ class EnrollUserUseCase {
         selectedTutorId = tutorStudentCounts[0].tutorId;
       }
     }
+
     const chatId = `${enrollment.userId}-${selectedTutorId}-${enrollment.courseId}`;
     const existingChat = await this.chatRepository.getChatHistory(chatId);
     if (!existingChat) {
@@ -76,6 +91,7 @@ class EnrollUserUseCase {
       };
 
       await this.chatRepository.createChat(newRoom);
+      // await this.createChatUseCase.execute(newRoom);
     }
 
     const updatedEnrollmentCount = course.data?.enrollmentCount + 1 || 1;
@@ -84,7 +100,22 @@ class EnrollUserUseCase {
       enrollmentCount: updatedEnrollmentCount,
     });
 
-    return await this.enrollmentRepository.add(enrollment);
+    const newEnrollment = await this.enrollmentRepository.add(enrollment);
+
+    let updatedStudents = [];
+    user.students
+      ? (updatedStudents = [...user.students, newEnrollment._id as string])
+      : (updatedStudents = [newEnrollment._id as string]);
+
+    const updateStudent = await this.updateDetailsUseCase.execute(
+      selectedTutorId,
+      {
+        students: updatedStudents,
+      }
+    );
+    // console.log("the updated stude", updateStudent);
+
+    return newEnrollment;
   };
 }
 

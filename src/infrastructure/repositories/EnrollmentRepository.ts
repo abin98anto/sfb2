@@ -1,7 +1,10 @@
+import { Types } from "mongoose";
 import { ICourse } from "../../core/entities/ICourse";
 import IEnrollment from "../../core/entities/IEnrollment";
 import EnrollmentInterface from "../../core/interfaces/EnrollmentInterface";
+import { Course } from "../db/schemas/courseSchema";
 import EnrollmentModel from "../db/schemas/enrollmentSchema";
+import { IUser } from "../../core/entities/IUser";
 
 class EnrollmentRepository implements EnrollmentInterface {
   add = async (data: IEnrollment): Promise<IEnrollment> => {

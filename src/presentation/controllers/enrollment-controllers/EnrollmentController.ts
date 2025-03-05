@@ -20,10 +20,13 @@ class EnrollmentController {
   add = async (req: Request, res: Response): Promise<void> => {
     try {
       const enrollment = req.body;
-      const result = await this.enrollUserUseCase.execute({
-        ...enrollment,
-        userId: req.user._id,
-      });
+      const result = await this.enrollUserUseCase.execute(
+        {
+          ...enrollment,
+          userId: req.user._id,
+        },
+        req.user
+      );
       res.status(201).json(result);
     } catch (error) {
       console.log("error enrolling in controller", error);
