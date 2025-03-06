@@ -42,7 +42,7 @@ class EnrollmentRepository implements EnrollmentInterface {
     updates: Partial<IEnrollment>
   ): Promise<IEnrollment | null> => {
     return await EnrollmentModel.findByIdAndUpdate(
-      updates._id,
+      updates._id as string,
       { $set: updates },
       { new: true }
     );

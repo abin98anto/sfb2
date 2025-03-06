@@ -44,6 +44,16 @@ class ChatRepository implements ChatInterface {
 
     return chats;
   };
+
+  getStudentList = async (tutorId: string): Promise<IChat[]> => {
+    const data = await ChatModel.find({ tutorId: tutorId })
+      .populate("studentId")
+      .populate("courseId")
+      .exec();
+
+    // console.log("repo data", data);
+    return data;
+  };
 }
 
 export default ChatRepository;

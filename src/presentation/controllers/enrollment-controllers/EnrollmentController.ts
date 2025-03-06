@@ -69,8 +69,7 @@ class EnrollmentController {
 
   update = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { updates } = req.body;
-      const result = await this.updateEnrollmentUseCase.execute(updates);
+      const result = await this.updateEnrollmentUseCase.execute(req.body);
       res.status(200).json(result);
     } catch (error) {
       console.log("error updating in controller", error);
@@ -101,6 +100,24 @@ class EnrollmentController {
     try {
       const userId = req.user._id as string;
       const { courseId } = req.body;
+      const result = await this.getEnrollmentWithoutIdUseCase.execute(
+        userId.toString(),
+        courseId
+      );
+      res.status(200).json(result);
+    } catch (error) {
+      console.log("error getting without id in controller", error);
+      res.status(500).json({
+        message: "error getting without id in controller",
+        err: error,
+        success: false,
+      });
+    }
+  };
+
+  getEnrollments = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { courseId, userId } = req.body;
       const result = await this.getEnrollmentWithoutIdUseCase.execute(
         userId,
         courseId

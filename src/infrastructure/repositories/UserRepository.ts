@@ -1,3 +1,4 @@
+import IEnrollment from "../../core/entities/IEnrollment";
 import { IUser } from "../../core/entities/IUser";
 import IParams from "../../core/entities/misc/IParams";
 import { UserInterface } from "../../core/interfaces/UserInterface";

@@ -10,4 +10,5 @@ export default interface ChatInterface {
   ): Promise<IChat | null>;
   storeMessage(message: IMessage): Promise<void>;
   getChatsForUser(userId: string): Promise<IChat[]>;
+  getStudentList(tutorId: string): Promise<IChat[]>;
 }

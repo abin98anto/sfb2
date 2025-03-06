@@ -85,4 +85,10 @@ enrollmentRoutes.post(
 enrollmentRoutes.get("/", enrollmentController.getAll);
 enrollmentRoutes.get("/:id", enrollmentController.getDetails);
 
+enrollmentRoutes.post(
+  "/get-enroll-details",
+  enrollmentController.getEnrollments
+);
+// enrollmentRoutes.put("/student-passed", enrollmentController.update);
+
 export default enrollmentRoutes;

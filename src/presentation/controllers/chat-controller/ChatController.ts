@@ -8,6 +8,7 @@ import { comments } from "../../../shared/constants/comments";
 import FindChatUseCase from "../../../core/use-cases/chat-usecases/FindChatUseCase";
 import GetByUserIdAndCourseId from "../../../core/use-cases/chat-usecases/GetByUserIdAndCourseId";
 import MarkAsReadUseCase from "../../../core/use-cases/chat-usecases/MarkAsReadUseCase";
+import GetStudentList from "../../../core/use-cases/chat-usecases/GetStudentListUseCase";
 
 class ChatController {
   constructor(
@@ -16,7 +17,8 @@ class ChatController {
     private GetAllChatsUseCase: GetAllChatsUseCase,
     private findChatUseCase: FindChatUseCase,
     private getByUserIdAndCourseIdUseCase: GetByUserIdAndCourseId,
-    private markAsReadUseCase: MarkAsReadUseCase
+    private markAsReadUseCase: MarkAsReadUseCase,
+    private getStudentList: GetStudentList
   ) {}
 
   createChat = async (req: Request, res: Response) => {
@@ -110,6 +112,20 @@ class ChatController {
     } catch (error) {
       console.log("error sending video call invite", error);
       res.status(500).json({ message: "error sending video call invite" });
+    }
+  };
+
+  studentList = async (req: Request, res: Response): Promise<void> => {
+    try {
+      // console.log("the id ", req.user);
+      const tutorId = req.user._id?.toString();
+      // console.log("the turo", tutorId);
+      const result = await this.getStudentList.execute(tutorId as string);
+      // console.log("contorller data", result);
+      res.status(200).json(result);
+    } catch (error) {
+      console.log("error fetching studnet details", error);
+      res.status(500).json({ message: "error fetching student details" });
     }
   };
 }

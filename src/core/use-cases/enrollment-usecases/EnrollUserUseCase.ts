@@ -107,13 +107,14 @@ class EnrollUserUseCase {
       ? (updatedStudents = [...user.students, newEnrollment._id as string])
       : (updatedStudents = [newEnrollment._id as string]);
 
-    const updateStudent = await this.updateDetailsUseCase.execute(
+    // console.log("the updated stude", updatedStudents);
+    const userUpdate = await this.updateDetailsUseCase.execute(
       selectedTutorId,
       {
         students: updatedStudents,
       }
     );
-    // console.log("the updated stude", updateStudent);
+    // console.log("thesuser updated", userUpdate);
 
     return newEnrollment;
   };

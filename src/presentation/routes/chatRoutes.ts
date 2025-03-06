@@ -15,6 +15,7 @@ import ChatInterface from "../../core/interfaces/ChatInterface";
 import { UserInterface } from "../../core/interfaces/UserInterface";
 import { UserRepository } from "../../infrastructure/repositories/UserRepository";
 import { GetUserDetailsUseCase } from "../../core/use-cases/user-usecases/GetUserDetailsUseCase";
+import GetStudentList from "../../core/use-cases/chat-usecases/GetStudentListUseCase";
 
 const chatRouter = Router();
 
@@ -31,6 +32,7 @@ const getByUserIdAndCourseIdUseCase = new GetByUserIdAndCourseId(
   chatRepository
 );
 const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
+const getStudentList = new GetStudentList(chatRepository);
 
 const chatController = new ChatController(
   createChatUseCase,
@@ -38,7 +40,8 @@ const chatController = new ChatController(
   getAllChatsUseCase,
   findChatUseCase,
   getByUserIdAndCourseIdUseCase,
-  markAsReadUseCase
+  markAsReadUseCase,
+  getStudentList
 );
 
 const jwtService = new JwtService();
@@ -49,5 +52,6 @@ chatRouter.get("/list", chatController.getChatList);
 chatRouter.post("/send", authMiddleware, chatController.sendMessage);
 chatRouter.put("/mark-as-read", chatController.markAsRead);
 chatRouter.post("/video-call", chatController.videoCallInvitation);
+chatRouter.get("/student-list", authMiddleware, chatController.studentList);
 
 export default chatRouter;
