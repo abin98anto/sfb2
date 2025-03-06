@@ -16,6 +16,7 @@ import { UserRepository } from "../../infrastructure/repositories/UserRepository
 import SubscriptionInterface from "../../core/interfaces/SubscriptionInterface";
 import SubscriptionRepository from "../../infrastructure/repositories/SubscriptionRepository";
 import NewSubscriberUseCase from "../../core/use-cases/subscription-usecases/NewSubscriberUseCase";
+import CheckSubscriptionStatusUseCase from "../../core/use-cases/subscription-usecases/CheckSubscriptionStatusUseCase";
 
 const orderRepository: OrderInterface = new OrderRepository();
 const subscriptionRepository: SubscriptionInterface =
@@ -25,11 +26,15 @@ const createOrderUseCase = new CreateOrderUseCase(orderRepository);
 const getAllOrdersUseCase = new GetAllOrderUseCase(orderRepository);
 const getUserOrdersUseCase = new GetUserOrdersUseCase(orderRepository);
 const newSubscriberUseCase = new NewSubscriberUseCase(subscriptionRepository);
+const checkSubscriptionStatusUseCase = new CheckSubscriptionStatusUseCase(
+  subscriptionRepository
+);
 const orderController = new OrderController(
   createOrderUseCase,
   getUserOrdersUseCase,
   getAllOrdersUseCase,
-  newSubscriberUseCase
+  newSubscriberUseCase,
+  checkSubscriptionStatusUseCase
 );
 
 const userRepository: UserInterface = new UserRepository();
@@ -44,5 +49,11 @@ orderRouter.post("/add", orderController.create);
 orderRouter.get("/user/:userId", orderController.getUserOrders);
 
 orderRouter.post("/razorpay/create", razorpayController.createRazorpayOrder);
+
+orderRouter.get(
+  "/sub-check",
+  authMiddleware,
+  orderController.subscriptionCheck
+);
 
 export default orderRouter;

@@ -15,6 +15,8 @@ interface SubscriptionInterface {
     search: string;
   }): Promise<any[]>;
   getCount(search: string): Promise<number>;
+
+  checkUserSubscription(userEmail: string): Promise<ISubscription | null>;
 }
 
 export default SubscriptionInterface;

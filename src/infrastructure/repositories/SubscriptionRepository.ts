@@ -81,4 +81,22 @@ export default class SubscriptionRepository implements SubscriptionInterface {
       : { isDeleted: false };
     return await SubscriptionModel.countDocuments(query);
   };
+
+  // Add this method to your SubscriptionRepository class
+  checkUserSubscription = async (
+    userEmail: string
+  ): Promise<ISubscription | null> => {
+    try {
+      const subscription = await SubscriptionModel.findOne({
+        "users.userEmail": userEmail,
+        isDeleted: false,
+        isActive: true,
+      });
+      console.log("repos", subscription);
+      return subscription as ISubscription | null;
+    } catch (error) {
+      console.error("Error checking user subscription:", error);
+      throw error;
+    }
+  };
 }
