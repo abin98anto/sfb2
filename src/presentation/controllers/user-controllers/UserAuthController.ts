@@ -8,6 +8,7 @@ import { LoginUserUseCase } from "../../../core/use-cases/user-usecases/LoginUse
 import { RefreshTokenUseCase } from "../../../core/use-cases/user-usecases/RefreshTokenUseCase";
 import { UpdateDetailsUseCase } from "../../../core/use-cases/user-usecases/UpdateDetailsUseCase";
 import ChangePasswordUseCase from "../../../core/use-cases/user-usecases/ChangePasswordUseCase";
+import { GoogleAuthUseCase } from "../../../core/use-cases/user-usecases/GoogleAuthUseCase";
 
 export class UserAuthController {
   constructor(
@@ -17,7 +18,8 @@ export class UserAuthController {
     private loginUserUseCase: LoginUserUseCase,
     private refreshTokenUseCase: RefreshTokenUseCase,
     private updateDetailsUseCase: UpdateDetailsUseCase,
-    private changePasswordUseCase: ChangePasswordUseCase
+    private changePasswordUseCase: ChangePasswordUseCase,
+    private googleAuthUseCase: GoogleAuthUseCase
   ) {}
 
   sendOTP = async (req: Request, res: Response): Promise<void> => {
@@ -211,5 +213,46 @@ export class UserAuthController {
     }
   };
 
-  
+  googleSignIn = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { token } = req.body;
+      if (!token) {
+        res.status(400).json({ error: "google token missing." });
+        return;
+      }
+
+      const response = await this.googleAuthUseCase.execute(token);
+
+      const { accessToken, refreshToken } = response.data;
+
+      res
+        .cookie("accessToken", accessToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+          maxAge: 24 * 60 * 60 * 1000,
+        })
+        .cookie("userRefresh", refreshToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+          maxAge: 7 * 24 * 60 * 60 * 1000,
+        })
+        .status(200)
+        .json({
+          success: true,
+          message: response.message,
+          data: response.data,
+        });
+      return;
+    } catch (error) {
+      console.log("google signin fail", error);
+      res
+        .status(401)
+        .json({
+          err:error,
+          message: "google signin fail",
+        });
+    }
+  };
 }

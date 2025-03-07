@@ -18,6 +18,8 @@ import { UpdateDetailsUseCase } from "../../core/use-cases/user-usecases/UpdateD
 import { AuthMiddleware } from "../middleware/authMiddleware";
 import { GetUserDetailsUseCase } from "../../core/use-cases/user-usecases/GetUserDetailsUseCase";
 import ChangePasswordUseCase from "../../core/use-cases/user-usecases/ChangePasswordUseCase";
+import { GoogleAuthUseCase } from "../../core/use-cases/user-usecases/GoogleAuthUseCase";
+import CreateUserUseCase from "../../core/use-cases/user-usecases/CreateUserUseCase";
 
 const userRepository: UserInterface = new UserRepository();
 
@@ -30,6 +32,12 @@ const loginUserUseCase = new LoginUserUseCase(userRepository, jwtService);
 const refreshTokenUseCase = new RefreshTokenUseCase(jwtService, userRepository);
 const updateDetailsUseCase = new UpdateDetailsUseCase(userRepository);
 const changePasswordUseCase = new ChangePasswordUseCase(userRepository);
+const createUserUseCase = new CreateUserUseCase(userRepository);
+const googleAuthUseCase = new GoogleAuthUseCase(
+  createUserUseCase,
+  userRepository,
+  jwtService
+);
 
 const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
 
@@ -40,7 +48,8 @@ const userAuthController = new UserAuthController(
   loginUserUseCase,
   refreshTokenUseCase,
   updateDetailsUseCase,
-  changePasswordUseCase
+  changePasswordUseCase,
+  googleAuthUseCase
 );
 
 const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
@@ -64,5 +73,8 @@ userRouter.put(
   authMiddleware,
   userAuthController.changePassword
 );
+
+// Google Auth routes.
+userRouter.post("/auth/google", userAuthController.googleSignIn);
 
 export default userRouter;
