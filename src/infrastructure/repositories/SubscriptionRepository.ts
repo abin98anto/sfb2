@@ -1,5 +1,7 @@
 import IOrder from "../../core/entities/IOrder";
-import ISubscription from "../../core/entities/ISubscription";
+import ISubscription, {
+  IUserSubsDetail,
+} from "../../core/entities/ISubscription";
 import SubscriptionInterface from "../../core/interfaces/SubscriptionInterface";
 import SubscriptionModel from "../db/schemas/subscriptionSchema";
 
@@ -98,5 +100,20 @@ export default class SubscriptionRepository implements SubscriptionInterface {
       console.error("Error checking user subscription:", error);
       throw error;
     }
+  };
+
+  // remove expited users.
+  findActiveSubscriptions = async (): Promise<ISubscription[]> => {
+    return await SubscriptionModel.find({ isActive: true, isDeleted: false });
+  };
+
+  updateSubscriptionUsers = async (
+    subscriptionId: string,
+    users: Array<IUserSubsDetail>
+  ): Promise<void> => {
+    await SubscriptionModel.updateOne(
+      { _id: subscriptionId },
+      { $set: { users } }
+    );
   };
 }

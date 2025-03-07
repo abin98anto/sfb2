@@ -17,6 +17,9 @@ import enrollmentRoutes from "./presentation/routes/enrollmentRoutes";
 import chatRouter from "./presentation/routes/chatRoutes";
 import { createServer } from "http";
 import { initializeSocket } from "./infrastructure/external-services/SocketService";
+import SubscriptionCronJobs from "./shared/utils/SubscriptionCornJobs";
+import HandleExpiredSubscriptionsUseCase from "./core/use-cases/subscription-usecases/HandleExpiredSubscriptionsUseCase";
+import SubscriptionRepository from "./infrastructure/repositories/SubscriptionRepository";
 
 dotenv.config();
 const app = express();
@@ -37,6 +40,16 @@ app.use("/subsciption", subscriptionRoutes);
 app.use("/order", orderRouter);
 app.use("/enrollment", enrollmentRoutes);
 app.use("/chat", chatRouter);
+
+// Corn job.
+const subscriptionRepository = new SubscriptionRepository();
+const handleExpiredSubscriptionsUseCase = new HandleExpiredSubscriptionsUseCase(
+  subscriptionRepository
+);
+const subscriptionCronJobs = new SubscriptionCronJobs(
+  handleExpiredSubscriptionsUseCase
+);
+subscriptionCronJobs.setupJobs();
 
 const PORT = 4000;
 connectDB().then(() =>

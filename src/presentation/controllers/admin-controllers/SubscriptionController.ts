@@ -5,13 +5,15 @@ import NewSubscriberUseCase from "../../../core/use-cases/subscription-usecases/
 import { Request, Response } from "express";
 import UpdateSubscriptionUseCase from "../../../core/use-cases/subscription-usecases/UpdateSubscriptionUseCase";
 import GetAllSubscriptionsUseCase from "../../../core/use-cases/subscription-usecases/GetAllSubscriptionsUseCase";
+import HandleExpiredSubscriptionsUseCase from "../../../core/use-cases/subscription-usecases/HandleExpiredSubscriptionsUseCase";
 
 export default class SubscriptionController {
   constructor(
     private createSubscriptionUseCase: CreateSubscriptionUseCase,
     private updateSubscriptionUseCase: UpdateSubscriptionUseCase,
     private getAllSubscriptionsUseCase: GetAllSubscriptionsUseCase,
-    private newSubscriberUseCase: NewSubscriberUseCase
+    private newSubscriberUseCase: NewSubscriberUseCase,
+    private handleExpiredSubscriptionsUseCase: HandleExpiredSubscriptionsUseCase
   ) {}
 
   getAll = async (req: Request, res: Response): Promise<void> => {
@@ -76,4 +78,28 @@ export default class SubscriptionController {
     //   res.status(500).json({ message: "error adding new subscriber" });
     // }
   };
+
+  async removeExpiredSubscriptions(req: Request, res: Response) {
+    try {
+      const result = await this.handleExpiredSubscriptionsUseCase.execute();
+
+      if (result.success) {
+        return res.status(200).json({
+          success: true,
+          message: `Successfully processed subscriptions. Removed ${result.removedCount} expired users.`,
+        });
+      } else {
+        return res.status(500).json({
+          success: false,
+          message: result.message,
+        });
+      }
+    } catch (error) {
+      console.error("SubscriptionController Error:", error);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while processing expired subscriptions",
+      });
+    }
+  }
 }
