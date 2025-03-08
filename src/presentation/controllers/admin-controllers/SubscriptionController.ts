@@ -12,7 +12,6 @@ export default class SubscriptionController {
     private createSubscriptionUseCase: CreateSubscriptionUseCase,
     private updateSubscriptionUseCase: UpdateSubscriptionUseCase,
     private getAllSubscriptionsUseCase: GetAllSubscriptionsUseCase,
-    private newSubscriberUseCase: NewSubscriberUseCase,
     private handleExpiredSubscriptionsUseCase: HandleExpiredSubscriptionsUseCase
   ) {}
 

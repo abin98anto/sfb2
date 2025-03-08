@@ -6,8 +6,8 @@ import SubscriptionRepository from "../../infrastructure/repositories/Subscripti
 import GetAllSubscriptionsUseCase from "../../core/use-cases/subscription-usecases/GetAllSubscriptionsUseCase";
 import CreateSubscriptionUseCase from "../../core/use-cases/subscription-usecases/CreateSubscriptionUseCase";
 import UpdateSubscriptionUseCase from "../../core/use-cases/subscription-usecases/UpdateSubscriptionUseCase";
-import NewSubscriberUseCase from "../../core/use-cases/subscription-usecases/NewSubscriberUseCase";
 import SubscriptionController from "../controllers/admin-controllers/SubscriptionController";
+import HandleExpiredSubscriptionsUseCase from "../../core/use-cases/subscription-usecases/HandleExpiredSubscriptionsUseCase";
 
 const subscriptionRepository: SubscriptionInterface =
   new SubscriptionRepository();
@@ -19,13 +19,15 @@ const createSubscriptionUseCase = new CreateSubscriptionUseCase(
 const updateSubscriptionUseCase = new UpdateSubscriptionUseCase(
   subscriptionRepository
 );
-const newSubscriberUseCase = new NewSubscriberUseCase(subscriptionRepository);
+const handleExpiredSubscriptionsUseCase = new HandleExpiredSubscriptionsUseCase(
+  subscriptionRepository
+);
 
 const subscriptionController = new SubscriptionController(
   createSubscriptionUseCase,
   updateSubscriptionUseCase,
   getAllUseCase,
-  newSubscriberUseCase
+  handleExpiredSubscriptionsUseCase
 );
 
 subscriptionRoutes.get("/", subscriptionController.getAll);
