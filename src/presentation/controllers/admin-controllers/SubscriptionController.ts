@@ -1,6 +1,5 @@
 import ISubscription from "../../../core/entities/ISubscription";
 import CreateSubscriptionUseCase from "../../../core/use-cases/subscription-usecases/CreateSubscriptionUseCase";
-import NewSubscriberUseCase from "../../../core/use-cases/subscription-usecases/NewSubscriberUseCase";
 
 import { Request, Response } from "express";
 import UpdateSubscriptionUseCase from "../../../core/use-cases/subscription-usecases/UpdateSubscriptionUseCase";

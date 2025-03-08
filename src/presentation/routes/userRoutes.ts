@@ -20,6 +20,8 @@ import { GetUserDetailsUseCase } from "../../core/use-cases/user-usecases/GetUse
 import ChangePasswordUseCase from "../../core/use-cases/user-usecases/ChangePasswordUseCase";
 import { GoogleAuthUseCase } from "../../core/use-cases/user-usecases/GoogleAuthUseCase";
 import CreateUserUseCase from "../../core/use-cases/user-usecases/CreateUserUseCase";
+import ForgotPasswordUseCase from "../../core/use-cases/user-usecases/ForgotPasswordUseCase";
+import { SetNewPasswordUseCase } from "../../core/use-cases/user-usecases/SetNewPasswordUseCase";
 
 const userRepository: UserInterface = new UserRepository();
 
@@ -38,7 +40,11 @@ const googleAuthUseCase = new GoogleAuthUseCase(
   userRepository,
   jwtService
 );
-
+const forgotPasswordUseCase = new ForgotPasswordUseCase(
+  userRepository,
+  nodemailerService
+);
+const setNewPasswordUseCase = new SetNewPasswordUseCase(userRepository);
 const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
 
 const userAuthController = new UserAuthController(
@@ -49,7 +55,9 @@ const userAuthController = new UserAuthController(
   refreshTokenUseCase,
   updateDetailsUseCase,
   changePasswordUseCase,
-  googleAuthUseCase
+  googleAuthUseCase,
+  forgotPasswordUseCase,
+  setNewPasswordUseCase
 );
 
 const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
@@ -73,6 +81,8 @@ userRouter.put(
   authMiddleware,
   userAuthController.changePassword
 );
+userRouter.put("/forgot-password", userAuthController.forgotPasswordOTP);
+userRouter.put("/set-password", userAuthController.resetPassword);
 
 // Google Auth routes.
 userRouter.post("/auth/google", userAuthController.googleSignIn);

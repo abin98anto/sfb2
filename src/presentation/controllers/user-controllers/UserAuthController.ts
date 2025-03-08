@@ -9,6 +9,8 @@ import { RefreshTokenUseCase } from "../../../core/use-cases/user-usecases/Refre
 import { UpdateDetailsUseCase } from "../../../core/use-cases/user-usecases/UpdateDetailsUseCase";
 import ChangePasswordUseCase from "../../../core/use-cases/user-usecases/ChangePasswordUseCase";
 import { GoogleAuthUseCase } from "../../../core/use-cases/user-usecases/GoogleAuthUseCase";
+import ForgotPasswordUseCase from "../../../core/use-cases/user-usecases/ForgotPasswordUseCase";
+import { SetNewPasswordUseCase } from "../../../core/use-cases/user-usecases/SetNewPasswordUseCase";
 
 export class UserAuthController {
   constructor(
@@ -19,7 +21,9 @@ export class UserAuthController {
     private refreshTokenUseCase: RefreshTokenUseCase,
     private updateDetailsUseCase: UpdateDetailsUseCase,
     private changePasswordUseCase: ChangePasswordUseCase,
-    private googleAuthUseCase: GoogleAuthUseCase
+    private googleAuthUseCase: GoogleAuthUseCase,
+    private forgotPasswordUseCase: ForgotPasswordUseCase,
+    private setNewPasswordUseCase: SetNewPasswordUseCase
   ) {}
 
   sendOTP = async (req: Request, res: Response): Promise<void> => {
@@ -247,12 +251,42 @@ export class UserAuthController {
       return;
     } catch (error) {
       console.log("google signin fail", error);
-      res
-        .status(401)
-        .json({
-          err:error,
-          message: "google signin fail",
-        });
+      res.status(401).json({
+        err: error,
+        message: "google signin fail",
+      });
+    }
+  };
+
+  forgotPasswordOTP = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { email } = req.body;
+      const result = await this.forgotPasswordUseCase.execute(email);
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(401).json({
+        success: false,
+        message: "error in forgot password",
+        err: error,
+      });
+    }
+  };
+
+  resetPassword = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { email, otp, password } = req.body;
+      const result = await this.setNewPasswordUseCase.execute(
+        email,
+        otp,
+        password
+      );
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(401).json({
+        success: false,
+        message: "error in reset password",
+        err: error,
+      });
     }
   };
 }
