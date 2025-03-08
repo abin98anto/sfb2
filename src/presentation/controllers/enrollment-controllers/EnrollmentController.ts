@@ -69,7 +69,9 @@ class EnrollmentController {
 
   update = async (req: Request, res: Response): Promise<void> => {
     try {
-      const result = await this.updateEnrollmentUseCase.execute(req.body);
+      // console.log("updateing", req.body);
+      const {updates } = req.body
+      const result = await this.updateEnrollmentUseCase.execute(updates);
       res.status(200).json(result);
     } catch (error) {
       console.log("error updating in controller", error);
