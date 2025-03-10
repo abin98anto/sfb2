@@ -1,3 +1,4 @@
+import { comments } from "../../../shared/constants/comments";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
 import SubscriptionInterface from "../../interfaces/SubscriptionInterface";
 
@@ -9,13 +10,12 @@ class CheckSubscriptionStatusUseCase {
       const result = await this.subscriptionRepository.checkUserSubscription(
         email
       );
-      console.log("chcekc subs status", result);
       return { success: true, data: result };
     } catch (error) {
-      console.log("error in check subscription status usecase", error);
+      console.log(comments.SUB_STATUS_CHECK_UC_FAIL, error);
       return {
         success: false,
-        message: "error in check subscription status usecase",
+        message: comments.SUB_STATUS_CHECK_UC_FAIL,
         err: error,
       };
     }

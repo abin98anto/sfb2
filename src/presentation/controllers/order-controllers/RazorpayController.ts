@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import Razorpay from "razorpay";
 
+import { comments } from "../../../shared/constants/comments";
+
 export class RazorpayController {
   private razorpay: Razorpay;
 
@@ -27,8 +29,8 @@ export class RazorpayController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: "Error creating Razorpay order",
-        error: error instanceof Error ? error.message : "Unknown error",
+        message: comments.RZPAY_ERR,
+        error: error instanceof Error ? error.message : comments.UNKOWN_ERR,
       });
     }
   };

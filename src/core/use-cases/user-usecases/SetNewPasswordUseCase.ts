@@ -37,7 +37,7 @@ export class SetNewPasswordUseCase {
       } else {
         return {
           success: false,
-          message: "Error reseting password",
+          message: comments.SET_PASS_ERR,
           err: error,
         };
       }

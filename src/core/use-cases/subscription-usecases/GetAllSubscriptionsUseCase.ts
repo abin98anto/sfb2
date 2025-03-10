@@ -1,8 +1,9 @@
+import { comments } from "../../../shared/constants/comments";
 import { PaginationParams } from "../../entities/misc/PaginationParams";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
 import SubscriptionInterface from "../../interfaces/SubscriptionInterface";
 
-export default class GetAllSubscriptionsUseCase {
+class GetAllSubscriptionsUseCase {
   constructor(private subscriptionRepository: SubscriptionInterface) {}
   execute = async (params: PaginationParams = {}): Promise<UseCaseResponse> => {
     try {
@@ -23,15 +24,17 @@ export default class GetAllSubscriptionsUseCase {
         page,
         totalPages: Math.ceil(totalCount / limit),
       };
-      
+
       return { success: true, data };
     } catch (error) {
-      console.log("error in get all subscription usecase", error);
+      console.log(comments.SUB_ALL_FETCH_UC_FAIL, error);
       return {
         success: false,
-        message: "error in get all subscription usecase",
+        message: comments.SUB_ALL_FETCH_UC_FAIL,
         err: error,
       };
     }
   };
 }
+
+export default GetAllSubscriptionsUseCase;

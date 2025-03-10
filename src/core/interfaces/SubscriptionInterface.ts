@@ -17,7 +17,6 @@ interface SubscriptionInterface {
   getCount(search: string): Promise<number>;
 
   checkUserSubscription(userEmail: string): Promise<ISubscription | null>;
-  // removeExpiredUsers(currentDate: Date): Promise<void>;
   findActiveSubscriptions(): Promise<ISubscription[]>;
   updateSubscriptionUsers(
     subscriptionId: string,

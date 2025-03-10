@@ -1,3 +1,4 @@
+import { comments } from "../../../shared/constants/comments";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
 import EnrollmentInterface from "../../interfaces/EnrollmentInterface";
 
@@ -8,10 +9,10 @@ class GetAllUseCase {
       const data = await this.enrollmentRepository.getAll();
       return { success: true, data };
     } catch (error) {
-      console.log("error getting all enrollments", error);
+      console.log(comments.ENROLL_ALL_FETCH_UC_FAIL, error);
       return {
         success: false,
-        message: "error getting all enrollments",
+        message: comments.ENROLL_ALL_FETCH_UC_FAIL,
         err: error,
       };
     }

@@ -1,7 +1,6 @@
 import express from "express";
 const userRouter = express.Router();
 
-// User Auth
 import { UserInterface } from "../../core/interfaces/UserInterface";
 import { UserRepository } from "../../infrastructure/repositories/UserRepository";
 import { NodemailerService } from "../../infrastructure/external-services/NodemailerService";

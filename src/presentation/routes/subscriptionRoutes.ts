@@ -33,6 +33,5 @@ const subscriptionController = new SubscriptionController(
 subscriptionRoutes.get("/", subscriptionController.getAll);
 subscriptionRoutes.post("/add", subscriptionController.create);
 subscriptionRoutes.put("/update", subscriptionController.update);
-subscriptionRoutes.put("/new-subscriber", subscriptionController.addSubscriber);
 
 export default subscriptionRoutes;

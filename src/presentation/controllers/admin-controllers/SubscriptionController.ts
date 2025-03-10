@@ -5,6 +5,7 @@ import { Request, Response } from "express";
 import UpdateSubscriptionUseCase from "../../../core/use-cases/subscription-usecases/UpdateSubscriptionUseCase";
 import GetAllSubscriptionsUseCase from "../../../core/use-cases/subscription-usecases/GetAllSubscriptionsUseCase";
 import HandleExpiredSubscriptionsUseCase from "../../../core/use-cases/subscription-usecases/HandleExpiredSubscriptionsUseCase";
+import { comments } from "../../../shared/constants/comments";
 
 export default class SubscriptionController {
   constructor(
@@ -27,8 +28,8 @@ export default class SubscriptionController {
       });
       res.status(200).json(result);
     } catch (error) {
-      console.log("error in get all subscription", error);
-      res.status(500).json({ message: "error in get all subscription" });
+      console.log(comments.SUBS_ALL_C_ERR, error);
+      res.status(500).json({ message: comments.SUBS_ALL_C_ERR, err: error });
     }
   };
 
@@ -41,8 +42,8 @@ export default class SubscriptionController {
         ? res.status(201).json(result)
         : res.status(409).json(result);
     } catch (error) {
-      console.log("error in add subscription", error);
-      res.status(500).json({ message: "error in add subscription" });
+      console.log(comments.SUBS_ADD_C_ERR, error);
+      res.status(500).json({ message: comments.SUBS_ADD_C_ERR });
     }
   };
 
@@ -56,25 +57,9 @@ export default class SubscriptionController {
         ? res.status(200).json(result)
         : res.status(409).json(result);
     } catch (error) {
-      console.log("error in update subscription", error);
-      res.status(500).json({ message: "error in update subscription" });
+      console.log(comments.SUBS_UPDATE_C_ERR, error);
+      res.status(500).json({ message: comments.SUBS_UPDATE_C_ERR });
     }
-  };
-
-  addSubscriber = async (req: Request, res: Response): Promise<void> => {
-    // try {
-    //   const { subscriptionId, userId } = req.body;
-    //   const result = await this.newSubscriberUseCase.execute(
-    //     subscriptionId,
-    //     userId
-    //   );
-    //   result.success
-    //     ? res.status(200).json(result)
-    //     : res.status(409).json(result);
-    // } catch (error) {
-    //   console.log("error in add subscriber", error);
-    //   res.status(500).json({ message: "error adding new subscriber" });
-    // }
   };
 
   async removeExpiredSubscriptions(req: Request, res: Response) {
@@ -93,10 +78,10 @@ export default class SubscriptionController {
         });
       }
     } catch (error) {
-      console.error("SubscriptionController Error:", error);
+      console.error(comments.SUBS_EXP_C_ERR, error);
       return res.status(500).json({
         success: false,
-        message: "An error occurred while processing expired subscriptions",
+        message: comments.SUBS_EXP_C_ERR,
       });
     }
   }

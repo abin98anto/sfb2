@@ -46,8 +46,8 @@ export class AdminController {
 
       res.status(200).json(result);
     } catch (error) {
-      console.log("error blocking user", error);
-      res.status(500).json({ message: "error blocking user", err: error });
+      console.log(comments.USER_BLOCK_U_ERR, error);
+      res.status(500).json({ message: comments.USER_BLOCK_U_ERR, err: error });
     }
   };
 
@@ -57,10 +57,12 @@ export class AdminController {
       const result = await this.approveTutorUseCase.execute(id);
       res.status(200).json(result);
     } catch (error) {
-      console.log("error blocking user", error);
-      res
-        .status(500)
-        .json({ success: false, message: "error blocking user", err: error });
+      console.log(comments.TUTOR_APPROVE_U_ERR, error);
+      res.status(500).json({
+        success: false,
+        message: comments.TUTOR_APPROVE_U_ERR,
+        err: error,
+      });
     }
   };
 
@@ -71,10 +73,12 @@ export class AdminController {
       const result = await this.denyTutorUserCase.execute(id, reason);
       res.status(200).json(result);
     } catch (error) {
-      console.log("error blocking user", error);
-      res
-        .status(500)
-        .json({ success: false, message: "error blocking user", err: error });
+      console.log(comments.TUTOR_DENY_U_ERR, error);
+      res.status(500).json({
+        success: false,
+        message: comments.TUTOR_DENY_U_ERR,
+        err: error,
+      });
     }
   };
 }

@@ -1,3 +1,4 @@
+import { comments } from "../../../shared/constants/comments";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
 import ChatInterface from "../../interfaces/ChatInterface";
 
@@ -6,14 +7,13 @@ class FindChatUseCase {
 
   execute = async (chatId: string): Promise<UseCaseResponse> => {
     try {
-      // console.log("the chat id in use cae", chatId);
       const data = await this.chatRepository.getChatHistory(chatId);
       return { success: true, data };
     } catch (error) {
-      console.log("error finding chats", error);
+      console.log(comments.CHAT_FIND_UC_ERR, error);
       return {
         success: false,
-        message: "error finding chats",
+        message: comments.CHAT_FIND_UC_ERR,
         err: error,
       };
     }

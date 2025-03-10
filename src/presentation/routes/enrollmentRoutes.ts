@@ -21,8 +21,6 @@ import { AuthMiddleware } from "../middleware/authMiddleware";
 import GetEnrollmentWithoutIdUseCase from "../../core/use-cases/enrollment-usecases/GetEnrollmentWithoutIdUseCase";
 import ChatInterface from "../../core/interfaces/ChatInterface";
 import ChatRepository from "../../infrastructure/repositories/ChatRepository";
-// import FindChatUseCase from "../../core/use-cases/chat-usecases/FindChatUseCase";
-// import CreateChatUseCase from "../../core/use-cases/chat-usecases/CreateChatUseCase";
 import { UpdateDetailsUseCase } from "../../core/use-cases/user-usecases/UpdateDetailsUseCase";
 
 const enrollmentRepository: EnrollmentInterface = new EnrollmentRepository();
@@ -36,8 +34,6 @@ const getCourseDetailsUseCase = new GetCourseDetailsUseCase(courseRepository);
 
 const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
 const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
-// const findChatUseCase = new FindChatUseCase(chatRepository);
-// const createChatUseCase = new CreateChatUseCase(chatRepository);
 const updateDetailsUseCase = new UpdateDetailsUseCase(userRepository);
 
 const enrollUserUseCase = new EnrollUserUseCase(
@@ -45,8 +41,6 @@ const enrollUserUseCase = new EnrollUserUseCase(
   chatRepository,
   updateCourseUseCase,
   getCourseDetailsUseCase,
-  // findChatUseCase,
-  // createChatUseCase,
   getUserDetailsUseCase,
   updateDetailsUseCase
 );
@@ -89,6 +83,5 @@ enrollmentRoutes.post(
   "/get-enroll-details",
   enrollmentController.getEnrollments
 );
-// enrollmentRoutes.put("/student-passed", enrollmentController.update);
 
 export default enrollmentRoutes;

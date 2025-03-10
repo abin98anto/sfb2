@@ -1,6 +1,6 @@
+import { comments } from "../../../shared/constants/comments";
 import SubscriptionInterface from "../../interfaces/SubscriptionInterface";
 
-// src/application/use-cases/RemoveExpiredSubscriptionsUseCase.js
 class HandleExpiredSubscriptionsUseCase {
   constructor(private subscriptionRepository: SubscriptionInterface) {}
 
@@ -12,12 +12,10 @@ class HandleExpiredSubscriptionsUseCase {
       let removedCount = 0;
 
       for (const subscription of subscriptions) {
-        // Filter out expired users
         const activeUsers = subscription.users.filter((user) => {
           return !user.endDate || user.endDate > currentDate;
         });
 
-        // If we found users to remove
         if (activeUsers.length !== subscription.users.length) {
           await this.subscriptionRepository.updateSubscriptionUsers(
             subscription._id as string,
@@ -30,14 +28,13 @@ class HandleExpiredSubscriptionsUseCase {
 
       return {
         success: true,
-        message: "Expired subscriptions checked successfully",
         removedCount,
       };
     } catch (error) {
-      console.error("Error in RemoveExpiredSubscriptionsUseCase:", error);
+      console.error(comments.SUB_EXPIRED_REMOVE_UC_FAIL, error);
       return {
         success: false,
-        message: "Failed to process expired subscriptions",
+        message: comments.SUB_EXPIRED_REMOVE_UC_FAIL,
         error: error,
       };
     }

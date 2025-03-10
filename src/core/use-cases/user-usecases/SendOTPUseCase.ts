@@ -28,7 +28,7 @@ export class SendOTPUseCase {
 
       await this.nodemailerService.send(
         user.email,
-        "SkillForge email verification",
+        comments.OTP_SUBJECT,
         `Verify your email. OTP : ${otp}`
       );
 

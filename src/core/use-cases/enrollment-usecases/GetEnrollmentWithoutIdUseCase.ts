@@ -1,3 +1,4 @@
+import { comments } from "../../../shared/constants/comments";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
 import EnrollmentInterface from "../../interfaces/EnrollmentInterface";
 
@@ -15,10 +16,10 @@ class GetEnrollmentWithoutIdUseCase {
       );
       return { success: true, data };
     } catch (error) {
-      console.log("error getting enrollment without id", error);
+      console.log(comments.ENROLL_FETCH_NOID_UC_FAIL, error);
       return {
         success: false,
-        message: "error getting enrollment without id",
+        message: comments.ENROLL_FETCH_NOID_UC_FAIL,
         err: error,
       };
     }

@@ -39,29 +39,19 @@ export default class SubscriptionRepository implements SubscriptionInterface {
   };
 
   addUser = async (order: IOrder): Promise<ISubscription | null> => {
-    console.log("Finding subscription with plan name:", order.plan);
-
-    try {
-      const result = (await SubscriptionModel.findOneAndUpdate(
-        { name: order.plan }, // Find subscription by plan name instead of ID
-        {
-          $push: {
-            users: {
-              userEmail: order.userEmail,
-              startDate: order.startDate,
-              endDate: order.endDate,
-            },
+    return (await SubscriptionModel.findOneAndUpdate(
+      { name: order.plan },
+      {
+        $push: {
+          users: {
+            userEmail: order.userEmail,
+            startDate: order.startDate,
+            endDate: order.endDate,
           },
         },
-        { new: true }
-      )) as ISubscription;
-
-      console.log("the result add user:", result);
-      return result;
-    } catch (error) {
-      console.error("Error updating subscription:", error);
-      throw error;
-    }
+      },
+      { new: true }
+    )) as ISubscription;
   };
 
   getPaginated = async (params: {
@@ -84,25 +74,18 @@ export default class SubscriptionRepository implements SubscriptionInterface {
     return await SubscriptionModel.countDocuments(query);
   };
 
-  // Add this method to your SubscriptionRepository class
   checkUserSubscription = async (
     userEmail: string
   ): Promise<ISubscription | null> => {
-    try {
-      const subscription = await SubscriptionModel.findOne({
-        "users.userEmail": userEmail,
-        isDeleted: false,
-        isActive: true,
-      });
-      console.log("repos", subscription);
-      return subscription as ISubscription | null;
-    } catch (error) {
-      console.error("Error checking user subscription:", error);
-      throw error;
-    }
+    const subscription = await SubscriptionModel.findOne({
+      "users.userEmail": userEmail,
+      isDeleted: false,
+      isActive: true,
+    });
+
+    return subscription as ISubscription | null;
   };
 
-  // remove expited users.
   findActiveSubscriptions = async (): Promise<ISubscription[]> => {
     return await SubscriptionModel.find({ isActive: true, isDeleted: false });
   };

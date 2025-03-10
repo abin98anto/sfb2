@@ -1,3 +1,4 @@
+import { comments } from "../../../shared/constants/comments";
 import IChat from "../../entities/IChat";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
 import ChatInterface from "../../interfaces/ChatInterface";
@@ -10,10 +11,10 @@ class CreateChatUseCase {
       const data = await this.chatRepository.createChat(chat);
       return { success: true, data };
     } catch (error) {
-      console.log("error creating chat", error);
+      console.log(comments.CHAT_CREATE_UC_ERR, error);
       return {
         success: false,
-        message: "error creating chat",
+        message: comments.CHAT_CREATE_UC_ERR,
         err: error,
       };
     }

@@ -51,7 +51,6 @@ class ChatRepository implements ChatInterface {
       .populate("courseId")
       .exec();
 
-    // console.log("repo data", data);
     return data;
   };
 }

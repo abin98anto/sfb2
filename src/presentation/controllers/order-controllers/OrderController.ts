@@ -3,12 +3,13 @@ import { Request, Response } from "express";
 import CreateOrderUseCase from "../../../core/use-cases/order-usecases/CreateOrderUseCase";
 import GetUserOrdersUseCase from "../../../core/use-cases/order-usecases/GetUserOrdersUseCase";
 import GetAllOrderUseCase from "../../../core/use-cases/order-usecases/GetAllOrdersUseCase";
-import SubscriptionInterface from "../../../core/interfaces/SubscriptionInterface";
-import { UseCaseResponse } from "../../../core/entities/misc/useCaseResponse";
 import NewSubscriberUseCase from "../../../core/use-cases/subscription-usecases/NewSubscriberUseCase";
 import CheckSubscriptionStatusUseCase from "../../../core/use-cases/subscription-usecases/CheckSubscriptionStatusUseCase";
+import { UseCaseResponse } from "../../../core/entities/misc/useCaseResponse";
+import { EnrollStatus } from "../../../core/entities/misc/enums";
+import { comments } from "../../../shared/constants/comments";
 
-export default class OrderController {
+class OrderController {
   constructor(
     private createOrderUseCase: CreateOrderUseCase,
     private getUserOrdersUseCase: GetUserOrdersUseCase,
@@ -19,25 +20,22 @@ export default class OrderController {
 
   create = async (req: Request, res: Response): Promise<void> => {
     try {
-      // console.log("creating new order", req.body);
       const order = req.body;
       const result: UseCaseResponse = await this.createOrderUseCase.execute({
         ...order,
         userEmail: order.userEmail,
-        status: "completed",
+        status: EnrollStatus.COMPLETED,
       });
 
-      // console.log("the result in creatte order controller", order.userEmail);
-      // const subData = await this.subscriptionRepository.addUser(
-      //   result.data._id as string,
-      //   order
-      // );
-      const subData = await this.newSubscriberUseCase.execute(order);
-      // console.log("the sub data", subData);
+      await this.newSubscriberUseCase.execute(order);
       res.status(200).json(result);
     } catch (error) {
-      console.log("error in create order", error);
-      res.status(500).json({ message: "error in create order" });
+      console.log(comments.ORDER_ADD_FAIL, error);
+      res.status(500).json({
+        success: false,
+        error: error,
+        message: comments.ORDER_ADD_FAIL,
+      });
     }
   };
 
@@ -47,7 +45,12 @@ export default class OrderController {
       const result = await this.getUserOrdersUseCase.execute(userId);
       res.status(200).json(result);
     } catch (error) {
-      res.status(500).json({ success: false, error: error });
+      console.log(comments.ORDER_USER_FETCH_FAIL, error);
+      res.status(500).json({
+        success: false,
+        error: error,
+        message: comments.ORDER_USER_FETCH_FAIL,
+      });
     }
   };
 
@@ -56,7 +59,12 @@ export default class OrderController {
       const result = await this.getAllOrdersUseCase.execute();
       res.status(200).json(result);
     } catch (error) {
-      res.status(500).json({ success: false, error: error });
+      console.log(comments.ORDER_ALL_FETCH_FAIL, error);
+      res.status(500).json({
+        success: false,
+        error: error,
+        message: comments.ORDER_ALL_FETCH_FAIL,
+      });
     }
   };
 
@@ -64,11 +72,16 @@ export default class OrderController {
     try {
       const { email } = req.user;
       const result = await this.checkSubscriptionStatusUseCase.execute(email);
-
       res.status(200).json(result);
     } catch (error) {
-      console.log("error checking for subs status.", error);
-      res.status(500).json({ success: false, error: error });
+      console.log(comments.SUB_CHECK_FAIL, error);
+      res.status(500).json({
+        success: false,
+        error: error,
+        message: comments.SUB_CHECK_FAIL,
+      });
     }
   };
 }
+
+export default OrderController;

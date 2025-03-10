@@ -1,5 +1,6 @@
 import cron from "node-cron";
 import HandleExpiredSubscriptionsUseCase from "../../core/use-cases/subscription-usecases/HandleExpiredSubscriptionsUseCase";
+import { comments } from "../constants/comments";
 
 class SubscriptionCronJobs {
   constructor(
@@ -7,12 +8,12 @@ class SubscriptionCronJobs {
   ) {}
 
   setupJobs() {
-    cron.schedule("0 0 * * *", async () => {
-      console.log("Running scheduled task to remove expired subscriptions");
+    cron.schedule(comments.CORN_TIME, async () => {
+      console.log(comments.CORN_STARTED);
       await this.handleExpiredSubscriptionsUseCase.execute();
     });
 
-    console.log("Subscription cron jobs initialized");
+    console.log(comments.CORN_INITIATED);
   }
 }
 

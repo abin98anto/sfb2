@@ -1,3 +1,4 @@
+import { comments } from "../../../shared/constants/comments";
 import ISubscription from "../../entities/ISubscription";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
 import SubscriptionInterface from "../../interfaces/SubscriptionInterface";
@@ -12,7 +13,7 @@ export default class UpdateSubscriptionUseCase {
           await this.subscriptionRepository.findById(data._id as string);
 
         if (!existingSubscription) {
-          return { success: false, message: "Subscription not found" };
+          return { success: false, message: comments.SUB_NOT_FOUND };
         }
 
         if (existingSubscription.name === data.name) {
@@ -24,16 +25,16 @@ export default class UpdateSubscriptionUseCase {
           await this.subscriptionRepository.findDuplicates(data.name);
 
         if (isDuplicate && isDuplicate._id !== data._id) {
-          return { success: false, message: "Subscription already exists" };
+          return { success: false, message: comments.SUB_EXIST };
         }
       }
       const result = await this.subscriptionRepository.update(data);
       return { success: true, data: result };
     } catch (error) {
-      console.log("error in update subscription usecase", error);
+      console.log(comments.SUB_UPDATE_UC_FAIL, error);
       return {
         success: false,
-        message: "error in update subscription usecase",
+        message: comments.SUB_UPDATE_UC_FAIL,
         err: error,
       };
     }

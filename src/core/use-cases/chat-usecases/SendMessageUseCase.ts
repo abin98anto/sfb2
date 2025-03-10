@@ -1,3 +1,4 @@
+import { comments } from "../../../shared/constants/comments";
 import IMessage from "../../entities/IMessage";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
 import { MessageInterface } from "../../interfaces/MessageInterface";
@@ -10,10 +11,10 @@ class SendMessageUseCase {
       const data = await this.messageRepository.createMessage(message);
       return { success: true, data };
     } catch (error) {
-      console.log("error creating new message in use case", error);
+      console.log(comments.MESSAGE_CREATE_UC_FAIL, error);
       return {
         success: false,
-        message: "error creating new message in use case",
+        message: comments.MESSAGE_CREATE_UC_FAIL,
         err: error,
       };
     }

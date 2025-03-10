@@ -1,4 +1,5 @@
 import { JwtService } from "../../../infrastructure/external-services/JwtService";
+import { comments } from "../../../shared/constants/comments";
 import { IUser } from "../../entities/IUser";
 import { UserRole } from "../../entities/misc/enums";
 import { JwtData } from "../../entities/misc/JwtData";
@@ -33,8 +34,8 @@ export class GoogleAuthUseCase {
         data: { userData, accessToken, refreshToken },
       };
     } catch (error) {
-      console.log("error in google sign in", error);
-      return { success: false, message: "error in google sign in", err: error };
+      console.log(comments.OAUTH_UC_FAIL, error);
+      return { success: false, message: comments.OAUTH_UC_FAIL, err: error };
     }
   }
 }

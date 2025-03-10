@@ -1,3 +1,4 @@
+import { comments } from "../../../shared/constants/comments";
 import { createOTP } from "../../../shared/utils/createOTP";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
 import { NodemailerInterface } from "../../interfaces/misc/NodemailerInterface";
@@ -13,22 +14,22 @@ class ForgotPasswordUseCase {
     try {
       const user = await this.userRepository.findByEmail(email);
       if (!user) {
-        return { success: false, message: "no user with this mail found." };
+        return { success: false, message: comments.USER_NOT_FOUND };
       }
 
       const { otp, expiresAt: expiration } = createOTP();
       user.otp = otp;
       user.otpExpiry = expiration;
-      console.log("ForgotPasswordUseCase.ts >>> OTP : ", otp);
+      console.log(comments.FORGOT_PASS_OTP, otp);
 
-      const subject = "SkillForge Password Reset";
+      const subject = comments.FORGOT_PASS_SUBJECT;
       const text = "Forgot password OTP : " + otp;
       await this.nodemailerService.send(user.email as string, subject, text);
       await this.userRepository.update(user._id as string, user);
 
       return { success: true };
     } catch (error) {
-      console.log("error in forgot password", error);
+      console.log(comments.FORGOT_PASS_UC_FAIL, error);
       if (error instanceof Error) {
         return { success: false, message: error.message };
       } else {

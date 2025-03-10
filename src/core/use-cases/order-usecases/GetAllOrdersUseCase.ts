@@ -1,3 +1,4 @@
+import { comments } from "../../../shared/constants/comments";
 import { PaginationParams } from "../../entities/misc/PaginationParams";
 import OrderInterface from "../../interfaces/OrderInterface";
 
@@ -26,10 +27,10 @@ export default class GetAllOrderUseCase {
 
       return { success: true, data };
     } catch (error) {
-      console.log("error fetching orders", error);
+      console.log(comments.ORDER_FETCH_UC_FAIL, error);
       return {
         success: false,
-        message: "error fetching orders",
+        message: comments.ORDER_FETCH_UC_FAIL,
         err: error,
       };
     }

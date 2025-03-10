@@ -1,3 +1,4 @@
+import { comments } from "../../../shared/constants/comments";
 import IOrder from "../../entities/IOrder";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
 import SubscriptionInterface from "../../interfaces/SubscriptionInterface";
@@ -8,13 +9,12 @@ export default class NewSubscriberUseCase {
   execute = async (order: IOrder): Promise<UseCaseResponse> => {
     try {
       const result = await this.subscriptionRepository.addUser(order);
-      console.log("the use case result ", result);
       return { success: true, data: result };
     } catch (error) {
-      console.log("error in new subscriber usecase", error);
+      console.log(comments.SUB_ADD_USER_UC_FAIL, error);
       return {
         success: false,
-        message: "error in new subscriber usecase",
+        message: comments.SUB_ADD_USER_UC_FAIL,
         err: error,
       };
     }

@@ -1,10 +1,7 @@
-import { Types } from "mongoose";
 import { ICourse } from "../../core/entities/ICourse";
 import IEnrollment from "../../core/entities/IEnrollment";
 import EnrollmentInterface from "../../core/interfaces/EnrollmentInterface";
-import { Course } from "../db/schemas/courseSchema";
 import EnrollmentModel from "../db/schemas/enrollmentSchema";
-import { IUser } from "../../core/entities/IUser";
 
 class EnrollmentRepository implements EnrollmentInterface {
   add = async (data: IEnrollment): Promise<IEnrollment> => {
@@ -60,15 +57,13 @@ class EnrollmentRepository implements EnrollmentInterface {
     const query = search
       ? { name: { $regex: search, $options: "i" }, isDeleted: false }
       : { isDeleted: false };
-
-    // Add .lean() to convert to plain JavaScript objects
+      
     const enrollments = await EnrollmentModel.find(query)
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: -1 })
       .lean();
-
-    // Map to ensure types match the interface
+      
     return enrollments.map((doc) => ({
       ...doc,
       userId: doc.userId as string,

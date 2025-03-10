@@ -1,19 +1,17 @@
-// import mongoose from "mongoose";
-import SubscriptionModel from "../infrastructure/db/schemas/subscriptionSchema"; // Adjust path as needed
-import SubscriptionRepository from "../infrastructure/repositories/SubscriptionRepository"; // Adjust path as needed
-import HandleExpiredSubscriptionsUseCase from "../core/use-cases/subscription-usecases/HandleExpiredSubscriptionsUseCase"; // Adjust path as needed
-import dotenv from "dotenv";
 import mongoose from "mongoose";
-
-// Load environment variables
+import dotenv from "dotenv";
 dotenv.config();
-const dbURI = process.env.MONGODB_TEST_URI;
 
+import SubscriptionModel from "../infrastructure/db/schemas/subscriptionSchema";
+import SubscriptionRepository from "../infrastructure/repositories/SubscriptionRepository";
+import HandleExpiredSubscriptionsUseCase from "../core/use-cases/subscription-usecases/HandleExpiredSubscriptionsUseCase";
+import { comments } from "../shared/constants/comments";
+
+const dbURI = process.env.MONGODB_TEST_URI;
 if (!dbURI) {
-  throw new Error("MONGODB_URI is not defined in the environment variables.");
+  throw new Error(comments.NO_MONGO_ID);
 }
 
-// Test data interface (adjust based on your ISubscription type)
 interface TestSubscription {
   name: string;
   description: string;
@@ -33,22 +31,20 @@ interface TestSubscription {
 
 const testJob = async () => {
   try {
-    console.log("Connecting to MongoDB...");
+    console.log(comments.MONGO_CONNECTING);
     await mongoose.connect(dbURI, {
       serverSelectionTimeoutMS: 30000,
     });
-    console.log("Connected to MongoDB!");
-
-    // Clear existing data to start with a clean slate
+    console.log(comments.MONGO_CONNECTED);
     await SubscriptionModel.deleteMany({});
-    console.log("Cleared existing subscription data.");
+    console.log(comments.SUBS_DATA_CLEARED);
 
     // Set up test data
     const pastDate = new Date();
-    pastDate.setDate(pastDate.getDate() - 1); // Yesterday
+    pastDate.setDate(pastDate.getDate() - 1);
 
     const futureDate = new Date();
-    futureDate.setDate(futureDate.getDate() + 30); // 30 days in future
+    futureDate.setDate(futureDate.getDate() + 30);
 
     const testSubscription: TestSubscription = {
       name: "Test Subscription",
@@ -62,40 +58,34 @@ const testJob = async () => {
         {
           userEmail: "expired@test.com",
           startDate: new Date(pastDate.getTime() - 30 * 24 * 60 * 60 * 1000),
-          endDate: pastDate, // Expired
+          endDate: pastDate,
         },
         {
           userEmail: "active@test.com",
           startDate: new Date(),
-          endDate: futureDate, // Active
+          endDate: futureDate,
         },
       ],
       isActive: true,
       isDeleted: false,
     };
 
-    // Save test data
     const createdSubscription = await SubscriptionModel.create(
       testSubscription
     );
-    console.log("Test subscription created with 2 users.");
-
-    // Run the use case
-    console.log("Manually testing expired subscriptions handling...");
-    const repository = new SubscriptionRepository(); // Create repository instance
-    const useCase = new HandleExpiredSubscriptionsUseCase(repository); // Instantiate use case with repository
-    const result = await useCase.execute(); // Execute the use case directly
-
-    // Log the result from the use case
+    console.log(comments.DUMMY_USERS_CREATED);
+    console.log(comments.MANNUAL_TEST_EXPIRED);
+    const repository = new SubscriptionRepository();
+    const useCase = new HandleExpiredSubscriptionsUseCase(repository);
+    const result = await useCase.execute();
     console.log("Use case result:", result);
     if (result.success) {
       console.log(`Removed ${result.removedCount} expired users.`);
     } else {
-      console.log("Failed to process expired subscriptions:", result.message);
-      return; // Exit early if the use case failed
+      console.log(comments.EXPIRED_SUBS_FAIL, result.message);
+      return;
     }
 
-    // Verify the database state
     const updatedSubscription = await SubscriptionModel.findById(
       createdSubscription._id
     );
@@ -104,7 +94,7 @@ const testJob = async () => {
         `Updated subscription has ${updatedSubscription.users.length} users.`
       );
       console.log(
-        "Remaining user email:",
+        comments.REMAINING_USERS,
         updatedSubscription.users[0].userEmail
       );
       if (
@@ -112,25 +102,23 @@ const testJob = async () => {
         updatedSubscription.users[0].userEmail === "active@test.com" &&
         result.removedCount === 1
       ) {
-        console.log("Test passed: Expired user was removed successfully.");
+        console.log(comments.TEST_COMPLETE);
       } else {
-        console.log(
-          "Test failed: Expired user was not removed or incorrect user remains."
-        );
+        console.log(comments.TEST_FAILED);
       }
     } else {
-      console.log("Test failed: Subscription not found after processing.");
+      console.log(comments.TEST_FAILED_DEFAULT);
     }
 
-    console.log("Test completed.");
+    console.log(comments.TEST_PASSED_DEFAULT);
   } catch (error) {
     console.error(
-      "Error during test:",
+      comments.TEST_ERR,
       error instanceof Error ? error.message : error
     );
   } finally {
     await mongoose.disconnect();
-    console.log("Disconnected from MongoDB");
+    console.log(comments.MONGO_DISCONNECTED);
   }
 };
 

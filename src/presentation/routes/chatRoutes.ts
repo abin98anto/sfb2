@@ -1,4 +1,6 @@
 import { Router } from "express";
+const chatRouter = Router();
+
 import ChatRepository from "../../infrastructure/repositories/ChatRepository";
 import MessageRepository from "../../infrastructure/repositories/MessageRepository";
 import CreateChatUseCase from "../../core/use-cases/chat-usecases/CreateChatUseCase";
@@ -16,8 +18,6 @@ import { UserInterface } from "../../core/interfaces/UserInterface";
 import { UserRepository } from "../../infrastructure/repositories/UserRepository";
 import { GetUserDetailsUseCase } from "../../core/use-cases/user-usecases/GetUserDetailsUseCase";
 import GetStudentList from "../../core/use-cases/chat-usecases/GetStudentListUseCase";
-
-const chatRouter = Router();
 
 const chatRepository: ChatInterface = new ChatRepository();
 const messageRepository: MessageInterface = new MessageRepository();

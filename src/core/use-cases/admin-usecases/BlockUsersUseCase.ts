@@ -1,3 +1,4 @@
+import { comments } from "../../../shared/constants/comments";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
 import { UserInterface } from "../../interfaces/UserInterface";
 
@@ -7,22 +8,22 @@ export default class BlockUsersUseCase {
   execute = async (id: string): Promise<UseCaseResponse> => {
     try {
       const user = await this.userRepository.findById(id);
-      if (!user) throw new Error("User not found");
+      if (!user) throw new Error(comments.USER_NOT_FOUND);
 
       const updatedStatus = !user.isActive;
-      const result = await this.userRepository.update(id, {
+      const data = await this.userRepository.update(id, {
         isActive: updatedStatus,
       });
 
       return {
         success: true,
-        data: result,
+        data,
       };
     } catch (error) {
-      console.log("error when blockin/unblocking user in usecase", error);
+      console.log(comments.BLOCK_UNBLOCK_UC_ERR, error);
       return {
         success: false,
-        message: "error when blockin/unblocking user in usecase",
+        message: comments.BLOCK_UNBLOCK_UC_ERR,
         err: error,
       };
     }

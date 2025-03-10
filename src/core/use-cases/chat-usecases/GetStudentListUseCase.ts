@@ -1,3 +1,4 @@
+import { comments } from "../../../shared/constants/comments";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
 import ChatInterface from "../../interfaces/ChatInterface";
 
@@ -7,13 +8,12 @@ class GetStudentList {
   execute = async (tutorId: string): Promise<UseCaseResponse> => {
     try {
       const data = await this.chatRepository.getStudentList(tutorId);
-      // console.log("usecase data", data);
       return { success: true, data };
     } catch (error) {
-      console.log("error fetching student details", error);
+      console.log(comments.STUDENT_DETAIL_FETCH_FAIL, error);
       return {
         success: false,
-        message: "error fetching student details",
+        message: comments.STUDENT_DETAIL_FETCH_FAIL,
         err: error,
       };
     }

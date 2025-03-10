@@ -1,3 +1,4 @@
+import { comments } from "../../../shared/constants/comments";
 import IEnrollment from "../../entities/IEnrollment";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
 import EnrollmentInterface from "../../interfaces/EnrollmentInterface";
@@ -10,10 +11,10 @@ class UpdateEnrollmentUseCase {
       const data = await this.enrollmentRepository.update(updates);
       return { success: true, data };
     } catch (error) {
-      console.log("error updating enrollment", error);
+      console.log(comments.ENROLL_UPDATE_UC_FAIL, error);
       return {
         success: false,
-        message: "error updating enrollment",
+        message: comments.ENROLL_UPDATE_UC_FAIL,
         err: error,
       };
     }

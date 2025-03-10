@@ -1,3 +1,4 @@
+import { comments } from "../../../shared/constants/comments";
 import ChatInterface from "../../interfaces/ChatInterface";
 
 class GetAllChatsUseCase {
@@ -8,10 +9,10 @@ class GetAllChatsUseCase {
       const data = await this.chatRepository.getChatsForUser(userId);
       return { success: true, data };
     } catch (error) {
-      console.log("error in fetching users chats in use case", error);
+      console.log(comments.USER_CHAT_FETCH_UC_ERR, error);
       return {
         success: false,
-        message: "error in fetching users chats in use case",
+        message: comments.USER_CHAT_FETCH_UC_ERR,
         err: error,
       };
     }

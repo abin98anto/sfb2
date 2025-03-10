@@ -1,3 +1,4 @@
+import { comments } from "../../../shared/constants/comments";
 import hashPassword from "../../../shared/utils/hashPassword";
 import { IUser } from "../../entities/IUser";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
@@ -13,7 +14,7 @@ class CreateUserUseCase {
       );
 
       if (existingUser) {
-        throw new Error("Email is taken");
+        throw new Error(comments.EMAIL_TAKEN);
       }
 
       let newUser: IUser;
@@ -30,10 +31,10 @@ class CreateUserUseCase {
       newUser = await this.userRepository.add(userData);
       return { success: true, data: newUser };
     } catch (error) {
-      console.log("error in creating user", error);
+      console.log(comments.USER_CREATE_UC_FAIL, error);
       return {
         success: false,
-        message: "error creating user in controller",
+        message: comments.USER_CREATE_UC_FAIL,
         err: error,
       };
     }

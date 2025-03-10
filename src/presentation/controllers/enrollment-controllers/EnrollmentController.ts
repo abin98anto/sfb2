@@ -6,6 +6,7 @@ import UpdateEnrollmentUseCase from "../../../core/use-cases/enrollment-usecases
 import UsersCoursesUseCase from "../../../core/use-cases/enrollment-usecases/UsersCoursesUseCase";
 
 import { Request, Response } from "express";
+import { comments } from "../../../shared/constants/comments";
 
 class EnrollmentController {
   constructor(
@@ -29,9 +30,9 @@ class EnrollmentController {
       );
       res.status(201).json(result);
     } catch (error) {
-      console.log("error enrolling in controller", error);
+      console.log(comments.ENROLL_ADD_FAIL, error);
       res.status(500).json({
-        message: "error enrolling in controller",
+        message: comments.ENROLL_ADD_FAIL,
         err: error,
         success: false,
       });
@@ -44,9 +45,9 @@ class EnrollmentController {
       const result = await this.enrollmentDetailsUseCase.execute(id);
       res.status(200).json(result);
     } catch (error) {
-      console.log("error getting details in controller", error);
+      console.log(comments.ENROLL_DETAILS_FAIL, error);
       res.status(500).json({
-        message: "error getting details in controller",
+        message: comments.ENROLL_DETAILS_FAIL,
         err: error,
         success: false,
       });
@@ -58,9 +59,9 @@ class EnrollmentController {
       const result = await this.getAllUseCase.execute();
       res.status(200).json(result);
     } catch (error) {
-      console.log("error getting all in controller", error);
+      console.log(comments.ENROLL_ALL_FAIL, error);
       res.status(500).json({
-        message: "error getting all in controller",
+        message: comments.ENROLL_ALL_FAIL,
         err: error,
         success: false,
       });
@@ -69,14 +70,13 @@ class EnrollmentController {
 
   update = async (req: Request, res: Response): Promise<void> => {
     try {
-      // console.log("updateing", req.body);
-      const {updates } = req.body
+      const { updates } = req.body;
       const result = await this.updateEnrollmentUseCase.execute(updates);
       res.status(200).json(result);
     } catch (error) {
-      console.log("error updating in controller", error);
+      console.log(comments.ENROLL_UPDATE_FAIL, error);
       res.status(500).json({
-        message: "error updating in controller",
+        message: comments.ENROLL_UPDATE_FAIL,
         err: error,
         success: false,
       });
@@ -89,9 +89,9 @@ class EnrollmentController {
       const result = await this.usersCoursesUseCase.execute(userId as string);
       res.status(200).json(result);
     } catch (error) {
-      console.log("error getting user's courses in controller", error);
+      console.log(comments.ENROLL_USER_COURSE_ERR, error);
       res.status(500).json({
-        message: "error getting user's courses in controller",
+        message: comments.ENROLL_USER_COURSE_ERR,
         err: error,
         success: false,
       });
@@ -108,9 +108,9 @@ class EnrollmentController {
       );
       res.status(200).json(result);
     } catch (error) {
-      console.log("error getting without id in controller", error);
+      console.log(comments.ENROLL_DETAILS2_FAIL, error);
       res.status(500).json({
-        message: "error getting without id in controller",
+        message: comments.ENROLL_DETAILS2_FAIL,
         err: error,
         success: false,
       });
@@ -126,9 +126,9 @@ class EnrollmentController {
       );
       res.status(200).json(result);
     } catch (error) {
-      console.log("error getting without id in controller", error);
+      console.log(comments.ENROLL_DETAILS2_FAIL, error);
       res.status(500).json({
-        message: "error getting without id in controller",
+        message: comments.ENROLL_DETAILS2_FAIL,
         err: error,
         success: false,
       });

@@ -1,3 +1,4 @@
+import { comments } from "../../../shared/constants/comments";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
 import { NodemailerInterface } from "../../interfaces/misc/NodemailerInterface";
 import { UserInterface } from "../../interfaces/UserInterface";
@@ -13,16 +14,16 @@ export default class DenyTutorUseCase {
       const user = await this.userRepository.findById(id);
       this.nodemailerService.send(
         user?.email as string,
-        "Tutor Job Application Update",
+        comments.TUTOR_DENY_SUBJECT,
         message
       );
       await this.userRepository.delete(id);
       return { success: true };
     } catch (error) {
-      console.log("error when denying tutor in usecase", error);
+      console.log(comments.TUTOR_DENY_UC_ERR, error);
       return {
         success: false,
-        message: "error when denying tutor in usecase",
+        message: comments.TUTOR_DENY_UC_ERR,
         err: error,
       };
     }

@@ -175,7 +175,7 @@ export class UserAuthController {
       res.status(401).json({
         success: false,
         message:
-          error instanceof Error ? error.message : "Token refresh failed",
+          error instanceof Error ? error.message : comments.TOKEN_REFRESH_FAIL,
         err: error,
       });
     }
@@ -211,7 +211,7 @@ export class UserAuthController {
     } catch (error) {
       res.status(501).json({
         success: false,
-        message: "error changing password",
+        message: comments.PASS_CHANGE_FAIL,
         err: error,
       });
     }
@@ -221,7 +221,7 @@ export class UserAuthController {
     try {
       const { token } = req.body;
       if (!token) {
-        res.status(400).json({ error: "google token missing." });
+        res.status(400).json({ error: comments.OAUTH_TOKEN_MISSING });
         return;
       }
 
@@ -250,10 +250,10 @@ export class UserAuthController {
         });
       return;
     } catch (error) {
-      console.log("google signin fail", error);
+      console.log(comments.OAUTH_FAIL, error);
       res.status(401).json({
         err: error,
-        message: "google signin fail",
+        message: comments.OAUTH_FAIL,
       });
     }
   };
@@ -266,7 +266,7 @@ export class UserAuthController {
     } catch (error) {
       res.status(401).json({
         success: false,
-        message: "error in forgot password",
+        message: comments.FORGOT_PASS_FAIL,
         err: error,
       });
     }
@@ -284,7 +284,7 @@ export class UserAuthController {
     } catch (error) {
       res.status(401).json({
         success: false,
-        message: "error in reset password",
+        message: comments.RESET_PASS_FAIL,
         err: error,
       });
     }

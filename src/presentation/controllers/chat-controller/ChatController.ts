@@ -27,7 +27,8 @@ class ChatController {
       const newChat = await this.createChatUseCase.execute(chat);
       res.status(201).json(newChat);
     } catch (error) {
-      res.status(500).json({ message: "error creating chat" });
+      console.log(comments.CHAT_ADD_C_ERR, error);
+      res.status(500).json({ message: comments.CHAT_ADD_C_ERR, err: error });
     }
   };
 
@@ -36,10 +37,9 @@ class ChatController {
     try {
       await this.sendMessageUseCase.execute(message);
       const io = req.app.get("io");
-      io.to(message.chatId).emit("receive_message", message);
+      io.to(message.chatId).emit(comments.IO_RECIEVE_MSG, message);
 
-      // console.log("the message", message);
-      io.emit("messageNotification", {
+      io.emit(comments.IO_MSG_NOTIFICATION, {
         chatId: message.chatId,
         sender: req.user.name,
         senderId: req.user._id,
@@ -49,6 +49,7 @@ class ChatController {
       });
       res.status(200).json({ message: comments.MSG_SENT_SUCC });
     } catch (error) {
+      console.log(comments.MSG_SENT_FAIL, error);
       res.status(500).json({ message: comments.MSG_SENT_FAIL });
     }
   };
@@ -59,7 +60,8 @@ class ChatController {
       const messages = await this.findChatUseCase.execute(chatId);
       res.status(200).json(messages);
     } catch (error) {
-      res.status(500).json({ message: "error fetching messages in the chat" });
+      console.log(comments.MSG_FETCH_C_ERR, error);
+      res.status(500).json({ message: comments.MSG_FETCH_C_ERR });
     }
   };
 
@@ -75,8 +77,8 @@ class ChatController {
       );
       res.status(200).json(result);
     } catch (error) {
-      console.log("error fetching messages for the chat", error);
-      res.status(500).json({ message: "error fetching messages for the chat" });
+      console.log(comments.MSG_FETCH2_C_ERR, error);
+      res.status(500).json({ message: comments.MSG_FETCH2_C_ERR });
     }
   };
 
@@ -86,8 +88,8 @@ class ChatController {
       const result = await this.GetAllChatsUseCase.execute(userId as string);
       res.status(200).json(result);
     } catch (error) {
-      console.log("error fetching chat list", error);
-      res.status(500).json({ message: "error fetching chat list" });
+      console.log(comments.CHAT_LIST_FETCH_FAIL, error);
+      res.status(500).json({ message: comments.CHAT_LIST_FETCH_FAIL });
     }
   };
 
@@ -97,35 +99,31 @@ class ChatController {
       const result = await this.markAsReadUseCase.execute(messageId);
       res.status(200).json(result);
     } catch (error) {
-      console.log("error in mark as read", error);
-      res.status(500).json({ message: "error in mark as read" });
+      console.log(comments.MSG_READ_ERR, error);
+      res.status(500).json({ message: comments.MSG_READ_ERR });
     }
   };
 
   videoCallInvitation = async (req: Request, res: Response): Promise<void> => {
     try {
-      // console.log("sending invite", req.body);
       const { roomID, userId, studentId } = req.body;
       const io = req.app.get("io");
-      io.emit("callInvite", { roomID, userId, studentId });
-      res.status(200).json({ message: "call invite sent." });
+      io.emit(comments.IO_CALL_INVITE, { roomID, userId, studentId });
+      res.status(200).json({ message: comments.CALL_INVITE_SENT });
     } catch (error) {
-      console.log("error sending video call invite", error);
-      res.status(500).json({ message: "error sending video call invite" });
+      console.log(comments.CALL_INVITE_FAIL, error);
+      res.status(500).json({ message: comments.CALL_INVITE_FAIL });
     }
   };
 
   studentList = async (req: Request, res: Response): Promise<void> => {
     try {
-      // console.log("the id ", req.user);
       const tutorId = req.user._id?.toString();
-      // console.log("the turo", tutorId);
       const result = await this.getStudentList.execute(tutorId as string);
-      // console.log("contorller data", result);
       res.status(200).json(result);
     } catch (error) {
-      console.log("error fetching studnet details", error);
-      res.status(500).json({ message: "error fetching student details" });
+      console.log(comments.STUDENT_LIST_FETCH_FAIL, error);
+      res.status(500).json({ message: comments.STUDENT_LIST_FETCH_FAIL });
     }
   };
 }

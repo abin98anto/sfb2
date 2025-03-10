@@ -1,5 +1,4 @@
 import IOrder from "../entities/IOrder";
-import IParams from "../entities/misc/IParams";
 
 export default interface OrderInterface {
   add(order: IOrder): Promise<IOrder>;

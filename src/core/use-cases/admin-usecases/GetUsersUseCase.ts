@@ -1,5 +1,4 @@
 import { comments } from "../../../shared/constants/comments";
-import IParams from "../../entities/misc/IParams";
 import { PaginationParams } from "../../entities/misc/PaginationParams";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
 import { UserInterface } from "../../interfaces/UserInterface";

@@ -1,4 +1,5 @@
 import { UserRepository } from "../../../infrastructure/repositories/UserRepository";
+import { comments } from "../../../shared/constants/comments";
 import hashPassword from "../../../shared/utils/hashPassword";
 import { IUser } from "../../entities/IUser";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
@@ -24,7 +25,7 @@ class ChangePasswordUseCase {
       if (!isMatch) {
         return {
           success: false,
-          message: "Current password is incorrect.",
+          message: comments.INCORRECT_PASSWORD,
         };
       }
 
@@ -36,13 +37,13 @@ class ChangePasswordUseCase {
 
       return {
         success: true,
-        message: "Password changed successfully.",
+        message: comments.PASS_CHANGE_SUCC,
       };
     } catch (error) {
-      console.log("error changing password", error);
+      console.log(comments.PASS_CHANGE_UC_FAIL, error);
       return {
         success: false,
-        message: "error changing password",
+        message: comments.PASS_CHANGE_UC_FAIL,
         err: error,
       };
     }

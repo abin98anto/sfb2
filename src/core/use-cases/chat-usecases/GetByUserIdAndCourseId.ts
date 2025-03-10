@@ -1,3 +1,4 @@
+import { comments } from "../../../shared/constants/comments";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
 import ChatInterface from "../../interfaces/ChatInterface";
 
@@ -15,10 +16,10 @@ class GetByUserIdAndCourseId {
       );
       return { success: true, data };
     } catch (error) {
-      console.log("error fetching chat using user id and course id", error);
+      console.log(comments.CHAT_BY_NOID_UC_FAIL, error);
       return {
         success: false,
-        message: "error fetching chat using user id and course id",
+        message: comments.CHAT_BY_NOID_UC_FAIL,
         err: error,
       };
     }
