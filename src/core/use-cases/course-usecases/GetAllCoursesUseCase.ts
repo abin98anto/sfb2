@@ -8,18 +8,27 @@ export class GetAllCoursesUseCase {
 
   execute = async (params: PaginationParams = {}): Promise<UseCaseResponse> => {
     try {
-      const { page = 1, limit = 10, search = "" } = params;
+      const {
+        page = 1,
+        limit = 10,
+        search = "",
+        category = "",
+        sort = "all",
+      } = params;
+
       const skip = (page - 1) * limit;
 
-      const totalCount = await this.courseRepository.getCount(search);
-      const categories = await this.courseRepository.getPaginated({
+      const totalCount = await this.courseRepository.getCount(search, category);
+      const courses = await this.courseRepository.getPaginated({
         skip,
         limit,
         search,
+        category,
+        sort,
       });
 
       const data = {
-        data: categories,
+        data: courses,
         total: totalCount,
         limit,
         page,

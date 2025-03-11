@@ -1,5 +1,6 @@
 import { ICourse } from "../../core/entities/ICourse";
 import IParams from "../../core/entities/misc/IParams";
+// import IParams from "../../core/entities/misc/IParams";
 import { CourseInterface } from "../../core/interfaces/CourseInterface";
 import { comments } from "../../shared/constants/comments";
 import { Course } from "../db/schemas/courseSchema";
@@ -56,13 +57,33 @@ export class CourseRepository implements CourseInterface {
     skip,
     limit,
     search,
+    category,
+    sort,
   }: IParams): Promise<ICourse[]> => {
-    const query = search ? { name: { $regex: search, $options: "i" } } : {};
+    // Create initial query
+    let query: any = {};
+
+    // Add search condition if provided
+    if (search) {
+      query.title = { $regex: search, $options: "i" };
+    }
+
+    // Add category filter if provided
+    if (category && category !== "All") {
+      query.category = category;
+    }
+
+    // Determine sort order
+    let sortOrder: any = { createdAt: -1 }; // Default to newest first
+
+    if (sort === "oldest") {
+      sortOrder = { createdAt: 1 };
+    }
 
     return await Course.find(query)
       .skip(skip)
       .limit(limit)
-      .sort({ createdAt: -1 })
+      .sort(sortOrder)
       .populate([
         {
           path: "tutors",
@@ -75,8 +96,19 @@ export class CourseRepository implements CourseInterface {
       ]);
   };
 
-  getCount = async (search: string): Promise<number> => {
-    const query = search ? { name: { $regex: search, $options: "i" } } : {};
+  getCount = async (search: string, category?: string): Promise<number> => {
+    // Create initial query
+    let query: any = {};
+
+    // Add search condition if provided
+    if (search) {
+      query.title = { $regex: search, $options: "i" };
+    }
+
+    // Add category filter if provided
+    if (category && category !== "All") {
+      query.category = category;
+    }
 
     return await Course.countDocuments(query);
   };

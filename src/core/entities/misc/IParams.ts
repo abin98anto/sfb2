@@ -1,5 +1,9 @@
-export default interface IParams {
+interface IParams {
   skip: number;
   limit: number;
-  search: string;
+  search?: string;
+  category?: string;
+  sort?: string;
 }
+
+export default IParams;
