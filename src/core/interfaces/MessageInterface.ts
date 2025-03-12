@@ -5,4 +5,8 @@ export interface MessageInterface {
   findByConversation(conversationId: string): Promise<IMessage[]>;
   markAsRead(messageIds: string[]): Promise<void>;
   getMessagesForChat(chatId: string): Promise<IMessage[]>;
+  countUnreadMessages(userId: string): Promise<number>;
+  getLastMessagesForChats(
+    chatIds: string[]
+  ): Promise<{ chatId: string; message: any }[]>;
 }

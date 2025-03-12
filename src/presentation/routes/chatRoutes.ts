@@ -18,6 +18,8 @@ import { UserInterface } from "../../core/interfaces/UserInterface";
 import { UserRepository } from "../../infrastructure/repositories/UserRepository";
 import { GetUserDetailsUseCase } from "../../core/use-cases/user-usecases/GetUserDetailsUseCase";
 import GetStudentList from "../../core/use-cases/chat-usecases/GetStudentListUseCase";
+import LastMessageUseCase from "../../core/use-cases/chat-usecases/LastMessageUseCase";
+import UnreadCountUseCase from "../../core/use-cases/chat-usecases/UnreadCountUseCase";
 
 const chatRepository: ChatInterface = new ChatRepository();
 const messageRepository: MessageInterface = new MessageRepository();
@@ -33,6 +35,8 @@ const getByUserIdAndCourseIdUseCase = new GetByUserIdAndCourseId(
 );
 const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
 const getStudentList = new GetStudentList(chatRepository);
+const lastMessageUseCase = new LastMessageUseCase(messageRepository);
+const unreadCountUseCase = new UnreadCountUseCase(messageRepository);
 
 const chatController = new ChatController(
   createChatUseCase,
@@ -41,7 +45,9 @@ const chatController = new ChatController(
   findChatUseCase,
   getByUserIdAndCourseIdUseCase,
   markAsReadUseCase,
-  getStudentList
+  getStudentList,
+  unreadCountUseCase,
+  lastMessageUseCase
 );
 
 const jwtService = new JwtService();
@@ -53,5 +59,7 @@ chatRouter.post("/send", authMiddleware, chatController.sendMessage);
 chatRouter.put("/mark-as-read", chatController.markAsRead);
 chatRouter.post("/video-call", chatController.videoCallInvitation);
 chatRouter.get("/student-list", authMiddleware, chatController.studentList);
+chatRouter.get("/unread-count/:userId", chatController.getUnreadMessageCount);
+chatRouter.get("/last-messages/:userId", chatController.getLastMessages);
 
 export default chatRouter;

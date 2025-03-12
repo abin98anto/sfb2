@@ -9,6 +9,8 @@ import FindChatUseCase from "../../../core/use-cases/chat-usecases/FindChatUseCa
 import GetByUserIdAndCourseId from "../../../core/use-cases/chat-usecases/GetByUserIdAndCourseId";
 import MarkAsReadUseCase from "../../../core/use-cases/chat-usecases/MarkAsReadUseCase";
 import GetStudentList from "../../../core/use-cases/chat-usecases/GetStudentListUseCase";
+import UnreadCountUseCase from "../../../core/use-cases/chat-usecases/UnreadCountUseCase";
+import LastMessageUseCase from "../../../core/use-cases/chat-usecases/LastMessageUseCase";
 
 class ChatController {
   constructor(
@@ -18,7 +20,9 @@ class ChatController {
     private findChatUseCase: FindChatUseCase,
     private getByUserIdAndCourseIdUseCase: GetByUserIdAndCourseId,
     private markAsReadUseCase: MarkAsReadUseCase,
-    private getStudentList: GetStudentList
+    private getStudentList: GetStudentList,
+    private unreadCountUseCase: UnreadCountUseCase,
+    private lastMessageUseCase: LastMessageUseCase
   ) {}
 
   createChat = async (req: Request, res: Response) => {
@@ -186,6 +190,42 @@ class ChatController {
     } catch (error) {
       console.log(comments.STUDENT_LIST_FETCH_FAIL, error);
       res.status(500).json({ message: comments.STUDENT_LIST_FETCH_FAIL });
+    }
+  };
+
+  getUnreadMessageCount = async (req: Request, res: Response) => {
+    try {
+      const userId = req.params.userId;
+      const unreadCount = await this.unreadCountUseCase.execute(userId);
+
+      res.status(200).json({
+        success: true,
+        data: { unreadCount },
+      });
+    } catch (error) {
+      console.error("Failed to get unread message count:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to get unread message count",
+      });
+    }
+  };
+
+  getLastMessages = async (req: Request, res: Response) => {
+    try {
+      const { userId } = req.body;
+      const lastMessages = await this.lastMessageUseCase.execute(userId);
+
+      res.status(200).json({
+        success: true,
+        data: { lastMessages },
+      });
+    } catch (error) {
+      console.error("Failed to get last messages:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to get last messages",
+      });
     }
   };
 }

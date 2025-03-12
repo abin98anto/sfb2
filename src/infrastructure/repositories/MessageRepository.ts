@@ -43,6 +43,38 @@ class MessageRepository implements MessageInterface {
       .populate("sender")
       .populate("receiver");
   };
+
+  countUnreadMessages = async (userId: string): Promise<number> => {
+    const count = await MessageModel.countDocuments({
+      receiverId: userId,
+      isRead: false,
+    });
+
+    return count;
+  };
+
+  getLastMessagesForChats = async (
+    chatIds: string[]
+  ): Promise<{ chatId: string; message: any }[]> => {
+    const lastMessages = [];
+
+    for (const chatId of chatIds) {
+      const message = await MessageModel.findOne({ chatId })
+        .sort({ timestamp: -1 })
+        .limit(1)
+        .populate("senderId", "name")
+        .lean();
+
+      if (message) {
+        lastMessages.push({
+          chatId,
+          message,
+        });
+      }
+    }
+
+    return lastMessages;
+  };
 }
 
 export default MessageRepository;
