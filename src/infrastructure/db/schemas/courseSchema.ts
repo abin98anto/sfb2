@@ -32,6 +32,9 @@ const SectionSchema = new Schema<ISection>(
       trim: true,
     },
     lessons: [LessonSchema],
+    duration: {
+      type: Number,
+    },
   },
   { timestamps: true }
 );
