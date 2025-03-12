@@ -22,14 +22,20 @@ class MessageRepository implements MessageInterface {
     return MessageModel.find({ conversationId });
   };
 
-  markAsRead = async (messageId: string): Promise<IMessage | null> => {
-    const message = await MessageModel.findById(messageId);
-    if (message) {
-      message.isRead = true;
-      await message.save();
-      return message;
+  markAsRead = async (messageIds: string[]): Promise<void> => {
+    const result = await MessageModel.updateMany(
+      { _id: { $in: messageIds } }, // Filter: match any messages with IDs in the array
+      { $set: { isRead: true } } // Update: set isRead to true
+    );
+
+    if (result.modifiedCount > 0) {
+      // Return the updated messages
+      const updatedMessages = await MessageModel.find({
+        _id: { $in: messageIds },
+      });
+      // return updatedMessages;
     }
-    return null;
+    // return null;
   };
 
   getMessagesForChat = async (chatId: string): Promise<IMessage[]> => {

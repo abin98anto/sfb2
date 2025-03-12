@@ -32,21 +32,51 @@ class ChatController {
     }
   };
 
+  // sendMessage = async (req: Request, res: Response) => {
+  //   const message: IMessage = req.body;
+  //   try {
+  //     await this.sendMessageUseCase.execute(message);
+  //     const io = req.app.get("io");
+  //     io.to(message.chatId).emit(comments.IO_RECIEVE_MSG, message);
+
+  //     io.emit(comments.IO_MSG_NOTIFICATION, {
+  //       chatId: message.chatId,
+  //       sender: req.user.name,
+  //       senderId: req.user._id,
+  //       receiverId: message.receiverId,
+  //       content: message.content,
+  //       timestamp: message.timestamp,
+  //     });
+  //     res.status(200).json({ message: comments.MSG_SENT_SUCC });
+  //   } catch (error) {
+  //     console.log(comments.MSG_SENT_FAIL, error);
+  //     res.status(500).json({ message: comments.MSG_SENT_FAIL });
+  //   }
+  // };
+
   sendMessage = async (req: Request, res: Response) => {
     const message: IMessage = req.body;
     try {
-      await this.sendMessageUseCase.execute(message);
-      const io = req.app.get("io");
-      io.to(message.chatId).emit(comments.IO_RECIEVE_MSG, message);
+      const result = await this.sendMessageUseCase.execute(message);
+      if (!result.success || !result.data) {
+        throw new Error("Failed to save message");
+      }
+      const savedMessage = result.data; // Get the saved message with _id
 
-      io.emit(comments.IO_MSG_NOTIFICATION, {
-        chatId: message.chatId,
+      const io = req.app.get("io");
+      // Emit the saved message with _id to the chat room
+      io.to(savedMessage.chatId).emit(comments.IO_RECIEVE_MSG, savedMessage);
+
+      // Emit notification (unchanged, but using savedMessage fields for consistency)
+      io.to(savedMessage.receiverId).emit(comments.IO_MSG_NOTIFICATION, {
+        chatId: savedMessage.chatId,
         sender: req.user.name,
         senderId: req.user._id,
-        receiverId: message.receiverId,
-        content: message.content,
-        timestamp: message.timestamp,
+        receiverId: savedMessage.receiverId,
+        content: savedMessage.content,
+        timestamp: savedMessage.timestamp,
       });
+
       res.status(200).json({ message: comments.MSG_SENT_SUCC });
     } catch (error) {
       console.log(comments.MSG_SENT_FAIL, error);
@@ -95,8 +125,8 @@ class ChatController {
 
   markAsRead = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { messageId } = req.body;
-      const result = await this.markAsReadUseCase.execute(messageId);
+      const { messageIds } = req.body;
+      const result = await this.markAsReadUseCase.execute(messageIds);
       res.status(200).json(result);
     } catch (error) {
       console.log(comments.MSG_READ_ERR, error);
