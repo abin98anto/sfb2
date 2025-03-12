@@ -54,6 +54,38 @@ class ChatController {
   //   }
   // };
 
+  // this does the isRead correctly but not the notification.
+  // sendMessage = async (req: Request, res: Response) => {
+  //   const message: IMessage = req.body;
+  //   try {
+  //     const result = await this.sendMessageUseCase.execute(message);
+  //     if (!result.success || !result.data) {
+  //       throw new Error("Failed to save message");
+  //     }
+  //     const savedMessage = result.data; // Get the saved message with _id
+
+  //     const io = req.app.get("io");
+  //     // Emit the saved message with _id to the chat room
+  //     io.to(savedMessage.chatId).emit(comments.IO_RECIEVE_MSG, savedMessage);
+
+  //     // Emit notification (unchanged, but using savedMessage fields for consistency)
+  //     io.to(savedMessage.receiverId).emit(comments.IO_MSG_NOTIFICATION, {
+  //       chatId: savedMessage.chatId,
+  //       sender: req.user.name,
+  //       senderId: req.user._id,
+  //       receiverId: savedMessage.receiverId,
+  //       content: savedMessage.content,
+  //       timestamp: savedMessage.timestamp,
+  //     });
+
+  //     res.status(200).json({ message: comments.MSG_SENT_SUCC });
+  //   } catch (error) {
+  //     console.log(comments.MSG_SENT_FAIL, error);
+  //     res.status(500).json({ message: comments.MSG_SENT_FAIL });
+  //   }
+  // };
+
+  // In your backend controller (e.g., chatController.ts)
   sendMessage = async (req: Request, res: Response) => {
     const message: IMessage = req.body;
     try {
@@ -67,7 +99,7 @@ class ChatController {
       // Emit the saved message with _id to the chat room
       io.to(savedMessage.chatId).emit(comments.IO_RECIEVE_MSG, savedMessage);
 
-      // Emit notification (unchanged, but using savedMessage fields for consistency)
+      // Emit notification to the receiver's user-specific room
       io.to(savedMessage.receiverId).emit(comments.IO_MSG_NOTIFICATION, {
         chatId: savedMessage.chatId,
         sender: req.user.name,

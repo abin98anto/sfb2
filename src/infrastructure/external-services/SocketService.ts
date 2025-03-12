@@ -24,6 +24,12 @@ export const initializeSocket = (httpServer: HTTPServer) => {
       socket.join(chatId);
     });
 
+    // Handle joining a user-specific room
+    socket.on("joinUserRoom", (userId: string) => {
+      console.log(`Socket ${socket.id} joined user room ${userId}`); // Debug log
+      socket.join(userId);
+    });
+
     socket.on(comments.IO_DISCONNECT, () => {
       console.log(comments.IO_CLIENT_DISCONNECT);
     });
