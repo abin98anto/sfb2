@@ -39,7 +39,6 @@ const testJob = async () => {
     await SubscriptionModel.deleteMany({});
     console.log(comments.SUBS_DATA_CLEARED);
 
-    // Set up test data
     const pastDate = new Date();
     pastDate.setDate(pastDate.getDate() - 1);
 
