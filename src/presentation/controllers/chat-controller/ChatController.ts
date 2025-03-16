@@ -11,6 +11,7 @@ import MarkAsReadUseCase from "../../../core/use-cases/chat-usecases/MarkAsReadU
 import GetStudentList from "../../../core/use-cases/chat-usecases/GetStudentListUseCase";
 import UnreadCountUseCase from "../../../core/use-cases/chat-usecases/UnreadCountUseCase";
 import LastMessageUseCase from "../../../core/use-cases/chat-usecases/LastMessageUseCase";
+import UnreadCountByChatUseCase from "../../../core/use-cases/chat-usecases/GetUnreadCountByChatUseCase";
 
 class ChatController {
   constructor(
@@ -22,7 +23,8 @@ class ChatController {
     private markAsReadUseCase: MarkAsReadUseCase,
     private getStudentList: GetStudentList,
     private unreadCountUseCase: UnreadCountUseCase,
-    private lastMessageUseCase: LastMessageUseCase
+    private lastMessageUseCase: LastMessageUseCase,
+    private unreadCountByChatUseCase: UnreadCountByChatUseCase
   ) {}
 
   createChat = async (req: Request, res: Response) => {
@@ -97,13 +99,11 @@ class ChatController {
       if (!result.success || !result.data) {
         throw new Error("Failed to save message");
       }
-      const savedMessage = result.data; // Get the saved message with _id
+      const savedMessage = result.data;
 
       const io = req.app.get("io");
-      // Emit the saved message with _id to the chat room
       io.to(savedMessage.chatId).emit(comments.IO_RECIEVE_MSG, savedMessage);
 
-      // Emit notification to the receiver's user-specific room
       io.to(savedMessage.receiverId).emit(comments.IO_MSG_NOTIFICATION, {
         chatId: savedMessage.chatId,
         sender: req.user.name,
@@ -225,6 +225,26 @@ class ChatController {
       res.status(500).json({
         success: false,
         message: "Failed to get last messages",
+      });
+    }
+  };
+
+  getUnreadCountByChatId = async (req: Request, res: Response) => {
+    try {
+      const { chatId, userId } = req.body;
+      const unreadCount = await this.unreadCountByChatUseCase.execute(
+        chatId,
+        userId
+      );
+      res.status(200).json({
+        success: true,
+        data: { unreadCount },
+      });
+    } catch (error) {
+      console.error("Failed to get unread message count:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to get unread message count",
       });
     }
   };

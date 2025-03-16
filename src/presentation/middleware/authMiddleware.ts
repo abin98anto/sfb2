@@ -38,6 +38,11 @@ export class AuthMiddleware {
           res.status(401).json({ message: comments.USER_NOT_FOUND });
           return;
         }
+
+        if (!data.isActive) {
+          res.status(401).json({ message: "user is blocked by admin" });
+          return;
+        }
         req.user = data;
         next();
       } catch (error) {

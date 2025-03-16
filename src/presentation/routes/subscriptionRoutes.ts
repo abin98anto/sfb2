@@ -8,6 +8,11 @@ import CreateSubscriptionUseCase from "../../core/use-cases/subscription-usecase
 import UpdateSubscriptionUseCase from "../../core/use-cases/subscription-usecases/UpdateSubscriptionUseCase";
 import SubscriptionController from "../controllers/admin-controllers/SubscriptionController";
 import HandleExpiredSubscriptionsUseCase from "../../core/use-cases/subscription-usecases/HandleExpiredSubscriptionsUseCase";
+import { JwtService } from "../../infrastructure/external-services/JwtService";
+import { UserInterface } from "../../core/interfaces/UserInterface";
+import { UserRepository } from "../../infrastructure/repositories/UserRepository";
+import { GetUserDetailsUseCase } from "../../core/use-cases/user-usecases/GetUserDetailsUseCase";
+import { AuthMiddleware } from "../middleware/authMiddleware";
 
 const subscriptionRepository: SubscriptionInterface =
   new SubscriptionRepository();
@@ -30,8 +35,17 @@ const subscriptionController = new SubscriptionController(
   handleExpiredSubscriptionsUseCase
 );
 
+const jwtService = new JwtService();
+const userRepository: UserInterface = new UserRepository();
+const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
+const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
+
 subscriptionRoutes.get("/", subscriptionController.getAll);
-subscriptionRoutes.post("/add", subscriptionController.create);
-subscriptionRoutes.put("/update", subscriptionController.update);
+subscriptionRoutes.post("/add", authMiddleware, subscriptionController.create);
+subscriptionRoutes.put(
+  "/update",
+  authMiddleware,
+  subscriptionController.update
+);
 
 export default subscriptionRoutes;

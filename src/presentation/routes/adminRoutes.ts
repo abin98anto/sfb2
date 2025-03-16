@@ -10,9 +10,13 @@ import ApproveTutorUseCase from "../../core/use-cases/admin-usecases/ApproveTuto
 import DenyTutorUseCase from "../../core/use-cases/admin-usecases/DenyTutorUseCase";
 import { NodemailerInterface } from "../../core/interfaces/misc/NodemailerInterface";
 import { NodemailerService } from "../../infrastructure/external-services/NodemailerService";
+import { AuthMiddleware } from "../middleware/authMiddleware";
+import { GetUserDetailsUseCase } from "../../core/use-cases/user-usecases/GetUserDetailsUseCase";
+import { JwtService } from "../../infrastructure/external-services/JwtService";
 
 const userRepository: UserInterface = new UserRepository();
 const nodemailerService: NodemailerInterface = new NodemailerService();
+const jwtService = new JwtService();
 
 const getUsersUseCase = new GetUsersUseCase(userRepository);
 const blockUserUseCase = new BlockUsersUseCase(userRepository);
@@ -21,6 +25,7 @@ const denyTutorUseCase = new DenyTutorUseCase(
   userRepository,
   nodemailerService
 );
+const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
 
 const adminController = new AdminController(
   getUsersUseCase,
@@ -28,10 +33,15 @@ const adminController = new AdminController(
   approveTutorUseCase,
   denyTutorUseCase
 );
+const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 
-adminRouter.get("/users/:role", adminController.getUsersBasedOnRole);
-adminRouter.put("/block/:id", adminController.blockUser);
-adminRouter.put("/approve/:id", adminController.approveTutor);
-adminRouter.put("/deny/:id", adminController.denyTutor);
+adminRouter.get(
+  "/users/:role",
+  authMiddleware,
+  adminController.getUsersBasedOnRole
+);
+adminRouter.put("/block/:id", authMiddleware, adminController.blockUser);
+adminRouter.put("/approve/:id", authMiddleware, adminController.approveTutor);
+adminRouter.put("/deny/:id", authMiddleware, adminController.denyTutor);
 
 export default adminRouter;

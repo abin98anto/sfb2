@@ -7,6 +7,7 @@ import { Course } from "../db/schemas/courseSchema";
 
 export class CourseRepository implements CourseInterface {
   add = async (course: Partial<ICourse>): Promise<ICourse> => {
+
     const newCourse = new Course(course);
     await newCourse.save();
     return newCourse;

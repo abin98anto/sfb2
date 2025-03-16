@@ -2,6 +2,7 @@ import IMessage from "../../core/entities/IMessage";
 import { MessageInterface } from "../../core/interfaces/MessageInterface";
 import ChatModel from "../db/schemas/chatSchema";
 import { MessageModel } from "../db/schemas/messageSchema";
+import userRouter from "../../presentation/routes/userRoutes";
 
 class MessageRepository implements MessageInterface {
   createMessage = async (message: IMessage): Promise<IMessage> => {
@@ -74,6 +75,13 @@ class MessageRepository implements MessageInterface {
     }
 
     return lastMessages;
+  };
+
+  getMessagesByChatId = async (
+    chatId: string,
+    userId: string
+  ): Promise<IMessage[]> => {
+    return MessageModel.find({ chatId, receiverId: userId });
   };
 }
 

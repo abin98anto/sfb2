@@ -68,10 +68,14 @@ userRouter.delete(API.USER_DELETE, userAuthController.deleteUser);
 
 // Login routes.
 userRouter.post(API.USER_LOGIN, userAuthController.login);
-userRouter.post(API.USER_LOGOUT, userAuthController.logout);
+userRouter.post(API.USER_LOGOUT, authMiddleware, userAuthController.logout);
 
 // Refresh Access Token routes.
-userRouter.post(API.USER_REFRESH, userAuthController.refreshAccessToken);
+userRouter.post(
+  API.USER_REFRESH,
+  authMiddleware,
+  userAuthController.refreshAccessToken
+);
 
 // Update user details routes.
 userRouter.put(API.USER_UPDATE, authMiddleware, userAuthController.update);
@@ -80,8 +84,16 @@ userRouter.put(
   authMiddleware,
   userAuthController.changePassword
 );
-userRouter.put("/forgot-password", userAuthController.forgotPasswordOTP);
-userRouter.put("/set-password", userAuthController.resetPassword);
+userRouter.put(
+  "/forgot-password",
+  authMiddleware,
+  userAuthController.forgotPasswordOTP
+);
+userRouter.put(
+  "/set-password",
+  authMiddleware,
+  userAuthController.resetPassword
+);
 
 // Google Auth routes.
 userRouter.post("/auth/google", userAuthController.googleSignIn);

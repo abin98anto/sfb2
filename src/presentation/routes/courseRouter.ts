@@ -5,6 +5,11 @@ import { GetCourseDetailsUseCase } from "../../core/use-cases/course-usecases/Ge
 import { GetAllCoursesUseCase } from "../../core/use-cases/course-usecases/GetAllCoursesUseCase";
 import { CourseController } from "../controllers/course-controllers/CourseController";
 import { UpdateCourseUseCase } from "../../core/use-cases/course-usecases/UpdateCourseUseCase";
+import { JwtService } from "../../infrastructure/external-services/JwtService";
+import { UserInterface } from "../../core/interfaces/UserInterface";
+import { UserRepository } from "../../infrastructure/repositories/UserRepository";
+import { GetUserDetailsUseCase } from "../../core/use-cases/user-usecases/GetUserDetailsUseCase";
+import { AuthMiddleware } from "../middleware/authMiddleware";
 
 const courseRouter = express.Router();
 const courseRepository: CourseRepository = new CourseRepository();
@@ -18,13 +23,18 @@ const courseController = new CourseController(
   createCourseUseCase,
   getCourseDetailsUseCase,
   updateCourseUseCase,
-  getAllCoursesUseCase  
+  getAllCoursesUseCase
 );
+
+const jwtService = new JwtService();
+const userRepository: UserInterface = new UserRepository();
+const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
+const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 
 courseRouter.get("/", courseController.getCourses);
 courseRouter.get("/:courseId", courseController.getCourseDetails);
-courseRouter.post("/add", courseController.add);
-courseRouter.put("/update", courseController.update);
-courseRouter.put("/toggle", courseController.toggleStatus);
+courseRouter.post("/add", authMiddleware, courseController.add);
+courseRouter.put("/update", authMiddleware, courseController.update);
+courseRouter.put("/toggle", authMiddleware, courseController.toggleStatus);
 
 export default courseRouter;

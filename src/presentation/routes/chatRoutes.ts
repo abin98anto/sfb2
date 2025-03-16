@@ -20,6 +20,7 @@ import { GetUserDetailsUseCase } from "../../core/use-cases/user-usecases/GetUse
 import GetStudentList from "../../core/use-cases/chat-usecases/GetStudentListUseCase";
 import LastMessageUseCase from "../../core/use-cases/chat-usecases/LastMessageUseCase";
 import UnreadCountUseCase from "../../core/use-cases/chat-usecases/UnreadCountUseCase";
+import UnreadCountByChatUseCase from "../../core/use-cases/chat-usecases/GetUnreadCountByChatUseCase";
 
 const chatRepository: ChatInterface = new ChatRepository();
 const messageRepository: MessageInterface = new MessageRepository();
@@ -37,6 +38,7 @@ const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
 const getStudentList = new GetStudentList(chatRepository);
 const lastMessageUseCase = new LastMessageUseCase(messageRepository);
 const unreadCountUseCase = new UnreadCountUseCase(messageRepository);
+const unreadCountByChatId = new UnreadCountByChatUseCase(messageRepository);
 
 const chatController = new ChatController(
   createChatUseCase,
@@ -47,19 +49,37 @@ const chatController = new ChatController(
   markAsReadUseCase,
   getStudentList,
   unreadCountUseCase,
-  lastMessageUseCase
+  lastMessageUseCase,
+  unreadCountByChatId
 );
 
 const jwtService = new JwtService();
 const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 
-chatRouter.get("/messages/:chatId", chatController.getMessages);
-chatRouter.get("/list", chatController.getChatList);
+chatRouter.get("/messages/:chatId", authMiddleware, chatController.getMessages);
+chatRouter.get("/list", authMiddleware, chatController.getChatList);
 chatRouter.post("/send", authMiddleware, chatController.sendMessage);
-chatRouter.put("/mark-as-read", chatController.markAsRead);
-chatRouter.post("/video-call", chatController.videoCallInvitation);
+chatRouter.put("/mark-as-read", authMiddleware, chatController.markAsRead);
+chatRouter.post(
+  "/video-call",
+  authMiddleware,
+  chatController.videoCallInvitation
+);
 chatRouter.get("/student-list", authMiddleware, chatController.studentList);
-chatRouter.get("/unread-count/:userId", chatController.getUnreadMessageCount);
-chatRouter.get("/last-messages/:userId", chatController.getLastMessages);
+chatRouter.get(
+  "/unread-count/:userId",
+  authMiddleware,
+  chatController.getUnreadMessageCount
+);
+chatRouter.get(
+  "/last-messages/:userId",
+  authMiddleware,
+  chatController.getLastMessages
+);
+chatRouter.post(
+  "/unread-count-by-chat",
+  authMiddleware,
+  chatController.getUnreadCountByChatId
+);
 
 export default chatRouter;

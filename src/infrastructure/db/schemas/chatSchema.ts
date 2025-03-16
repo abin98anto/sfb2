@@ -8,6 +8,12 @@ const chatSchema = new Schema<IChat>(
     tutorId: { type: String, required: true, ref: "User" },
     courseId: { type: String, required: true, ref: "Course" },
     messages: [{ type: Schema.Types.ObjectId, ref: "Message" }],
+    // lastMessage: {
+    //   content: String,
+    //   senderId: { type: String, ref: "User" },
+    //   timestamp: Date,
+    //   contentType: String,
+    // },
   },
   {
     timestamps: true,

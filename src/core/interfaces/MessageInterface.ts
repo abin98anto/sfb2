@@ -9,4 +9,5 @@ export interface MessageInterface {
   getLastMessagesForChats(
     chatIds: string[]
   ): Promise<{ chatId: string; message: any }[]>;
+  getMessagesByChatId(chatId: string, userId: string): Promise<IMessage[]>;
 }

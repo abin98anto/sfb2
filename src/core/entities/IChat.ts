@@ -4,4 +4,10 @@ export default interface IChat {
   studentId: string;
   courseId: string;
   messages: string[];
+  // lastMessage: {
+  //   content: string;
+  //   senderId: string;
+  //   timestamp: Date;
+  //   contentType: string;
+  // };
 }
