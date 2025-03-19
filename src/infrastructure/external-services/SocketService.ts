@@ -24,9 +24,8 @@ export const initializeSocket = (httpServer: HTTPServer) => {
       socket.join(chatId);
     });
 
-    // Handle joining a user-specific room
     socket.on("joinUserRoom", (userId: string) => {
-      console.log(`Socket ${socket.id} joined user room ${userId}`); // Debug log
+      console.log(`Socket ${socket.id} joined user room ${userId}`);
       socket.join(userId);
     });
 

@@ -6,7 +6,8 @@ import ChatModel from "../db/schemas/chatSchema";
 class ChatRepository implements ChatInterface {
   createChat = async (chat: IChat): Promise<IChat> => {
     const newChat = new ChatModel(chat);
-    return newChat.save();
+    const savedChat = newChat.save();
+    return savedChat;
   };
 
   getChatHistory = async (chatId: string): Promise<IChat | null> => {
@@ -20,16 +21,17 @@ class ChatRepository implements ChatInterface {
     return ChatModel.findOne({ courseId, studentId: userId })
       .populate("tutorId")
       .populate("studentId")
-      .populate("courseId")
-      .populate("messages");
+      .populate("courseId");
+    // .populate("messages");
   };
 
   storeMessage = async (message: IMessage): Promise<void> => {
-    const chat = await ChatModel.findById(message.chatId);
-    if (chat) {
-      chat.messages.push(message._id as string);
-      await chat.save();
-    }
+    console.log("store message repo function called of chat repository.");
+    // const chat = await ChatModel.findById(message.chatId);
+    // if (chat) {
+    //   chat.messages.push(message._id);
+    //   await chat.save();
+    // }
   };
 
   getChatsForUser = async (userId: string): Promise<IChat[]> => {
@@ -39,7 +41,7 @@ class ChatRepository implements ChatInterface {
       .populate("tutorId")
       .populate("studentId")
       .populate("courseId")
-      .populate("messages")
+      .populate("lastMessage")
       .exec();
 
     return chats;

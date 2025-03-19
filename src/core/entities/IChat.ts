@@ -1,13 +1,11 @@
+import { Types } from "mongoose";
+
 export default interface IChat {
   _id?: string;
   tutorId: string;
   studentId: string;
   courseId: string;
-  messages: string[];
-  // lastMessage: {
-  //   content: string;
-  //   senderId: string;
-  //   timestamp: Date;
-  //   contentType: string;
-  // };
+  // messages: string[];
+  lastMessage?: string | null;
+  unreadMessageCount: number;
 }

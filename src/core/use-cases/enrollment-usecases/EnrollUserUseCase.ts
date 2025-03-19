@@ -73,7 +73,9 @@ class EnrollUserUseCase {
         studentId: enrollment.userId as string,
         tutorId: selectedTutorId,
         courseId: course?._id as string,
-        messages: [],
+        // messages: [],
+        lastMessage: null,
+        unreadMessageCount: 0,
       };
 
       await this.chatRepository.createChat(newRoom);

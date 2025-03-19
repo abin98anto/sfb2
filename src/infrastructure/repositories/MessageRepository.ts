@@ -2,21 +2,32 @@ import IMessage from "../../core/entities/IMessage";
 import { MessageInterface } from "../../core/interfaces/MessageInterface";
 import ChatModel from "../db/schemas/chatSchema";
 import { MessageModel } from "../db/schemas/messageSchema";
-import userRouter from "../../presentation/routes/userRoutes";
 
 class MessageRepository implements MessageInterface {
   createMessage = async (message: IMessage): Promise<IMessage> => {
-    const savedMessage = await MessageModel.create(message);
+    const newMessage = new MessageModel(message);
+    const savedMessage = newMessage.save();
 
-    await ChatModel.findByIdAndUpdate(
-      message.chatId,
+    const currentChat = await ChatModel.findOneAndUpdate(
+      { _id: message.chatId },
       {
-        $push: { messages: savedMessage._id },
-      },
-      { new: true }
+        lastMessage: (await savedMessage)._id,
+        $inc: { unreadMessageCount: 1 },
+      }
     );
 
     return savedMessage;
+
+    // const savedMessage = await MessageModel.create(message);
+    // const newMessage = await ChatModel.findByIdAndUpdate(
+    //   message.chatId,
+    //   {
+    //     $push: { messages: savedMessage._id },
+    //   },
+    //   { new: true }
+    // );
+
+    // return savedMessage;
   };
 
   findByConversation = async (conversationId: string): Promise<IMessage[]> => {
@@ -25,18 +36,15 @@ class MessageRepository implements MessageInterface {
 
   markAsRead = async (messageIds: string[]): Promise<void> => {
     const result = await MessageModel.updateMany(
-      { _id: { $in: messageIds } }, // Filter: match any messages with IDs in the array
-      { $set: { isRead: true } } // Update: set isRead to true
+      { _id: { $in: messageIds } },
+      { $set: { isRead: true } }
     );
 
     if (result.modifiedCount > 0) {
-      // Return the updated messages
       const updatedMessages = await MessageModel.find({
         _id: { $in: messageIds },
       });
-      // return updatedMessages;
     }
-    // return null;
   };
 
   getMessagesForChat = async (chatId: string): Promise<IMessage[]> => {
