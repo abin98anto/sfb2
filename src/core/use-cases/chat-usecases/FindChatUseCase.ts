@@ -1,13 +1,13 @@
 import { comments } from "../../../shared/constants/comments";
 import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
-import ChatInterface from "../../interfaces/ChatInterface";
+import { MessageInterface } from "../../interfaces/MessageInterface";
 
 class FindChatUseCase {
-  constructor(private chatRepository: ChatInterface) {}
+  constructor(private messageRepository: MessageInterface) {}
 
   execute = async (chatId: string): Promise<UseCaseResponse> => {
     try {
-      const data = await this.chatRepository.getChatHistory(chatId);
+      const data = await this.messageRepository.getMessagesByChatId(chatId);
       return { success: true, data };
     } catch (error) {
       console.log(comments.CHAT_FIND_UC_ERR, error);

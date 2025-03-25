@@ -29,7 +29,7 @@ const userRepository: UserInterface = new UserRepository();
 const createChatUseCase = new CreateChatUseCase(chatRepository);
 const sendMessageUseCase = new SendMessageUseCase(messageRepository);
 const getAllChatsUseCase = new GetAllChatsUseCase(chatRepository);
-const findChatUseCase = new FindChatUseCase(chatRepository);
+const findChatUseCase = new FindChatUseCase(messageRepository);
 const markAsReadUseCase = new MarkAsReadUseCase(messageRepository);
 const getByUserIdAndCourseIdUseCase = new GetByUserIdAndCourseId(
   chatRepository

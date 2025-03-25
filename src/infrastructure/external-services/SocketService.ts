@@ -24,10 +24,10 @@ export const initializeSocket = (httpServer: HTTPServer) => {
       socket.join(chatId);
     });
 
-    socket.on("joinUserRoom", (userId: string) => {
-      console.log(`Socket ${socket.id} joined user room ${userId}`);
-      socket.join(userId);
-    });
+    // socket.on("joinUserRoom", (userId: string) => {
+    //   console.log(`Socket ${socket.id} joined user room ${userId}`);
+    //   socket.join(userId);
+    // });
 
     socket.on(comments.IO_DISCONNECT, () => {
       console.log(comments.IO_CLIENT_DISCONNECT);

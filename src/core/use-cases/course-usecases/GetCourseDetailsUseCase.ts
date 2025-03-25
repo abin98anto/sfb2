@@ -8,6 +8,7 @@ export class GetCourseDetailsUseCase {
   execute = async (courseId: string): Promise<UseCaseResponse> => {
     try {
       const result = await this.courseRepository.getById(courseId);
+      
       return { success: true, data: result };
     } catch (error) {
       console.log(comments.COURSE_FETCH_FAIL, error);

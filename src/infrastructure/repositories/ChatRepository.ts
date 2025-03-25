@@ -11,7 +11,7 @@ class ChatRepository implements ChatInterface {
   };
 
   getChatHistory = async (chatId: string): Promise<IChat | null> => {
-    return ChatModel.findById(chatId).populate("messages");
+    return ChatModel.findById(chatId);
   };
 
   getChatByCourseAndUser = async (

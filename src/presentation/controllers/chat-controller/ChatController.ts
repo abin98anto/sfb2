@@ -59,7 +59,7 @@ class ChatController {
         timestamp: savedMessage.timestamp,
       });
 
-      res.status(200).json({ message: comments.MSG_SENT_SUCC });
+      res.status(200).json({ success: true, data: savedMessage });
     } catch (error) {
       console.log(comments.MSG_SENT_FAIL, error);
       res.status(500).json({ message: comments.MSG_SENT_FAIL });
