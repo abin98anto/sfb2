@@ -17,17 +17,6 @@ class MessageRepository implements MessageInterface {
     );
 
     return savedMessage;
-
-    // const savedMessage = await MessageModel.create(message);
-    // const newMessage = await ChatModel.findByIdAndUpdate(
-    //   message.chatId,
-    //   {
-    //     $push: { messages: savedMessage._id },
-    //   },
-    //   { new: true }
-    // );
-
-    // return savedMessage;
   };
 
   findByConversation = async (conversationId: string): Promise<IMessage[]> => {
@@ -35,13 +24,10 @@ class MessageRepository implements MessageInterface {
   };
 
   markAsRead = async (messageIds: string[]): Promise<void> => {
-    console.log("marking message as read in repo");
     const result = await MessageModel.updateMany(
       { _id: { $in: messageIds } },
       { $set: { isRead: true } }
     );
-
-    console.log("ther result", result);
     if (result.modifiedCount > 0) {
       const updatedMessages = await MessageModel.find({
         _id: { $in: messageIds },
@@ -89,6 +75,10 @@ class MessageRepository implements MessageInterface {
 
   getMessagesByChatId = async (chatId: string): Promise<IMessage[]> => {
     return MessageModel.find({ chatId });
+  };
+
+  clearUnreadCount = async (chatId: string): Promise<void> => {
+    await ChatModel.updateOne({ _id: chatId }, { unreadMessageCount: 0 });
   };
 }
 

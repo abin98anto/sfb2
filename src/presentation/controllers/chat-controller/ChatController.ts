@@ -12,6 +12,8 @@ import GetStudentList from "../../../core/use-cases/chat-usecases/GetStudentList
 import UnreadCountUseCase from "../../../core/use-cases/chat-usecases/UnreadCountUseCase";
 import LastMessageUseCase from "../../../core/use-cases/chat-usecases/LastMessageUseCase";
 import UnreadCountByChatUseCase from "../../../core/use-cases/chat-usecases/GetUnreadCountByChatUseCase";
+import { UseCaseResponse } from "../../../core/entities/misc/useCaseResponse";
+import ClearUnreadMessageCountUseCase from "../../../core/use-cases/chat-usecases/ClearUnreadMessageCountUseCase";
 
 class ChatController {
   constructor(
@@ -24,7 +26,8 @@ class ChatController {
     private getStudentList: GetStudentList,
     private unreadCountUseCase: UnreadCountUseCase,
     private lastMessageUseCase: LastMessageUseCase,
-    private unreadCountByChatUseCase: UnreadCountByChatUseCase
+    private unreadCountByChatUseCase: UnreadCountByChatUseCase,
+    private clearUnreadMessageCountUseCase: ClearUnreadMessageCountUseCase
   ) {}
 
   createChat = async (req: Request, res: Response) => {
@@ -41,23 +44,21 @@ class ChatController {
   sendMessage = async (req: Request, res: Response) => {
     const message: IMessage = req.body;
     try {
-      const result = await this.sendMessageUseCase.execute(message);
+      const result: UseCaseResponse = await this.sendMessageUseCase.execute(
+        message
+      );
       if (!result.success || !result.data) {
         throw new Error("Failed to save message");
       }
       const savedMessage = result.data;
 
-      const io = req.app.get("io");
-      io.to(savedMessage.chatId).emit(comments.IO_RECIEVE_MSG, savedMessage);
-
-      io.to(savedMessage.receiverId).emit(comments.IO_MSG_NOTIFICATION, {
-        chatId: savedMessage.chatId,
-        sender: req.user.name,
-        senderId: req.user._id,
-        receiverId: savedMessage.receiverId,
-        content: savedMessage.content,
-        timestamp: savedMessage.timestamp,
-      });
+      // const io = req.app.get("io");
+      // io.to(savedMessage.chatId).emit(comments.IO_RECIEVE_MSG, savedMessage);
+      // console.log("sending notification ", message);
+      // io.to(savedMessage.receiverId).emit(
+      //   comments.IO_MSG_NOTIFICATION,
+      //   savedMessage
+      // );
 
       res.status(200).json({ success: true, data: savedMessage });
     } catch (error) {
@@ -107,6 +108,7 @@ class ChatController {
 
   markAsRead = async (req: Request, res: Response): Promise<void> => {
     try {
+      // console.log("the messages that are resd", req.body);
       const { messageIds } = req.body;
       const result = await this.markAsReadUseCase.execute(messageIds);
       res.status(200).json(result);
@@ -191,6 +193,23 @@ class ChatController {
       res.status(500).json({
         success: false,
         message: "Failed to get unread message count",
+      });
+    }
+  };
+
+  clearUnreadCount = async (req: Request, res: Response) => {
+    try {
+      const { chatId } = req.body;
+      const data = await this.clearUnreadMessageCountUseCase.execute(chatId);
+      res.status(200).json({
+        success: true,
+        data,
+      });
+    } catch (error) {
+      console.error("Failed to clear unread message count:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to clear unread message count",
       });
     }
   };

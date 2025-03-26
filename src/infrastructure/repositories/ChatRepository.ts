@@ -26,7 +26,7 @@ class ChatRepository implements ChatInterface {
   };
 
   storeMessage = async (message: IMessage): Promise<void> => {
-    console.log("store message repo function called of chat repository.");
+    console.log("store message repo function called of chat repository. but is commented out.");
     // const chat = await ChatModel.findById(message.chatId);
     // if (chat) {
     //   chat.messages.push(message._id);

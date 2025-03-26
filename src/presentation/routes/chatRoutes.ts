@@ -21,6 +21,7 @@ import GetStudentList from "../../core/use-cases/chat-usecases/GetStudentListUse
 import LastMessageUseCase from "../../core/use-cases/chat-usecases/LastMessageUseCase";
 import UnreadCountUseCase from "../../core/use-cases/chat-usecases/UnreadCountUseCase";
 import UnreadCountByChatUseCase from "../../core/use-cases/chat-usecases/GetUnreadCountByChatUseCase";
+import ClearUnreadMessageCountUseCase from "../../core/use-cases/chat-usecases/ClearUnreadMessageCountUseCase";
 
 const chatRepository: ChatInterface = new ChatRepository();
 const messageRepository: MessageInterface = new MessageRepository();
@@ -39,6 +40,9 @@ const getStudentList = new GetStudentList(chatRepository);
 const lastMessageUseCase = new LastMessageUseCase(messageRepository);
 const unreadCountUseCase = new UnreadCountUseCase(messageRepository);
 const unreadCountByChatId = new UnreadCountByChatUseCase(messageRepository);
+const clearUnreadMessageCountUseCase = new ClearUnreadMessageCountUseCase(
+  messageRepository
+);
 
 const chatController = new ChatController(
   createChatUseCase,
@@ -50,7 +54,8 @@ const chatController = new ChatController(
   getStudentList,
   unreadCountUseCase,
   lastMessageUseCase,
-  unreadCountByChatId
+  unreadCountByChatId,
+  clearUnreadMessageCountUseCase
 );
 
 const jwtService = new JwtService();
@@ -80,6 +85,12 @@ chatRouter.post(
   "/unread-count-by-chat",
   authMiddleware,
   chatController.getUnreadCountByChatId
+);
+
+chatRouter.post(
+  "/clear-unread-count",
+  authMiddleware,
+  chatController.clearUnreadCount
 );
 
 export default chatRouter;

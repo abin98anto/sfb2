@@ -10,4 +10,6 @@ export interface MessageInterface {
     chatIds: string[]
   ): Promise<{ chatId: string; message: any }[]>;
   getMessagesByChatId(chatId: string): Promise<IMessage[]>;
+
+  clearUnreadCount(chatId: string): Promise<void>;
 }

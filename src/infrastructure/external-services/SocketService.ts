@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import { Server as HTTPServer } from "http";
 import { comments } from "../../shared/constants/comments";
 import dotenv from "dotenv";
+import IMessage from "../../core/entities/IMessage";
 dotenv.config();
 
 export const initializeSocket = (httpServer: HTTPServer) => {
@@ -24,10 +25,11 @@ export const initializeSocket = (httpServer: HTTPServer) => {
       socket.join(chatId);
     });
 
-    // socket.on("joinUserRoom", (userId: string) => {
-    //   console.log(`Socket ${socket.id} joined user room ${userId}`);
-    //   socket.join(userId);
-    // });
+    socket.on("send-message", (data: IMessage) => {
+      io.to(data.senderId)
+        .to(data.receiverId)
+        .emit(comments.IO_RECIEVE_MSG, data);
+    });
 
     socket.on(comments.IO_DISCONNECT, () => {
       console.log(comments.IO_CLIENT_DISCONNECT);
