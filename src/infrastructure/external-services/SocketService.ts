@@ -5,6 +5,13 @@ import dotenv from "dotenv";
 import IMessage from "../../core/entities/IMessage";
 dotenv.config();
 
+interface messageReadData {
+  messageIds: string[];
+  chatId: string;
+  receiverId: string;
+  senderId: string;
+}
+
 export const initializeSocket = (httpServer: HTTPServer) => {
   const io = new Server(httpServer, {
     cors: {
@@ -13,7 +20,7 @@ export const initializeSocket = (httpServer: HTTPServer) => {
         process.env.BASE_URL_BE as string,
       ],
       methods: ["GET", "POST"],
-      credentials: true,
+      credentials: true,  
       allowedHeaders: ["my-custom-header"],
     },
   });
@@ -29,6 +36,11 @@ export const initializeSocket = (httpServer: HTTPServer) => {
       io.to(data.senderId)
         .to(data.receiverId)
         .emit(comments.IO_RECIEVE_MSG, data);
+    });
+
+    socket.on("msg-read", (data: messageReadData) => {
+      // console.log("message read event triggered", data);
+      socket.to(data.senderId).emit("msg-read", data);
     });
 
     socket.on(comments.IO_DISCONNECT, () => {
