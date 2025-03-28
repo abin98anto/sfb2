@@ -1,3 +1,4 @@
+import IChat from "../../core/entities/IChat";
 import IMessage from "../../core/entities/IMessage";
 import { MessageInterface } from "../../core/interfaces/MessageInterface";
 import ChatModel from "../db/schemas/chatSchema";
@@ -77,8 +78,18 @@ class MessageRepository implements MessageInterface {
     return MessageModel.find({ chatId });
   };
 
-  clearUnreadCount = async (chatId: string): Promise<void> => {
-    await ChatModel.updateOne({ _id: chatId }, { unreadMessageCount: 0 });
+  clearUnreadCount = async (chatId: string): Promise<IChat> => {
+    const updatedChat = await ChatModel.findOneAndUpdate(
+      { _id: chatId },
+      { unreadMessageCount: 0 },
+      { new: true }
+    );
+
+    if (!updatedChat) {
+      throw new Error("Chat not found");
+    }
+
+    return updatedChat;
   };
 }
 

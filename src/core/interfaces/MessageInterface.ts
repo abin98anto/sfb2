@@ -1,3 +1,4 @@
+import IChat from "../entities/IChat";
 import IMessage from "../entities/IMessage";
 
 export interface MessageInterface {
@@ -11,5 +12,5 @@ export interface MessageInterface {
   ): Promise<{ chatId: string; message: any }[]>;
   getMessagesByChatId(chatId: string): Promise<IMessage[]>;
 
-  clearUnreadCount(chatId: string): Promise<void>;
+  clearUnreadCount(chatId: string): Promise<IChat>;
 }
