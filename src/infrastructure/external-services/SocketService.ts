@@ -20,7 +20,7 @@ export const initializeSocket = (httpServer: HTTPServer) => {
         process.env.BASE_URL_BE as string,
       ],
       methods: ["GET", "POST"],
-      credentials: true,  
+      credentials: true,
       allowedHeaders: ["my-custom-header"],
     },
   });
@@ -39,7 +39,6 @@ export const initializeSocket = (httpServer: HTTPServer) => {
     });
 
     socket.on("msg-read", (data: messageReadData) => {
-      // console.log("message read event triggered", data);
       socket.to(data.senderId).emit("msg-read", data);
     });
 
