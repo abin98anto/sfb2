@@ -1,8 +1,10 @@
+import { UserModel } from "../../../infrastructure/db/schemas/userSchema";
 import IChat from "../../entities/IChat";
 import IEnrollment from "../../entities/IEnrollment";
 import { IUser } from "../../entities/IUser";
 import ChatInterface from "../../interfaces/ChatInterface";
 import EnrollmentInterface from "../../interfaces/EnrollmentInterface";
+import { UserInterface } from "../../interfaces/UserInterface";
 import { GetCourseDetailsUseCase } from "../course-usecases/GetCourseDetailsUseCase";
 import { UpdateCourseUseCase } from "../course-usecases/UpdateCourseUseCase";
 import { GetUserDetailsUseCase } from "../user-usecases/GetUserDetailsUseCase";
@@ -73,7 +75,6 @@ class EnrollUserUseCase {
         studentId: enrollment.userId as string,
         tutorId: selectedTutorId,
         courseId: course?._id as string,
-        // messages: [],
         lastMessage: null,
         unreadMessageCount: 0,
       };
@@ -88,18 +89,10 @@ class EnrollUserUseCase {
     });
 
     const newEnrollment = await this.enrollmentRepository.add(enrollment);
-
-    let updatedStudents = [];
-    user.students
-      ? (updatedStudents = [...user.students, newEnrollment._id as string])
-      : (updatedStudents = [newEnrollment._id as string]);
-
-    const userUpdate = await this.updateDetailsUseCase.execute(
-      selectedTutorId,
-      {
-        students: updatedStudents,
-      }
-    );
+    
+    const tutor = await UserModel.findById(selectedTutorId);
+    tutor?.students.push(newEnrollment.userId as string);
+    await tutor?.save();
 
     return newEnrollment;
   };
