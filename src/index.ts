@@ -20,6 +20,7 @@ import { initializeSocket } from "./infrastructure/external-services/SocketServi
 import SubscriptionCronJobs from "./shared/utils/SubscriptionCornJobs";
 import HandleExpiredSubscriptionsUseCase from "./core/use-cases/subscription-usecases/HandleExpiredSubscriptionsUseCase";
 import SubscriptionRepository from "./infrastructure/repositories/SubscriptionRepository";
+import reviewRouter from "./presentation/routes/reviewRoutes";
 
 dotenv.config();
 const app = express();
@@ -40,6 +41,7 @@ app.use("/subsciption", subscriptionRoutes);
 app.use("/order", orderRouter);
 app.use("/enrollment", enrollmentRoutes);
 app.use("/chat", chatRouter);
+app.use("/review", reviewRouter);
 
 // Corn job.
 const subscriptionRepository = new SubscriptionRepository();
