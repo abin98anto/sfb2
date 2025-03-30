@@ -4,6 +4,7 @@ import ISubscription, {
 } from "../../core/entities/ISubscription";
 import SubscriptionInterface from "../../core/interfaces/SubscriptionInterface";
 import SubscriptionModel from "../db/schemas/subscriptionSchema";
+import { UserModel } from "../db/schemas/userSchema";
 
 export default class SubscriptionRepository implements SubscriptionInterface {
   add = async (data: ISubscription): Promise<ISubscription> => {
@@ -39,6 +40,10 @@ export default class SubscriptionRepository implements SubscriptionInterface {
   };
 
   addUser = async (order: IOrder): Promise<ISubscription | null> => {
+    const admin = await UserModel.findOne({ role: "admin" });
+    if (typeof admin?.wallet === "number") admin.wallet += order.amount;
+    await admin?.save();
+
     return (await SubscriptionModel.findOneAndUpdate(
       { name: order.plan },
       {
