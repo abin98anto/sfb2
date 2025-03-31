@@ -29,7 +29,7 @@ const userRepository: UserInterface = new UserRepository();
 const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
 const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 
-categoryRouter.get("/", authMiddleware, categoryController.getAll);
+categoryRouter.get("/", categoryController.getAll);
 categoryRouter.post("/add", authMiddleware, categoryController.add);
 categoryRouter.put("/update", authMiddleware, categoryController.update);
 categoryRouter.delete("/delete", authMiddleware, categoryController.softDelete);

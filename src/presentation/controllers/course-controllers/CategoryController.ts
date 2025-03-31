@@ -14,6 +14,7 @@ export class CategoryController {
 
   getAll = async (req: Request, res: Response): Promise<void> => {
     try {
+      console.log("first in line")
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
       const search = (req.query.search as string) || "";
