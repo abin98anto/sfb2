@@ -71,11 +71,7 @@ userRouter.post(API.USER_LOGIN, userAuthController.login);
 userRouter.post(API.USER_LOGOUT, authMiddleware, userAuthController.logout);
 
 // Refresh Access Token routes.
-userRouter.post(
-  API.USER_REFRESH,
-  authMiddleware,
-  userAuthController.refreshAccessToken
-);
+userRouter.post(API.USER_REFRESH, userAuthController.refreshAccessToken);
 
 // Update user details routes.
 userRouter.put(API.USER_UPDATE, authMiddleware, userAuthController.update);

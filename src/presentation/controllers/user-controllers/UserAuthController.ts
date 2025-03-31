@@ -159,8 +159,8 @@ export class UserAuthController {
 
   refreshAccessToken = async (req: Request, res: Response): Promise<void> => {
     try {
+      console.log("coookkiies", req.cookies);
       const refreshToken = req.cookies["refreshToken"];
-
       const { data } = await this.refreshTokenUseCase.execute(refreshToken);
 
       res.cookie("accessToken", data.newAccessToken, {
@@ -170,6 +170,7 @@ export class UserAuthController {
         maxAge: 15 * 60 * 1000,
       });
 
+      console.log("new one ");
       res.status(200).json(data);
     } catch (error) {
       res.status(401).json({
