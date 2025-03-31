@@ -49,7 +49,6 @@ export default class ReviewController {
     try {
       const courseId = req.params.courseId;
       const result = await this.getCourseReviewsUseCase.execute(courseId);
-      console.log("the ataa", result);
       res.status(200).json(result);
     } catch (error) {
       console.log("error in getting course reviews", error);
