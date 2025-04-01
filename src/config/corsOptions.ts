@@ -8,7 +8,10 @@ export const corsOptions = {
   ) {
     if (!origin) return callback(null, true);
 
-    const allowedOrigins = [API.FRONT_END];
+    const allowedOrigins = [
+      API.FRONT_END,
+      "https://sf-frontend-ten.vercel.app/",
+    ];
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
