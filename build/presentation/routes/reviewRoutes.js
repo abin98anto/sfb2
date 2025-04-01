@@ -1,0 +1,24 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = __importDefault(require("express"));
+var reviewRouter = express_1.default.Router();
+var ReviewRepository_1 = __importDefault(require("../../infrastructure/repositories/ReviewRepository"));
+var CreateReviewUseCase_1 = __importDefault(require("../../core/use-cases/review-usecases/CreateReviewUseCase"));
+var UpdateReviewUseCase_1 = __importDefault(require("../../core/use-cases/review-usecases/UpdateReviewUseCase"));
+var DeleteReviewUseCase_1 = __importDefault(require("../../core/use-cases/review-usecases/DeleteReviewUseCase"));
+var GetCourseReviewsUseCase_1 = __importDefault(require("../../core/use-cases/review-usecases/GetCourseReviewsUseCase"));
+var ReviewController_1 = __importDefault(require("../controllers/review-controllers/ReviewController"));
+var reviewRepository = new ReviewRepository_1.default();
+var createReviewUseCase = new CreateReviewUseCase_1.default(reviewRepository);
+var updateReviewUseCase = new UpdateReviewUseCase_1.default(reviewRepository);
+var deleteReviewUseCase = new DeleteReviewUseCase_1.default(reviewRepository);
+var getCourseReviewsUseCase = new GetCourseReviewsUseCase_1.default(reviewRepository);
+var reviewController = new ReviewController_1.default(createReviewUseCase, updateReviewUseCase, deleteReviewUseCase, getCourseReviewsUseCase);
+reviewRouter.post("/add", reviewController.create);
+reviewRouter.put("/update", reviewController.update);
+reviewRouter.delete("/:reviewId", reviewController.delete);
+reviewRouter.get("/:courseId", reviewController.getCourseReviews);
+exports.default = reviewRouter;
