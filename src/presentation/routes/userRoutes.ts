@@ -61,6 +61,11 @@ const userAuthController = new UserAuthController(
 
 const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 
+// just to test if the server is working.
+userRouter.get("/", (req, res) => {
+  res.send("test");
+});
+
 // Signup routes.
 userRouter.post(API.OTP_SENT, userAuthController.sendOTP);
 userRouter.post(API.OTP_VERIFY, userAuthController.verifyOTP);

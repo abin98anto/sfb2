@@ -33,11 +33,6 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 
-// just to test if the server is working.
-app.get("/test", (req, res) => {
-  res.send("test");
-});
-
 app.use("/", userRouter);
 app.use("/categories", categoryRouter);
 app.use("/course", courseRouter);
