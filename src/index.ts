@@ -53,7 +53,7 @@ const subscriptionCronJobs = new SubscriptionCronJobs(
 );
 subscriptionCronJobs.setupJobs();
 
-const PORT = 4000;
+const PORT = 3000;
 connectDB().then(() =>
   server.listen(PORT, () => {
     console.log(comments.SERVER_SUCC);
