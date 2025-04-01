@@ -33,6 +33,7 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 
+console.log("first")
 app.use("/", userRouter);
 app.use("/categories", categoryRouter);
 app.use("/course", courseRouter);
