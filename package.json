@@ -10,7 +10,8 @@
     "dev": "concurrently \"tsc --watch\" \"nodemon dist/index.js\"",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:expiration": "jest -t 'Expired Subscription Removal'"
+    "test:expiration": "jest -t 'Expired Subscription Removal'",
+    "serve": "pm2 start dist/index.js --interpreter node"
   },
   "repository": {
     "type": "git",
