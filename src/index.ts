@@ -25,11 +25,11 @@ import reviewRouter from "./presentation/routes/reviewRoutes";
 dotenv.config();
 const app = express();
 
-const server = createServer(app);
-const io = initializeSocket(server);
-app.set("io", io);
+// const server = createServer(app);
+// const io = initializeSocket(server);
+// app.set("io", io);
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 
@@ -56,8 +56,8 @@ subscriptionCronJobs.setupJobs();
 
 const PORT = 3000;
 connectDB().then(() =>
-  server.listen(PORT, () => {
-    // app.listen(PORT, () => {
+  // server.listen(PORT, () => {
+  app.listen(PORT, () => {
     console.log(comments.SERVER_SUCC);
   })
 );
