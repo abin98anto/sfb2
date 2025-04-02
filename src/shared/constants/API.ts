@@ -1,5 +1,6 @@
 export const API = {
-  FRONT_END: "http://localhost:5173",
+  FRONT_END: "http://sf-frontend-ten.vercel.app/",
+  // FRONT_END: "http://localhost:5173",
 
   // User Auth
   OTP_SENT: "/send-otp",
