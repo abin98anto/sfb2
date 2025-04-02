@@ -42,7 +42,8 @@ var userAuthController = new UserAuthController_1.UserAuthController(sendOTPUseC
 var authMiddleware = authMiddleware_1.AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 // just to test if the server is working.
 userRouter.get("/", function (req, res) {
-    res.send("test");
+    console.log("new req");
+    res.status(200).json({ message: "Server is working" });
 });
 // Signup routes.
 userRouter.post(API_1.API.OTP_SENT, userAuthController.sendOTP);

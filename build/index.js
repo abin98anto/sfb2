@@ -6,7 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var dotenv_1 = __importDefault(require("dotenv"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
+var cors_1 = __importDefault(require("cors"));
 var connection_1 = __importDefault(require("./infrastructure/db/connection"));
+var corsOptions_1 = require("./config/corsOptions");
 var comments_1 = require("./shared/constants/comments");
 var userRoutes_1 = __importDefault(require("./presentation/routes/userRoutes"));
 var categoryRoutes_1 = __importDefault(require("./presentation/routes/categoryRoutes"));
@@ -16,16 +18,18 @@ var subscriptionRoutes_1 = __importDefault(require("./presentation/routes/subscr
 var orderRoutes_1 = __importDefault(require("./presentation/routes/orderRoutes"));
 var enrollmentRoutes_1 = __importDefault(require("./presentation/routes/enrollmentRoutes"));
 var chatRoutes_1 = __importDefault(require("./presentation/routes/chatRoutes"));
+var http_1 = require("http");
+var SocketService_1 = require("./infrastructure/external-services/SocketService");
 var SubscriptionCornJobs_1 = __importDefault(require("./shared/utils/SubscriptionCornJobs"));
 var HandleExpiredSubscriptionsUseCase_1 = __importDefault(require("./core/use-cases/subscription-usecases/HandleExpiredSubscriptionsUseCase"));
 var SubscriptionRepository_1 = __importDefault(require("./infrastructure/repositories/SubscriptionRepository"));
 var reviewRoutes_1 = __importDefault(require("./presentation/routes/reviewRoutes"));
 dotenv_1.default.config();
 var app = (0, express_1.default)();
-// const server = createServer(app);
-// const io = initializeSocket(server);
-// app.set("io", io);
-// app.use(cors(corsOptions));
+var server = (0, http_1.createServer)(app);
+var io = (0, SocketService_1.initializeSocket)(server);
+app.set("io", io);
+app.use((0, cors_1.default)(corsOptions_1.corsOptions));
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 console.log("first");
@@ -45,8 +49,8 @@ var subscriptionCronJobs = new SubscriptionCornJobs_1.default(handleExpiredSubsc
 subscriptionCronJobs.setupJobs();
 var PORT = 3000;
 (0, connection_1.default)().then(function () {
-    // server.listen(PORT, () => {
-    return app.listen(PORT, function () {
+    return server.listen(PORT, function () {
+        // app.listen(PORT, () => {
         console.log(comments_1.comments.SERVER_SUCC);
     });
 });

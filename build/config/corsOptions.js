@@ -9,7 +9,7 @@ exports.corsOptions = {
             return callback(null, true);
         var allowedOrigins = [
             API_1.API.FRONT_END,
-            "https://sf-frontend-ten.vercel.app/",
+            // "https://sf-frontend-ten.vercel.app/",
         ];
         if (allowedOrigins.includes(origin)) {
             callback(null, true);
@@ -21,4 +21,5 @@ exports.corsOptions = {
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
+    // allowedHeaders: "Content-Type,Authorization",
 };
