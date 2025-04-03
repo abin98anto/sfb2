@@ -73,13 +73,8 @@ userRouter.get("/", (req, res) => {
 userRouter.post(API.OTP_SENT, userAuthController.sendOTP);
 userRouter.post(API.OTP_VERIFY, userAuthController.verifyOTP);
 userRouter.delete(API.USER_DELETE, userAuthController.deleteUser);
-userRouter.post(
-  API.USER_LOGIN,
-  authenticate,
-  authenticate,
-  userAuthController.login
-);
-userRouter.post(API.USER_LOGOUT, userAuthController.logout);
+userRouter.post(API.USER_LOGIN, authenticate, userAuthController.login);
+userRouter.post(API.USER_LOGOUT, authenticate, userAuthController.logout);
 
 // Refresh Access Token routes.
 // userRouter.use(authenticate);
