@@ -62,7 +62,7 @@ const jwtService = new JwtService();
 const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 
 chatRouter.get("/messages/:chatId", authMiddleware, chatController.getMessages);
-chatRouter.get("/list", authMiddleware, chatController.getChatList);
+chatRouter.get("/list", chatController.getChatList);
 chatRouter.post("/send", authMiddleware, chatController.sendMessage);
 chatRouter.put("/mark-as-read", authMiddleware, chatController.markAsRead);
 chatRouter.post(
