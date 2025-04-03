@@ -7,6 +7,7 @@ import UsersCoursesUseCase from "../../../core/use-cases/enrollment-usecases/Use
 
 import { Request, Response } from "express";
 import { comments } from "../../../shared/constants/comments";
+import { IUser } from "../../../core/entities/IUser";
 
 class EnrollmentController {
   constructor(
@@ -26,7 +27,7 @@ class EnrollmentController {
           ...enrollment,
           userId: req.user._id,
         },
-        req.user
+        req.user as IUser
       );
       res.status(201).json(result);
     } catch (error) {
