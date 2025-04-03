@@ -33,11 +33,11 @@ const adminController = new AdminController(
   approveTutorUseCase,
   denyTutorUseCase
 );
-const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
+// const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 
 adminRouter.get("/users/:role", adminController.getUsersBasedOnRole);
 adminRouter.put("/block/:id", adminController.blockUser);
-adminRouter.put("/approve/:id", authMiddleware, adminController.approveTutor);
-adminRouter.put("/deny/:id", authMiddleware, adminController.denyTutor);
+adminRouter.put("/approve/:id", adminController.approveTutor);
+adminRouter.put("/deny/:id", adminController.denyTutor);
 
 export default adminRouter;
