@@ -99,8 +99,8 @@ export class UserAuthController {
   };
 
   login = async (req: Request, res: Response): Promise<void> => {
+    console.log("the login", req.body);
     try {
-      console.log("the login", req.body);
       const { email, password, role } = req.body.userData;
 
       const result = await this.loginUserUseCase.execute(email, password, role);
