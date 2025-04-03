@@ -29,17 +29,14 @@ app.use(cors(corsOptions));
 
 app.post("/deploy", (req, res) => {
   console.log("Received push event from GitHub...");
-  exec(
-    "npm run deploy",
-    (err, stdout, stderr) => {
-      if (err) {
-        console.error(`Error: ${stderr}`);
-        return res.status(500).send("Deployment failed");
-      }
-      console.log(stdout);
-      res.send("Deployment successful");
+  exec("npm run deploy", (err, stdout, stderr) => {
+    if (err) {
+      console.error(`Error: ${stderr}`);
+      return res.status(500).send("Deployment failed");
     }
-  );
+    console.log(stdout);
+    res.send("Deployment successful");
+  });
 });
 
 const server = createServer(app);

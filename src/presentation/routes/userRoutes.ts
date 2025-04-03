@@ -21,6 +21,7 @@ import { GoogleAuthUseCase } from "../../core/use-cases/user-usecases/GoogleAuth
 import CreateUserUseCase from "../../core/use-cases/user-usecases/CreateUserUseCase";
 import ForgotPasswordUseCase from "../../core/use-cases/user-usecases/ForgotPasswordUseCase";
 import { SetNewPasswordUseCase } from "../../core/use-cases/user-usecases/SetNewPasswordUseCase";
+import { UserRole } from "../../core/entities/misc/enums";
 
 const userRepository: UserInterface = new UserRepository();
 
@@ -59,42 +60,33 @@ const userAuthController = new UserAuthController(
   setNewPasswordUseCase
 );
 
-const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
+// const authMiddleware = new AuthMiddleware(jwtService, getUserDetailsUseCase);
+// const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
+const authenticate = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
+const authorize = AuthMiddleware.authorize([UserRole.ADMIN, UserRole.TUTOR]);
 
 // just to test if the server is working.
 userRouter.get("/", (req, res) => {
   res.status(200).json({ message: "Server is working" });
 });
 
-// Signup routes.
 userRouter.post(API.OTP_SENT, userAuthController.sendOTP);
 userRouter.post(API.OTP_VERIFY, userAuthController.verifyOTP);
 userRouter.delete(API.USER_DELETE, userAuthController.deleteUser);
-
-// Login routes.
 userRouter.post(API.USER_LOGIN, userAuthController.login);
-userRouter.post(API.USER_LOGOUT, authMiddleware, userAuthController.logout);
+
+userRouter.post(API.USER_LOGOUT, userAuthController.logout);
 
 // Refresh Access Token routes.
+userRouter.use(authenticate, authorize);
+
 userRouter.post(API.USER_REFRESH, userAuthController.refreshAccessToken);
 
 // Update user details routes.
-userRouter.put(API.USER_UPDATE, authMiddleware, userAuthController.update);
-userRouter.put(
-  "/change-password",
-  authMiddleware,
-  userAuthController.changePassword
-);
-userRouter.put(
-  "/forgot-password",
-  authMiddleware,
-  userAuthController.forgotPasswordOTP
-);
-userRouter.put(
-  "/set-password",
-  authMiddleware,
-  userAuthController.resetPassword
-);
+userRouter.put(API.USER_UPDATE, userAuthController.update);
+userRouter.put("/change-password", userAuthController.changePassword);
+userRouter.put("/forgot-password", userAuthController.forgotPasswordOTP);
+userRouter.put("/set-password", userAuthController.resetPassword);
 
 // Google Auth routes.
 userRouter.post("/auth/google", userAuthController.googleSignIn);

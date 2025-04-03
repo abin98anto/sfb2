@@ -14,7 +14,7 @@ class ChangePasswordUseCase {
   constructor(private userRepository: UserRepository) {}
 
   execute = async (
-    user: IUser,
+    user: Partial<IUser>,
     data: ChangePasswordProps
   ): Promise<UseCaseResponse> => {
     try {
