@@ -16,8 +16,8 @@ export class AuthMiddleware {
       next: NextFunction
     ): Promise<void> => {
       try {
-        console.log("authenticating");
-        const accessToken = req.cookies.accessToken;
+        console.log("authenticating", req.cookies);
+        const accessToken = req.cookies["accessToken"];
         console.log("access token", accessToken);
         if (!accessToken) {
           res.status(401).json({ message: comments.ACCSS_NOT_FOUND });
