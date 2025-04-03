@@ -77,7 +77,7 @@ userRouter.post(API.USER_LOGIN, userAuthController.login);
 userRouter.post(API.USER_LOGOUT, userAuthController.logout);
 
 // Refresh Access Token routes.
-userRouter.use(authenticate, authorize);
+// userRouter.use(authenticate, authorize);
 
 userRouter.post(API.USER_REFRESH, userAuthController.refreshAccessToken);
 
