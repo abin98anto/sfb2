@@ -21,10 +21,26 @@ import SubscriptionCronJobs from "./shared/utils/SubscriptionCornJobs";
 import HandleExpiredSubscriptionsUseCase from "./core/use-cases/subscription-usecases/HandleExpiredSubscriptionsUseCase";
 import SubscriptionRepository from "./infrastructure/repositories/SubscriptionRepository";
 import reviewRouter from "./presentation/routes/reviewRoutes";
+import { exec } from "child_process";
 
 dotenv.config();
 const app = express();
 app.use(cors(corsOptions));
+
+app.post("/deploy", (req, res) => {
+  console.log("Received push event from GitHub...");
+  exec(
+    "cd /home/sfb2 && git pull origin main && npm install && npm run build && pm2 restart all",
+    (err, stdout, stderr) => {
+      if (err) {
+        console.error(`Error: ${stderr}`);
+        return res.status(500).send("Deployment failed");
+      }
+      console.log(stdout);
+      res.send("Deployment successful");
+    }
+  );
+});
 
 const server = createServer(app);
 const io = initializeSocket(server);
