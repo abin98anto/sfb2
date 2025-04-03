@@ -12,4 +12,5 @@ export default interface IEnrollment {
   completedLessons: string[];
   completedAt?: Date;
   quitAt?: Date;
+  grade?: string;
 }

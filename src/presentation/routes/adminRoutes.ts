@@ -43,7 +43,6 @@ const authorize = AuthMiddleware.authorize([UserRole.ADMIN]);
 adminRouter.get(
   "/users/:role",
   authenticate,
-  authorize,
   adminController.getUsersBasedOnRole
 );
 adminRouter.put(
