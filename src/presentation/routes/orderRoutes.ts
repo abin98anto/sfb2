@@ -55,7 +55,7 @@ orderRouter.post(
 );
 
 orderRouter.get(
-  "/sub-check",
+  "/sub-check/:email",
   authMiddleware,
   orderController.subscriptionCheck
 );
