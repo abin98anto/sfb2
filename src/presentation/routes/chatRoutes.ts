@@ -61,36 +61,16 @@ const chatController = new ChatController(
 const jwtService = new JwtService();
 const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 
-chatRouter.get("/messages/:chatId", authMiddleware, chatController.getMessages);
+chatRouter.get("/messages/:chatId", chatController.getMessages);
 chatRouter.get("/list", chatController.getChatList);
-chatRouter.post("/send", authMiddleware, chatController.sendMessage);
-chatRouter.put("/mark-as-read", authMiddleware, chatController.markAsRead);
-chatRouter.post(
-  "/video-call",
-  authMiddleware,
-  chatController.videoCallInvitation
-);
-chatRouter.get("/student-list", authMiddleware, chatController.studentList);
-chatRouter.get(
-  "/unread-count/:userId",
-  authMiddleware,
-  chatController.getUnreadMessageCount
-);
-chatRouter.get(
-  "/last-messages/:userId",
-  authMiddleware,
-  chatController.getLastMessages
-);
-chatRouter.post(
-  "/unread-count-by-chat",
-  authMiddleware,
-  chatController.getUnreadCountByChatId
-);
+chatRouter.post("/send", chatController.sendMessage);
+chatRouter.put("/mark-as-read", chatController.markAsRead);
+chatRouter.post("/video-call", chatController.videoCallInvitation);
+chatRouter.get("/student-list", chatController.studentList);
+chatRouter.get("/unread-count/:userId", chatController.getUnreadMessageCount);
+chatRouter.get("/last-messages/:userId", chatController.getLastMessages);
+chatRouter.post("/unread-count-by-chat", chatController.getUnreadCountByChatId);
 
-chatRouter.post(
-  "/clear-unread-count",
-  authMiddleware,
-  chatController.clearUnreadCount
-);
+chatRouter.post("/clear-unread-count", chatController.clearUnreadCount);
 
 export default chatRouter;
