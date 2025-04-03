@@ -109,13 +109,13 @@ export class UserAuthController {
           .cookie("accessToken", result.data.accessToken, {
             httpOnly: true,
             secure: true,
-            sameSite: "strict",
+            sameSite: "none",
             maxAge: 24 * 60 * 60 * 1000,
           })
           .cookie("refreshToken", result.data.refreshToken, {
             httpOnly: true,
             secure: true,
-            sameSite: "strict",
+            sameSite: "none",
             maxAge: 7 * 24 * 60 * 60 * 1000,
           })
           .status(200)
@@ -136,7 +136,7 @@ export class UserAuthController {
   };
 
   logout = async (req: Request, res: Response): Promise<void> => {
-    console.log("logogogout in contoelleer")
+    console.log("logogogout in contoelleer");
     try {
       res
         .clearCookie("accessToken", {
