@@ -38,11 +38,31 @@ const adminController = new AdminController(
 const authenticate = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 const authorize = AuthMiddleware.authorize([UserRole.ADMIN]);
 
-adminRouter.use(authenticate, authorize);
+// adminRouter.use(authenticate, authorize);
 
-adminRouter.get("/users/:role", adminController.getUsersBasedOnRole);
-adminRouter.put("/block/:id", adminController.blockUser);
-adminRouter.put("/approve/:id", adminController.approveTutor);
-adminRouter.put("/deny/:id", adminController.denyTutor);
+adminRouter.get(
+  "/users/:role",
+  authenticate,
+  authorize,
+  adminController.getUsersBasedOnRole
+);
+adminRouter.put(
+  "/block/:id",
+  authenticate,
+  authorize,
+  adminController.blockUser
+);
+adminRouter.put(
+  "/approve/:id",
+  authenticate,
+  authorize,
+  adminController.approveTutor
+);
+adminRouter.put(
+  "/deny/:id",
+  authenticate,
+  authorize,
+  adminController.denyTutor
+);
 
 export default adminRouter;

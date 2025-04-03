@@ -77,15 +77,39 @@ userRouter.post(API.USER_LOGIN, userAuthController.login);
 userRouter.post(API.USER_LOGOUT, userAuthController.logout);
 
 // Refresh Access Token routes.
-// userRouter.use(authenticate, authorize);
+// userRouter.use(authenticate);
 
-userRouter.post(API.USER_REFRESH, userAuthController.refreshAccessToken);
+userRouter.post(
+  API.USER_REFRESH,
+  authenticate,
+  userAuthController.refreshAccessToken
+);
 
 // Update user details routes.
-userRouter.put(API.USER_UPDATE, userAuthController.update);
-userRouter.put("/change-password", userAuthController.changePassword);
-userRouter.put("/forgot-password", userAuthController.forgotPasswordOTP);
-userRouter.put("/set-password", userAuthController.resetPassword);
+userRouter.put(
+  API.USER_UPDATE,
+  authenticate,
+  authorize,
+  userAuthController.update
+);
+userRouter.put(
+  "/change-password",
+  authenticate,
+  authorize,
+  userAuthController.changePassword
+);
+userRouter.put(
+  "/forgot-password",
+  authenticate,
+  authorize,
+  userAuthController.forgotPasswordOTP
+);
+userRouter.put(
+  "/set-password",
+  authenticate,
+  authorize,
+  userAuthController.resetPassword
+);
 
 // Google Auth routes.
 userRouter.post("/auth/google", userAuthController.googleSignIn);
