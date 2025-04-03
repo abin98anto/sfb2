@@ -58,14 +58,16 @@ export class AuthMiddleware {
   }
 
   static authorize(allowedRoles: UserRole[]) {
-    console.log("authorize");
     return (req: Request, res: Response, next: NextFunction): void => {
+      console.log("authorize");
       if (!req.user) {
+        console.log("no user");
         res.status(401).json({ message: comments.ACCESS_INVLD });
         return;
       }
 
       const userRole = req.user.role as UserRole;
+      console.log("uesrrole", userRole);
 
       if (!allowedRoles.includes(userRole)) {
         res
@@ -74,6 +76,7 @@ export class AuthMiddleware {
         return;
       }
 
+      console.log("authorizing done");
       next();
     };
   }
