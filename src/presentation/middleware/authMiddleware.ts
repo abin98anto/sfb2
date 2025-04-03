@@ -18,7 +18,7 @@ export class AuthMiddleware {
       try {
         console.log("authenticating");
         const accessToken = req.cookies.accessToken;
-
+        console.log("access token", accessToken);
         if (!accessToken) {
           res.status(401).json({ message: comments.ACCSS_NOT_FOUND });
           return;
@@ -26,7 +26,7 @@ export class AuthMiddleware {
 
         const decoded: JwtData | null =
           jwtService.verifyAccessToken(accessToken);
-
+        console.log("decoded", decoded);
         if (!decoded?._id) {
           res.status(401).json({ message: comments.JWT_PAYLOAD_INVLD });
           return;
@@ -35,18 +35,21 @@ export class AuthMiddleware {
         const { data } = await getUserDetailsUseCase.execute(
           decoded?._id as string
         );
-
+        console.log("the user data ", data);
         if (!data) {
           res.status(401).json({ message: comments.USER_NOT_FOUND });
           return;
         }
 
         if (!data.isActive) {
+          console.log("user not active ", data.isActive);
           res.status(401).json({ message: "user is blocked by admin" });
           return;
         }
+        console.log("user active", data.isActive);
 
         req.user = data;
+        console.log("authenticating done");
         next();
       } catch (error) {
         res.status(401).json({ message: comments.ACCESS_INVLD });
