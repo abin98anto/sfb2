@@ -8,7 +8,7 @@ export const corsOptions = {
   ) {
     if (!origin) return callback(null, true);
 
-    const allowedOrigins = [API.FRONT_END];
+    const allowedOrigins = "*";
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
