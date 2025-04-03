@@ -66,6 +66,13 @@ export class AuthMiddleware {
         return;
       }
 
+      // console.log("the user to authorize", req.user);
+      // if (!req.user.isActive) {
+      //   console.log("user is blocked by admin");
+      //   res.status(401).json({ message: "user is blocked by admin" });
+      //   return;
+      // }
+
       const userRole = req.user.role as UserRole;
       console.log("uesrrole", userRole);
       console.log("alllowed roles", allowedRoles);
