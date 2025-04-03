@@ -70,8 +70,8 @@ class OrderController {
 
   subscriptionCheck = async (req: Request, res: Response) => {
     try {
+      console.log("subcheck", req.params.email);
       const { email } = req?.user ?? req.params.email;
-      console.log("subcheck", email);
       const result = await this.checkSubscriptionStatusUseCase.execute(email);
       res.status(200).json(result);
     } catch (error) {
