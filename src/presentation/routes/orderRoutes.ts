@@ -44,7 +44,7 @@ const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
 const razorpayController = new RazorpayController();
 const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 
-orderRouter.get("/", orderController.getAll);
+orderRouter.get("/", authMiddleware, orderController.getAll);
 orderRouter.post("/add", authMiddleware, orderController.create);
 orderRouter.get("/user/:userId", authMiddleware, orderController.getUserOrders);
 

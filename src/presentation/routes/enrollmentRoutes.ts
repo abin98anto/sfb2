@@ -22,6 +22,7 @@ import GetEnrollmentWithoutIdUseCase from "../../core/use-cases/enrollment-useca
 import ChatInterface from "../../core/interfaces/ChatInterface";
 import ChatRepository from "../../infrastructure/repositories/ChatRepository";
 import { UpdateDetailsUseCase } from "../../core/use-cases/user-usecases/UpdateDetailsUseCase";
+import { UserRole } from "../../core/entities/misc/enums";
 
 const enrollmentRepository: EnrollmentInterface = new EnrollmentRepository();
 const chatRepository: ChatInterface = new ChatRepository();
@@ -34,6 +35,7 @@ const getCourseDetailsUseCase = new GetCourseDetailsUseCase(courseRepository);
 
 const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
 const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
+const authorize = AuthMiddleware.authorize([UserRole.USER]);
 const updateDetailsUseCase = new UpdateDetailsUseCase(userRepository);
 
 const enrollUserUseCase = new EnrollUserUseCase(
@@ -64,7 +66,12 @@ const enrollmentController = new EnrollmentController(
   getEnrollmentWithoutIdUseCase
 );
 
-enrollmentRoutes.post("/add", authMiddleware, enrollmentController.add);
+enrollmentRoutes.post(
+  "/add",
+  authMiddleware,
+  authorize,
+  enrollmentController.add
+);
 enrollmentRoutes.get(
   "/user-enrollments/:userId",
   enrollmentController.getUserCourses
@@ -75,11 +82,12 @@ enrollmentRoutes.post(
   authMiddleware,
   enrollmentController.getWithoutId
 );
-enrollmentRoutes.get("/", enrollmentController.getAll);
-enrollmentRoutes.get("/:id", enrollmentController.getDetails);
+enrollmentRoutes.get("/", authMiddleware, enrollmentController.getAll);
+enrollmentRoutes.get("/:id", authMiddleware, enrollmentController.getDetails);
 
 enrollmentRoutes.post(
   "/get-enroll-details",
+  authMiddleware,
   enrollmentController.getEnrollments
 );
 

@@ -12,6 +12,7 @@ import { JwtService } from "../../infrastructure/external-services/JwtService";
 import { GetUserDetailsUseCase } from "../../core/use-cases/user-usecases/GetUserDetailsUseCase";
 import { UserInterface } from "../../core/interfaces/UserInterface";
 import { UserRepository } from "../../infrastructure/repositories/UserRepository";
+import { UserRole } from "../../core/entities/misc/enums";
 
 const categoryRepository: CategoryInterface = new CategoryRepository();
 
@@ -28,10 +29,21 @@ const jwtService = new JwtService();
 const userRepository: UserInterface = new UserRepository();
 const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
 const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
+const authorize = AuthMiddleware.authorize([UserRole.ADMIN]);
 
 categoryRouter.get("/", categoryController.getAll);
-categoryRouter.post("/add", authMiddleware, categoryController.add);
-categoryRouter.put("/update", authMiddleware, categoryController.update);
-categoryRouter.delete("/delete", authMiddleware, categoryController.softDelete);
+categoryRouter.post("/add", authMiddleware, authorize, categoryController.add);
+categoryRouter.put(
+  "/update",
+  authMiddleware,
+  authorize,
+  categoryController.update
+);
+categoryRouter.delete(
+  "/delete",
+  authMiddleware,
+  authorize,
+  categoryController.softDelete
+);
 
 export default categoryRouter;

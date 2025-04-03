@@ -13,6 +13,7 @@ import { UserInterface } from "../../core/interfaces/UserInterface";
 import { UserRepository } from "../../infrastructure/repositories/UserRepository";
 import { GetUserDetailsUseCase } from "../../core/use-cases/user-usecases/GetUserDetailsUseCase";
 import { AuthMiddleware } from "../middleware/authMiddleware";
+import { UserRole } from "../../core/entities/misc/enums";
 
 const subscriptionRepository: SubscriptionInterface =
   new SubscriptionRepository();
@@ -39,12 +40,19 @@ const jwtService = new JwtService();
 const userRepository: UserInterface = new UserRepository();
 const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
 const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
+const authorize = AuthMiddleware.authorize([UserRole.ADMIN]);
 
 subscriptionRoutes.get("/", subscriptionController.getAll);
-subscriptionRoutes.post("/add", authMiddleware, subscriptionController.create);
+subscriptionRoutes.post(
+  "/add",
+  authMiddleware,
+  authorize,
+  subscriptionController.create
+);
 subscriptionRoutes.put(
   "/update",
   authMiddleware,
+  authorize,
   subscriptionController.update
 );
 
