@@ -65,7 +65,10 @@ const enrollmentController = new EnrollmentController(
 );
 
 enrollmentRoutes.post("/add", authMiddleware, enrollmentController.add);
-enrollmentRoutes.get("/user-enrollments", enrollmentController.getUserCourses);
+enrollmentRoutes.get(
+  "/user-enrollments/:userId",
+  enrollmentController.getUserCourses
+);
 enrollmentRoutes.put("/update", enrollmentController.update);
 enrollmentRoutes.post(
   "/without-id",
