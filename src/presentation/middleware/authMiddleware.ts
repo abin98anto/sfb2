@@ -15,35 +15,35 @@ export class AuthMiddleware {
       next: NextFunction
     ): Promise<void> => {
       try {
-        const accessToken = req.cookies["accessToken"];
+        // const accessToken = req.cookies["accessToken"];
 
-        if (!accessToken) {
-          res.status(401).json({ message: comments.ACCSS_NOT_FOUND });
-          return;
-        }
+        // if (!accessToken) {
+        //   res.status(401).json({ message: comments.ACCSS_NOT_FOUND });
+        //   return;
+        // }
 
-        const decoded: JwtData | null =
-          jwtService.verifyAccessToken(accessToken);
+        // const decoded: JwtData | null =
+        //   jwtService.verifyAccessToken(accessToken);
 
-        if (!decoded?._id) {
-          res.status(401).json({ message: comments.JWT_PAYLOAD_INVLD });
-          return;
-        }
+        // if (!decoded?._id) {
+        //   res.status(401).json({ message: comments.JWT_PAYLOAD_INVLD });
+        //   return;
+        // }
 
-        const { data } = await getUserDetailsUseCase.execute(
-          decoded?._id as string
-        );
+        // const { data } = await getUserDetailsUseCase.execute(
+        //   decoded?._id as string
+        // );
 
-        if (!data) {
-          res.status(401).json({ message: comments.USER_NOT_FOUND });
-          return;
-        }
+        // if (!data) {
+        //   res.status(401).json({ message: comments.USER_NOT_FOUND });
+        //   return;
+        // }
 
-        if (!data.isActive) {
-          res.status(401).json({ message: "user is blocked by admin" });
-          return;
-        }
-        req.user = data;
+        // if (!data.isActive) {
+        //   res.status(401).json({ message: "user is blocked by admin" });
+        //   return;
+        // }
+        // req.user = data;
         next();
       } catch (error) {
         res.status(401).json({ message: comments.ACCESS_INVLD });
