@@ -10,13 +10,13 @@ export class AuthMiddleware {
     jwtService: JwtService,
     getUserDetailsUseCase: GetUserDetailsUseCase
   ) {
-    console.log("authenticating");
     return async (
       req: Request,
       res: Response,
       next: NextFunction
     ): Promise<void> => {
       try {
+        console.log("authenticating");
         const accessToken = req.cookies.accessToken;
 
         if (!accessToken) {
