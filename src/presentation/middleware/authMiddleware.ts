@@ -70,6 +70,7 @@ export class AuthMiddleware {
       console.log("uesrrole", userRole);
 
       if (!allowedRoles.includes(userRole)) {
+        console.log("not allowed");
         res
           .status(403)
           .json({ message: "Access forbidden: Insufficient permissions" });
