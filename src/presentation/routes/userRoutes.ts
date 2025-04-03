@@ -74,10 +74,10 @@ userRouter.post(API.OTP_SENT, userAuthController.sendOTP);
 userRouter.post(API.OTP_VERIFY, userAuthController.verifyOTP);
 userRouter.delete(API.USER_DELETE, userAuthController.deleteUser);
 userRouter.post(API.USER_LOGIN, userAuthController.login);
+userRouter.post(API.USER_LOGOUT, userAuthController.logout);
 
 // Refresh Access Token routes.
 userRouter.use(authenticate, authorize);
-userRouter.post(API.USER_LOGOUT, userAuthController.logout);
 
 userRouter.post(API.USER_REFRESH, userAuthController.refreshAccessToken);
 
