@@ -11,7 +11,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:expiration": "jest -t 'Expired Subscription Removal'",
-    "deploy": "npm run build && pm2 restart all"
+    "deploy": "git pull origin main && npm run build && pm2 restart all"
   },
   "repository": {
     "type": "git",
