@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 const userRouter = express.Router();
 
 import { UserInterface } from "../../core/interfaces/UserInterface";
@@ -79,7 +79,10 @@ userRouter.post(API.USER_LOGIN, userAuthController.login);
 // userRouter.use(authenticate, authorize);
 userRouter.post(
   API.USER_LOGOUT,
-  () => console.log("loging otu"),
+  (req: Request, res: Response, next: NextFunction) => {
+    console.log("loging otu");
+    next();
+  },
   authenticate,
   authorize,
   userAuthController.logout
