@@ -13,6 +13,7 @@ import { NodemailerService } from "../../infrastructure/external-services/Nodema
 import { AuthMiddleware } from "../middleware/authMiddleware";
 import { GetUserDetailsUseCase } from "../../core/use-cases/user-usecases/GetUserDetailsUseCase";
 import { JwtService } from "../../infrastructure/external-services/JwtService";
+import { UserRole } from "../../core/entities/misc/enums";
 
 const userRepository: UserInterface = new UserRepository();
 const nodemailerService: NodemailerInterface = new NodemailerService();
@@ -34,6 +35,10 @@ const adminController = new AdminController(
   denyTutorUseCase
 );
 // const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
+const authenticate = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
+const authorize = AuthMiddleware.authorize([UserRole.ADMIN]);
+
+adminRouter.use(authenticate, authorize);
 
 adminRouter.get("/users/:role", adminController.getUsersBasedOnRole);
 adminRouter.put("/block/:id", adminController.blockUser);
