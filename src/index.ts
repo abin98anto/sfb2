@@ -30,7 +30,7 @@ app.use(cors(corsOptions));
 app.post("/deploy", (req, res) => {
   console.log("Received push event from GitHub...");
   exec(
-    "cd /home/sfb2 && git pull origin main && npm install && npm run build && pm2 restart all",
+    "cd /home/sfb2 && npm run deploy",
     (err, stdout, stderr) => {
       if (err) {
         console.error(`Error: ${stderr}`);
