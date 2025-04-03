@@ -24,12 +24,12 @@ import reviewRouter from "./presentation/routes/reviewRoutes";
 
 dotenv.config();
 const app = express();
+app.use(cors(corsOptions));
 
 const server = createServer(app);
 const io = initializeSocket(server);
 app.set("io", io);
 
-app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 
