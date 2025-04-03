@@ -76,17 +76,8 @@ userRouter.delete(API.USER_DELETE, userAuthController.deleteUser);
 userRouter.post(API.USER_LOGIN, userAuthController.login);
 
 // Refresh Access Token routes.
-// userRouter.use(authenticate, authorize);
-userRouter.post(
-  API.USER_LOGOUT,
-  (req: Request, res: Response, next: NextFunction) => {
-    console.log("loging otu");
-    next();
-  },
-  authenticate,
-  authorize,
-  userAuthController.logout
-);
+userRouter.use(authenticate, authorize);
+userRouter.post(API.USER_LOGOUT, userAuthController.logout);
 
 userRouter.post(API.USER_REFRESH, userAuthController.refreshAccessToken);
 
