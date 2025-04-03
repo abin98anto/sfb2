@@ -68,6 +68,7 @@ export class AuthMiddleware {
 
       const userRole = req.user.role as UserRole;
       console.log("uesrrole", userRole);
+      console.log("alllowed roles", allowedRoles);
 
       if (!allowedRoles.includes(userRole)) {
         console.log("not allowed");
