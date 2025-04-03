@@ -63,7 +63,7 @@ const userAuthController = new UserAuthController(
 // const authMiddleware = new AuthMiddleware(jwtService, getUserDetailsUseCase);
 // const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 const authenticate = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
-const authorize = AuthMiddleware.authorize([UserRole.ADMIN, UserRole.TUTOR]);
+const authorize = AuthMiddleware.authorize([UserRole.USER]);
 
 // just to test if the server is working.
 userRouter.get("/", (req, res) => {
