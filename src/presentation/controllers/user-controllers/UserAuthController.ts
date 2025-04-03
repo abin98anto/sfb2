@@ -136,6 +136,7 @@ export class UserAuthController {
   };
 
   logout = async (req: Request, res: Response): Promise<void> => {
+    console.log("logogogout in contoelleer")
     try {
       res
         .clearCookie("accessToken", {
