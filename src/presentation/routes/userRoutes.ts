@@ -63,7 +63,6 @@ const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 
 // just to test if the server is working.
 userRouter.get("/", (req, res) => {
-  console.log("new req");
   res.status(200).json({ message: "Server is working" });
 });
 
