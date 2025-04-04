@@ -172,7 +172,7 @@ export class UserAuthController {
         maxAge: 24 * 60 * 60 * 1000,
       });
 
-      console.log("new one ", res.cookie);
+      console.log("new one ", data);
       res.status(200).json(data);
     } catch (error) {
       res.status(401).json({
