@@ -142,12 +142,12 @@ export class UserAuthController {
         .clearCookie("accessToken", {
           httpOnly: true,
           secure: true,
-          sameSite: "strict",
+          sameSite: "none",
         })
         .clearCookie("refreshToken", {
           httpOnly: true,
           secure: true,
-          sameSite: "strict",
+          sameSite: "none",
         })
         .status(200)
         .json({ message: comments.LOGOUT_SUCC });
