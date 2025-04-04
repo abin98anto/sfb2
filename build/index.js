@@ -24,12 +24,24 @@ var SubscriptionCornJobs_1 = __importDefault(require("./shared/utils/Subscriptio
 var HandleExpiredSubscriptionsUseCase_1 = __importDefault(require("./core/use-cases/subscription-usecases/HandleExpiredSubscriptionsUseCase"));
 var SubscriptionRepository_1 = __importDefault(require("./infrastructure/repositories/SubscriptionRepository"));
 var reviewRoutes_1 = __importDefault(require("./presentation/routes/reviewRoutes"));
+var child_process_1 = require("child_process");
 dotenv_1.default.config();
 var app = (0, express_1.default)();
+app.use((0, cors_1.default)(corsOptions_1.corsOptions));
+app.post("/deploy", function (req, res) {
+    console.log("Received push event from GitHub...");
+    (0, child_process_1.exec)("npm run deploy", function (err, stdout, stderr) {
+        if (err) {
+            console.error("Error: ".concat(stderr));
+            return res.status(500).send("Deployment failed");
+        }
+        console.log(stdout);
+        res.send("Deployment successful");
+    });
+});
 var server = (0, http_1.createServer)(app);
 var io = (0, SocketService_1.initializeSocket)(server);
 app.set("io", io);
-app.use((0, cors_1.default)(corsOptions_1.corsOptions));
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 console.log("first");
@@ -49,7 +61,7 @@ var subscriptionCronJobs = new SubscriptionCornJobs_1.default(handleExpiredSubsc
 subscriptionCronJobs.setupJobs();
 var PORT = 3000;
 (0, connection_1.default)().then(function () {
-    return server.listen(PORT, function () {
+    return server.listen(PORT, "0.0.0.0", function () {
         // app.listen(PORT, () => {
         console.log(comments_1.comments.SERVER_SUCC);
     });

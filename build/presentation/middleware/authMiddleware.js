@@ -49,12 +49,15 @@ var AuthMiddleware = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
+                        console.log("authenticating", req.cookies);
                         accessToken = req.cookies["accessToken"];
+                        console.log("access token", accessToken);
                         if (!accessToken) {
                             res.status(401).json({ message: comments_1.comments.ACCSS_NOT_FOUND });
                             return [2 /*return*/];
                         }
                         decoded = jwtService.verifyAccessToken(accessToken);
+                        console.log("decoded", decoded);
                         if (!(decoded === null || decoded === void 0 ? void 0 : decoded._id)) {
                             res.status(401).json({ message: comments_1.comments.JWT_PAYLOAD_INVLD });
                             return [2 /*return*/];
@@ -62,15 +65,19 @@ var AuthMiddleware = /** @class */ (function () {
                         return [4 /*yield*/, getUserDetailsUseCase.execute(decoded === null || decoded === void 0 ? void 0 : decoded._id)];
                     case 1:
                         data = (_a.sent()).data;
+                        console.log("the user data ", data);
                         if (!data) {
                             res.status(401).json({ message: comments_1.comments.USER_NOT_FOUND });
                             return [2 /*return*/];
                         }
                         if (!data.isActive) {
+                            console.log("user not active ", data.isActive);
                             res.status(401).json({ message: "user is blocked by admin" });
                             return [2 /*return*/];
                         }
+                        console.log("user active", data.isActive);
                         req.user = data;
+                        console.log("authenticating done");
                         next();
                         return [3 /*break*/, 3];
                     case 2:
@@ -81,6 +88,34 @@ var AuthMiddleware = /** @class */ (function () {
                 }
             });
         }); };
+    };
+    AuthMiddleware.authorize = function (allowedRoles) {
+        return function (req, res, next) {
+            console.log("authorize");
+            if (!req.user) {
+                console.log("no user");
+                res.status(401).json({ message: comments_1.comments.ACCESS_INVLD });
+                return;
+            }
+            // console.log("the user to authorize", req.user);
+            // if (!req.user.isActive) {
+            //   console.log("user is blocked by admin");
+            //   res.status(401).json({ message: "user is blocked by admin" });
+            //   return;
+            // }
+            var userRole = req.user.role;
+            console.log("uesrrole", userRole);
+            console.log("alllowed roles", allowedRoles);
+            if (!allowedRoles.includes(userRole)) {
+                console.log("not allowed");
+                res
+                    .status(403)
+                    .json({ message: "Access forbidden: Insufficient permissions" });
+                return;
+            }
+            console.log("authorizing done");
+            next();
+        };
     };
     return AuthMiddleware;
 }());

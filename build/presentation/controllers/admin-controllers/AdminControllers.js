@@ -52,6 +52,7 @@ var AdminController = /** @class */ (function () {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 2, , 3]);
+                        console.log("etting users based on role", req.params);
                         return [4 /*yield*/, this.getUsersUseCase.execute(req.params.role, req.query)];
                     case 1:
                         users = _b.sent();

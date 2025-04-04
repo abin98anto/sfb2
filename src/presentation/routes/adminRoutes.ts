@@ -14,6 +14,7 @@ import { AuthMiddleware } from "../middleware/authMiddleware";
 import { GetUserDetailsUseCase } from "../../core/use-cases/user-usecases/GetUserDetailsUseCase";
 import { JwtService } from "../../infrastructure/external-services/JwtService";
 import { UserRole } from "../../core/entities/misc/enums";
+import AddMoneyToWalletUseCase from "../../core/use-cases/admin-usecases/AddMoneyToWalletUseCase";
 
 const userRepository: UserInterface = new UserRepository();
 const nodemailerService: NodemailerInterface = new NodemailerService();
@@ -27,12 +28,14 @@ const denyTutorUseCase = new DenyTutorUseCase(
   nodemailerService
 );
 const getUserDetailsUseCase = new GetUserDetailsUseCase(userRepository);
+const addMoneyToWalletUseCase = new AddMoneyToWalletUseCase(userRepository);
 
 const adminController = new AdminController(
   getUsersUseCase,
   blockUserUseCase,
   approveTutorUseCase,
-  denyTutorUseCase
+  denyTutorUseCase,
+  addMoneyToWalletUseCase
 );
 // const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 const authenticate = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
@@ -59,5 +62,7 @@ adminRouter.put(
   authorize,
   adminController.denyTutor
 );
+
+adminRouter.put("/wallter", authenticate, authorize, adminController.addMoney);
 
 export default adminRouter;

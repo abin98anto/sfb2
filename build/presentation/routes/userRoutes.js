@@ -23,6 +23,7 @@ var GoogleAuthUseCase_1 = require("../../core/use-cases/user-usecases/GoogleAuth
 var CreateUserUseCase_1 = __importDefault(require("../../core/use-cases/user-usecases/CreateUserUseCase"));
 var ForgotPasswordUseCase_1 = __importDefault(require("../../core/use-cases/user-usecases/ForgotPasswordUseCase"));
 var SetNewPasswordUseCase_1 = require("../../core/use-cases/user-usecases/SetNewPasswordUseCase");
+var enums_1 = require("../../core/entities/misc/enums");
 var userRepository = new UserRepository_1.UserRepository();
 var jwtService = new JwtService_1.JwtService();
 var nodemailerService = new NodemailerService_1.NodemailerService();
@@ -39,26 +40,27 @@ var forgotPasswordUseCase = new ForgotPasswordUseCase_1.default(userRepository, 
 var setNewPasswordUseCase = new SetNewPasswordUseCase_1.SetNewPasswordUseCase(userRepository);
 var getUserDetailsUseCase = new GetUserDetailsUseCase_1.GetUserDetailsUseCase(userRepository);
 var userAuthController = new UserAuthController_1.UserAuthController(sendOTPUseCase, verifyOTPUseCase, deleteUserUseCase, loginUserUseCase, refreshTokenUseCase, updateDetailsUseCase, changePasswordUseCase, googleAuthUseCase, forgotPasswordUseCase, setNewPasswordUseCase);
-var authMiddleware = authMiddleware_1.AuthMiddleware.create(jwtService, getUserDetailsUseCase);
+// const authMiddleware = new AuthMiddleware(jwtService, getUserDetailsUseCase);
+// const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
+var authenticate = authMiddleware_1.AuthMiddleware.create(jwtService, getUserDetailsUseCase);
+var authorize = authMiddleware_1.AuthMiddleware.authorize([enums_1.UserRole.USER]);
 // just to test if the server is working.
 userRouter.get("/", function (req, res) {
-    console.log("new req");
     res.status(200).json({ message: "Server is working" });
 });
-// Signup routes.
 userRouter.post(API_1.API.OTP_SENT, userAuthController.sendOTP);
 userRouter.post(API_1.API.OTP_VERIFY, userAuthController.verifyOTP);
 userRouter.delete(API_1.API.USER_DELETE, userAuthController.deleteUser);
-// Login routes.
 userRouter.post(API_1.API.USER_LOGIN, userAuthController.login);
-userRouter.post(API_1.API.USER_LOGOUT, authMiddleware, userAuthController.logout);
+userRouter.post(API_1.API.USER_LOGOUT, authenticate, userAuthController.logout);
 // Refresh Access Token routes.
+// userRouter.use(authenticate);
 userRouter.post(API_1.API.USER_REFRESH, userAuthController.refreshAccessToken);
 // Update user details routes.
-userRouter.put(API_1.API.USER_UPDATE, authMiddleware, userAuthController.update);
-userRouter.put("/change-password", authMiddleware, userAuthController.changePassword);
-userRouter.put("/forgot-password", authMiddleware, userAuthController.forgotPasswordOTP);
-userRouter.put("/set-password", authMiddleware, userAuthController.resetPassword);
+userRouter.put(API_1.API.USER_UPDATE, authenticate, authMiddleware_1.AuthMiddleware.authorize([enums_1.UserRole.USER, enums_1.UserRole.TUTOR]), userAuthController.update);
+userRouter.put("/change-password", authenticate, authorize, userAuthController.changePassword);
+userRouter.put("/forgot-password", authenticate, authorize, userAuthController.forgotPasswordOTP);
+userRouter.put("/set-password", authenticate, authorize, userAuthController.resetPassword);
 // Google Auth routes.
 userRouter.post("/auth/google", userAuthController.googleSignIn);
 exports.default = userRouter;

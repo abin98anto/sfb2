@@ -140,7 +140,8 @@ var OrderController = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        email = req.user.email;
+                        email = req.params.email;
+                        console.log("subcheck", email);
                         return [4 /*yield*/, this.checkSubscriptionStatusUseCase.execute(email)];
                     case 1:
                         result = _a.sent();

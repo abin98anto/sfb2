@@ -13,6 +13,7 @@ var EnrollmentSchema = new mongoose_1.default.Schema({
     completedLessons: { type: [String], default: [] },
     completedAt: { type: Date },
     quitAt: Date,
+    grade: { type: String, default: "" },
 }, {
     timestamps: true,
 });

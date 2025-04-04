@@ -58,4 +58,13 @@ export class UserRepository implements UserInterface {
 
     return await UserModel.countDocuments(query);
   };
+
+  addToWallet = async (id: string, amount: number): Promise<IUser | null> => {
+    const user = await UserModel.findById(id);
+    if (!user) return null;
+
+    user.wallet = user.wallet + amount;
+    await user.save();
+    return user;
+  };
 }

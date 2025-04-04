@@ -154,23 +154,26 @@ var UserAuthController = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _b.trys.push([0, 2, , 3]);
+                        console.log("the login", req.body);
+                        _b.label = 1;
+                    case 1:
+                        _b.trys.push([1, 3, , 4]);
                         _a = req.body.userData, email = _a.email, password = _a.password, role = _a.role;
                         return [4 /*yield*/, this.loginUserUseCase.execute(email, password, role)];
-                    case 1:
+                    case 2:
                         result = _b.sent();
                         if (result.success) {
                             res
                                 .cookie("accessToken", result.data.accessToken, {
                                 httpOnly: true,
                                 secure: true,
-                                sameSite: "strict",
-                                maxAge: 24 * 60 * 60 * 1000,
+                                sameSite: "none",
+                                maxAge: 30 * 1000,
                             })
                                 .cookie("refreshToken", result.data.refreshToken, {
                                 httpOnly: true,
                                 secure: true,
-                                sameSite: "strict",
+                                sameSite: "none",
                                 maxAge: 7 * 24 * 60 * 60 * 1000,
                             })
                                 .status(200)
@@ -184,29 +187,30 @@ var UserAuthController = /** @class */ (function () {
                             res.status(401).json({ message: comments_1.comments.INVALID_CRED });
                             return [2 /*return*/];
                         }
-                        return [3 /*break*/, 3];
-                    case 2:
+                        return [3 /*break*/, 4];
+                    case 3:
                         error_4 = _b.sent();
                         console.error(comments_1.comments.LOGIN_C_FAIL, error_4);
                         res.status(400).json({ success: false, message: comments_1.comments.LOGIN_C_FAIL });
                         return [2 /*return*/];
-                    case 3: return [2 /*return*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         }); };
         this.logout = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
+                console.log("logogogout in contoelleer");
                 try {
                     res
                         .clearCookie("accessToken", {
                         httpOnly: true,
                         secure: true,
-                        sameSite: "strict",
+                        sameSite: "none",
                     })
                         .clearCookie("refreshToken", {
                         httpOnly: true,
                         secure: true,
-                        sameSite: "strict",
+                        sameSite: "none",
                     })
                         .status(200)
                         .json({ message: comments_1.comments.LOGOUT_SUCC });
@@ -231,15 +235,17 @@ var UserAuthController = /** @class */ (function () {
                         return [4 /*yield*/, this.refreshTokenUseCase.execute(refreshToken)];
                     case 1:
                         data = (_a.sent()).data;
-                        res.cookie("accessToken", data.newAccessToken, {
+                        console.log("new one ", data);
+                        res
+                            .cookie("accessToken", data, {
                             httpOnly: true,
-                            secure: process.env.NODE_ENV === "production",
-                            sameSite: "strict",
-                            maxAge: 15 * 60 * 1000,
-                        });
-                        console.log("new one ");
-                        res.status(200).json(data);
-                        return [3 /*break*/, 3];
+                            secure: true,
+                            sameSite: "none",
+                            maxAge: 30 * 1000,
+                        })
+                            .status(200)
+                            .json(data);
+                        return [2 /*return*/];
                     case 2:
                         error_5 = _a.sent();
                         res.status(401).json({

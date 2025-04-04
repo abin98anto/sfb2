@@ -6,13 +6,16 @@ import { IUser } from "../../../core/entities/IUser";
 import BlockUsersUseCase from "../../../core/use-cases/admin-usecases/BlockUsersUseCase";
 import ApproveTutorUseCase from "../../../core/use-cases/admin-usecases/ApproveTutorUseCase";
 import DenyTutorUseCase from "../../../core/use-cases/admin-usecases/DenyTutorUseCase";
+import { UpdateDetailsUseCase } from "../../../core/use-cases/user-usecases/UpdateDetailsUseCase";
+import AddMoneyToWalletUseCase from "../../../core/use-cases/admin-usecases/AddMoneyToWalletUseCase";
 
 export class AdminController {
   constructor(
     private getUsersUseCase: GetUsersUseCase,
     private blockUsersUseCase: BlockUsersUseCase,
     private approveTutorUseCase: ApproveTutorUseCase,
-    private denyTutorUserCase: DenyTutorUseCase
+    private denyTutorUserCase: DenyTutorUseCase,
+    private addMoneyToWalletUseCase: AddMoneyToWalletUseCase
   ) {}
 
   getUsersBasedOnRole = async (req: Request, res: Response) => {
@@ -78,6 +81,22 @@ export class AdminController {
       res.status(500).json({
         success: false,
         message: comments.TUTOR_DENY_U_ERR,
+        err: error,
+      });
+    }
+  };
+
+  addMoney = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { userId, amount } = req.body;
+      const result = await this.addMoneyToWalletUseCase.execute(userId, amount);
+
+      res.status(200).json(result);
+    } catch (error) {
+      console.log("error paying tutors", error);
+      res.status(500).json({
+        success: false,
+        message: "error adding money to wallet",
         err: error,
       });
     }

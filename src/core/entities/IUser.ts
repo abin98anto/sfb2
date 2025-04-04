@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export interface IUser {
   name: string;
   email: string;
@@ -13,6 +15,6 @@ export interface IUser {
   reviewsTaken?: number;
   sessionsTaken?: number;
   isVerified?: boolean;
-  _id?: string;
+  _id?: string | Types.ObjectId;
   refreshToken?: string;
 }

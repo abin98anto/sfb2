@@ -8,6 +8,7 @@ export interface UserInterface {
   update(id: string, user: Partial<IUser>): Promise<IUser | null>;
   delete(email: string): Promise<void>;
   getAll(role: string): Promise<IUser[]>;
+  addToWallet(id: string, amount: number): Promise<IUser | null>;
 
   getPaginated(role: string, params: IParams): Promise<Partial<IUser>[]>;
   getCount(role: string, search: string): Promise<number>;

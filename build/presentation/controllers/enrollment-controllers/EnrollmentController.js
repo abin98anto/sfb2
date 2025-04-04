@@ -163,7 +163,8 @@ var EnrollmentController = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        userId = req.user._id;
+                        console.log("getting user courses", req.params.userId);
+                        userId = req.params.userId;
                         return [4 /*yield*/, this.usersCoursesUseCase.execute(userId)];
                     case 1:
                         result = _a.sent();
