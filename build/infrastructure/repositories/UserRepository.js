@@ -150,6 +150,24 @@ var UserRepository = /** @class */ (function () {
                 }
             });
         }); };
+        this.addToWallet = function (id, amount) { return __awaiter(_this, void 0, void 0, function () {
+            var user, _id, userData;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, userSchema_1.UserModel.findById(id)];
+                    case 1:
+                        user = _a.sent();
+                        if (!user)
+                            return [2 /*return*/, null];
+                        user.wallet = user.wallet + amount;
+                        return [4 /*yield*/, user.save()];
+                    case 2:
+                        _a.sent();
+                        _id = user._id, userData = __rest(user, ["_id"]);
+                        return [2 /*return*/, userData];
+                }
+            });
+        }); };
     }
     return UserRepository;
 }());

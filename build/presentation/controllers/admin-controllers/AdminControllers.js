@@ -39,12 +39,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminController = void 0;
 var comments_1 = require("../../../shared/constants/comments");
 var AdminController = /** @class */ (function () {
-    function AdminController(getUsersUseCase, blockUsersUseCase, approveTutorUseCase, denyTutorUserCase) {
+    function AdminController(getUsersUseCase, blockUsersUseCase, approveTutorUseCase, denyTutorUserCase, addMoneyToWalletUseCase) {
         var _this = this;
         this.getUsersUseCase = getUsersUseCase;
         this.blockUsersUseCase = blockUsersUseCase;
         this.approveTutorUseCase = approveTutorUseCase;
         this.denyTutorUserCase = denyTutorUserCase;
+        this.addMoneyToWalletUseCase = addMoneyToWalletUseCase;
         this.getUsersBasedOnRole = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var users, filteredUsers, isVerifiedValue_1, error_1;
             var _a;
@@ -138,6 +139,31 @@ var AdminController = /** @class */ (function () {
                             success: false,
                             message: comments_1.comments.TUTOR_DENY_U_ERR,
                             err: error_4,
+                        });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.addMoney = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, userId, amount, result, error_5;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        _a = req.body, userId = _a.userId, amount = _a.amount;
+                        return [4 /*yield*/, this.addMoneyToWalletUseCase.execute(userId, amount)];
+                    case 1:
+                        result = _b.sent();
+                        res.status(200).json(result);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_5 = _b.sent();
+                        console.log("error paying tutors", error_5);
+                        res.status(500).json({
+                            success: false,
+                            message: "error adding money to wallet",
+                            err: error_5,
                         });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];

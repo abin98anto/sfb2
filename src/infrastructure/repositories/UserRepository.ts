@@ -65,6 +65,7 @@ export class UserRepository implements UserInterface {
 
     user.wallet = user.wallet + amount;
     await user.save();
-    return user;
+    const { _id, ...userData } = user;
+    return userData;
   };
 }
