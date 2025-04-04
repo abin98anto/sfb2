@@ -40,11 +40,7 @@ const authorize = AuthMiddleware.authorize([UserRole.ADMIN]);
 
 // adminRouter.use(authenticate, authorize);
 
-adminRouter.get(
-  "/users/:role",
-  authenticate,
-  adminController.getUsersBasedOnRole
-);
+adminRouter.get("/users/:role", adminController.getUsersBasedOnRole);
 adminRouter.put(
   "/block/:id",
   authenticate,
