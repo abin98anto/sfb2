@@ -165,17 +165,17 @@ export class UserAuthController {
       const refreshToken = req.cookies["refreshToken"];
       const { data } = await this.refreshTokenUseCase.execute(refreshToken);
 
+      console.log("new one ", data);
       res
-        .cookie("accessToken", data.newAccessToken, {
+        .cookie("accessToken", data, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
-          maxAge: 24 * 60 * 60 * 1000,
+          maxAge: 30 * 1000,
         })
         .status(200)
         .json(data);
-
-      console.log("new one ", data);
+      return;
 
       // res.status(200).json(data);
     } catch (error) {
