@@ -167,12 +167,12 @@ export class UserAuthController {
 
       res.cookie("accessToken", data.newAccessToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        maxAge: 15 * 60 * 1000,
+        secure: true,
+        sameSite: "none",
+        maxAge: 24 * 60 * 60 * 1000,
       });
 
-      console.log("new one ");
+      console.log("new one ", res.cookie);
       res.status(200).json(data);
     } catch (error) {
       res.status(401).json({
