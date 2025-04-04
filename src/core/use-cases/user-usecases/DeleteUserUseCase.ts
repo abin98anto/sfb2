@@ -8,11 +8,13 @@ export class DeleteUserUseCase {
   async execute(email: string): Promise<UseCaseResponse> {
     try {
       const userExists = await this.userRepository.findByEmail(email);
+      console.log("find user", userExists);
       if (!userExists) {
         return { success: false, message: comments.USER_NOT_FOUND };
       }
 
-      await this.userRepository.delete(email);
+      const repoData = await this.userRepository.delete(email);
+      console.log("the repo data", repoData);
       return { success: true, message: comments.USER_DEL_SUCC };
     } catch (error) {
       console.error(comments.USER_DEL_USECASE_FAIL, error);
