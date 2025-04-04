@@ -57,7 +57,8 @@ const userAuthController = new UserAuthController(
   changePasswordUseCase,
   googleAuthUseCase,
   forgotPasswordUseCase,
-  setNewPasswordUseCase
+  setNewPasswordUseCase,
+  getUserDetailsUseCase
 );
 
 // const authMiddleware = new AuthMiddleware(jwtService, getUserDetailsUseCase);
@@ -105,6 +106,12 @@ userRouter.put(
   authenticate,
   authorize,
   userAuthController.resetPassword
+);
+
+userRouter.get(
+  "/get-balance/:userId",
+  authenticate,
+  userAuthController.getBalance
 );
 
 // Google Auth routes.

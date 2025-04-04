@@ -11,6 +11,7 @@ import ChangePasswordUseCase from "../../../core/use-cases/user-usecases/ChangeP
 import { GoogleAuthUseCase } from "../../../core/use-cases/user-usecases/GoogleAuthUseCase";
 import ForgotPasswordUseCase from "../../../core/use-cases/user-usecases/ForgotPasswordUseCase";
 import { SetNewPasswordUseCase } from "../../../core/use-cases/user-usecases/SetNewPasswordUseCase";
+import { GetUserDetailsUseCase } from "../../../core/use-cases/user-usecases/GetUserDetailsUseCase";
 
 export class UserAuthController {
   constructor(
@@ -23,7 +24,8 @@ export class UserAuthController {
     private changePasswordUseCase: ChangePasswordUseCase,
     private googleAuthUseCase: GoogleAuthUseCase,
     private forgotPasswordUseCase: ForgotPasswordUseCase,
-    private setNewPasswordUseCase: SetNewPasswordUseCase
+    private setNewPasswordUseCase: SetNewPasswordUseCase,
+    private getUserDetailsUseCase: GetUserDetailsUseCase
   ) {}
 
   sendOTP = async (req: Request, res: Response): Promise<void> => {
@@ -292,6 +294,20 @@ export class UserAuthController {
       res.status(401).json({
         success: false,
         message: comments.RESET_PASS_FAIL,
+        err: error,
+      });
+    }
+  };
+
+  getBalance = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { userId } = req.params;
+      const result = await this.getUserDetailsUseCase.execute(userId);
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(401).json({
+        success: false,
+        message: "error fetching wallet balance.",
         err: error,
       });
     }
