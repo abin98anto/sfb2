@@ -41,11 +41,6 @@ reviewRouter.delete(
   authorize,
   reviewController.delete
 );
-reviewRouter.get(
-  "/:courseId",
-  authMiddleware,
-  authorize,
-  reviewController.getCourseReviews
-);
+reviewRouter.get("/:courseId", reviewController.getCourseReviews);
 
 export default reviewRouter;
