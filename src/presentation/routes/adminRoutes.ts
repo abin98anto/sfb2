@@ -63,6 +63,6 @@ adminRouter.put(
   adminController.denyTutor
 );
 
-adminRouter.put("/wallter", authenticate, authorize, adminController.addMoney);
+adminRouter.put("/add-money", authenticate, authorize, adminController.addMoney);
 
 export default adminRouter;
