@@ -81,8 +81,8 @@ export class UserAuthController {
 
   deleteUser = async (req: Request, res: Response): Promise<void> => {
     try {
-      console.log("the queryyy", req.query);
-      const { email } = req.query;
+      console.log("the queryyy", req.params);
+      const { email } = req.params;
       console.log("the email", email);
       const result = await this.deleteUserUseCase.execute(email as string);
 
