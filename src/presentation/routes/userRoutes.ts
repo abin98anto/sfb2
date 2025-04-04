@@ -89,7 +89,7 @@ userRouter.post(
 userRouter.put(
   API.USER_UPDATE,
   authenticate,
-  authorize,
+  AuthMiddleware.authorize([UserRole.USER, UserRole.TUTOR]),
   userAuthController.update
 );
 userRouter.put(
