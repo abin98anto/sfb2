@@ -13,7 +13,9 @@ export class DeleteUserUseCase {
         return { success: false, message: comments.USER_NOT_FOUND };
       }
 
-      const repoData = await this.userRepository.delete(email);
+      const repoData = await this.userRepository.delete(
+        userExists._id as string
+      );
       console.log("the repo data", repoData);
       return { success: true, message: comments.USER_DEL_SUCC };
     } catch (error) {
