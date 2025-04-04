@@ -24,7 +24,9 @@ export class UserRepository implements UserInterface {
   };
 
   delete = async (id: string): Promise<void> => {
-    await UserModel.findByIdAndDelete(id as string);
+    const repo = await UserModel.findByIdAndDelete(id as string);
+    console.log("the repo data", repo);
+    return;
   };
 
   getAll = async (role: string): Promise<IUser[]> => {
