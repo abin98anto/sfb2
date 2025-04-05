@@ -4,6 +4,8 @@ import ChatInterface from "../../interfaces/ChatInterface";
 class GetAllChatsUseCase {
   constructor(private chatRepository: ChatInterface) {}
 
+  // input: user id.
+  // output: list of the user's chat.
   execute = async (userId: string) => {
     try {
       const data = await this.chatRepository.getChatsForUser(userId);

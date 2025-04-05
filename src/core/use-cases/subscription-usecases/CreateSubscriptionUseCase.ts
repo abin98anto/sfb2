@@ -6,6 +6,8 @@ import SubscriptionInterface from "../../interfaces/SubscriptionInterface";
 class CreateSubscriptionUseCase {
   constructor(private subscriptionRepository: SubscriptionInterface) {}
 
+  // input: subscription object.
+  // output: newly created subscription object
   execute = async (data: ISubscription): Promise<UseCaseResponse> => {
     try {
       const isDuplicate = await this.subscriptionRepository.findDuplicates(

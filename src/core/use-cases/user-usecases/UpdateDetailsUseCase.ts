@@ -6,6 +6,8 @@ import { UserInterface } from "../../interfaces/UserInterface";
 export class UpdateDetailsUseCase {
   constructor(private userRepository: UserInterface) {}
 
+  // input: user id, nwe user data
+  // output: updates user
   execute = async (
     _id: string,
     user: Partial<IUser>

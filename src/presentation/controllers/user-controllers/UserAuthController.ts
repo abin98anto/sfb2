@@ -81,9 +81,7 @@ export class UserAuthController {
 
   deleteUser = async (req: Request, res: Response): Promise<void> => {
     try {
-      console.log("the queryyy", req.params);
       const { email } = req.params;
-      console.log("the email", email);
       const result = await this.deleteUserUseCase.execute(email as string);
 
       if (result.success) {
@@ -102,7 +100,6 @@ export class UserAuthController {
   };
 
   login = async (req: Request, res: Response): Promise<void> => {
-    console.log("the login", req.body);
     try {
       const { email, password, role } = req.body.userData;
 
@@ -139,7 +136,6 @@ export class UserAuthController {
   };
 
   logout = async (req: Request, res: Response): Promise<void> => {
-    console.log("logogogout in contoelleer");
     try {
       res
         .clearCookie("accessToken", {
@@ -164,11 +160,9 @@ export class UserAuthController {
 
   refreshAccessToken = async (req: Request, res: Response): Promise<void> => {
     try {
-      console.log("coookkiies", req.cookies);
       const refreshToken = req.cookies["refreshToken"];
       const { data } = await this.refreshTokenUseCase.execute(refreshToken);
 
-      console.log("new one ", data);
       res
         .cookie("accessToken", data, {
           httpOnly: true,
@@ -179,8 +173,6 @@ export class UserAuthController {
         .status(200)
         .json(data);
       return;
-
-      // res.status(200).json(data);
     } catch (error) {
       res.status(401).json({
         success: false,
@@ -306,9 +298,10 @@ export class UserAuthController {
       const result = await this.getUserDetailsUseCase.execute(userId);
       res.status(200).json(result);
     } catch (error) {
+      console.log(comments.BALANCE_FETCH_FAIL, error);
       res.status(401).json({
         success: false,
-        message: "error fetching wallet balance.",
+        message: comments.BALANCE_FETCH_FAIL,
         err: error,
       });
     }

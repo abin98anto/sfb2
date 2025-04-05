@@ -8,11 +8,8 @@ class UnreadCountByChatUseCase {
     userId: string
   ): Promise<UseCaseResponse> => {
     try {
-      // const data = await this.messageRepository.getMessagesByChatId(
-      //   chatId,
-      //   userId
-      // );
-      return { success: true };
+      const data = await this.messageRepository.getMessagesByChatId(chatId);
+      return { success: true, data };
     } catch (error) {
       console.log("error getting unread count of chat in use case", error);
       return {

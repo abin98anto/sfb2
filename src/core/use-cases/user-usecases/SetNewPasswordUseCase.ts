@@ -6,6 +6,8 @@ import { UserInterface } from "../../interfaces/UserInterface";
 export class SetNewPasswordUseCase {
   constructor(private userRepository: UserInterface) {}
 
+  // input: user email, otp, new password
+  // output: sets new password.
   async execute(
     email: string,
     otp: string,

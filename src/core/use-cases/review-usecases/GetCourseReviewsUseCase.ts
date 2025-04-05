@@ -4,6 +4,8 @@ import ReviewInterface from "../../interfaces/ReviewInterface";
 export default class GetCourseReviewsUseCase {
   constructor(private reviewRepository: ReviewInterface) {}
 
+  // input: courseId
+  // output: all reviews of the course.
   execute = async (courseId: string): Promise<UseCaseResponse> => {
     try {
       const data = await this.reviewRepository.getAllCourseReviews(courseId);

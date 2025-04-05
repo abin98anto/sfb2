@@ -5,6 +5,9 @@ import SubscriptionInterface from "../../interfaces/SubscriptionInterface";
 
 class GetAllSubscriptionsUseCase {
   constructor(private subscriptionRepository: SubscriptionInterface) {}
+
+  // input: search,sort, filter params.
+  // output: list of subscriptions
   execute = async (params: PaginationParams = {}): Promise<UseCaseResponse> => {
     try {
       const { page = 1, limit = 10, search = "" } = params;

@@ -6,6 +6,7 @@ import { UserInterface } from "../../interfaces/UserInterface";
 export class GetUsersUseCase {
   constructor(private userRepository: UserInterface) {}
 
+  // input: role and search,sort,filter params.
   execute = async (
     role: string,
     params: PaginationParams

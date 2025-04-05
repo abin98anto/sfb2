@@ -5,6 +5,8 @@ import ReviewInterface from "../../interfaces/ReviewInterface";
 export default class UpdateReviewUseCase {
   constructor(private reviewRepository: ReviewInterface) {}
 
+  // input: partial review.
+  // output: updated review
   execute = async (review: Partial<IReview>): Promise<UseCaseResponse> => {
     try {
       const data = await this.reviewRepository.update(review);

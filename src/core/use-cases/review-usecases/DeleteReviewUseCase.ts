@@ -4,6 +4,8 @@ import ReviewInterface from "../../interfaces/ReviewInterface";
 export default class DeleteReviewUseCase {
   constructor(private reviewRepository: ReviewInterface) {}
 
+  // input: reviewId
+  // output: deletes the review.
   execute = async (reviewId: string): Promise<UseCaseResponse> => {
     try {
       await this.reviewRepository.delete(reviewId);

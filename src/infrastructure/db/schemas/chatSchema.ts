@@ -6,8 +6,6 @@ const chatSchema = new Schema(
     studentId: { type: String, required: true, ref: "User" },
     tutorId: { type: String, required: true, ref: "User" },
     courseId: { type: String, required: true, ref: "Course" },
-    // do I need this array of message ids?
-    // messages: [{ type: String, ref: "Message" }],
     lastMessage: {
       type: String,
       ref: "Message",

@@ -6,6 +6,8 @@ import SubscriptionInterface from "../../interfaces/SubscriptionInterface";
 export default class NewSubscriberUseCase {
   constructor(private subscriptionRepository: SubscriptionInterface) {}
 
+  // input: order object.
+  // output: adds user to subscription
   execute = async (order: IOrder): Promise<UseCaseResponse> => {
     try {
       const result = await this.subscriptionRepository.addUser(order);

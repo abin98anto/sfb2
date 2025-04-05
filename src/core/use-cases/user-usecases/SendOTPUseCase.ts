@@ -12,6 +12,8 @@ export class SendOTPUseCase {
     private nodemailerService: NodemailerInterface
   ) {}
 
+  // input: user data
+  // output: sends otp to user for signup.
   execute = async (user: IUser): Promise<UseCaseResponse> => {
     try {
       const emailTaken = await this.userRepository.findByEmail(user.email);

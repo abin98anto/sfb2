@@ -17,13 +17,6 @@ export default class GetAllOrderUseCase {
         search,
       });
 
-      // const data = {
-      //   data: categories,
-      //   total: totalCount,
-      //   limit,
-      //   page,
-      //   totalPages: Math.ceil(totalCount / limit),
-      // };
       const data = await this.orderRepository.findAll();
 
       return { success: true, data };

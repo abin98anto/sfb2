@@ -6,6 +6,8 @@ import { UserInterface } from "../../interfaces/UserInterface";
 export class VerifyOTPUseCase {
   constructor(private userRepository: UserInterface) {}
 
+  // input: otp, user email.
+  // output: verifies user in DB.
   execute = async (otp: string, email: string): Promise<UseCaseResponse> => {
     try {
       const user = await this.userRepository.findByEmail(email);

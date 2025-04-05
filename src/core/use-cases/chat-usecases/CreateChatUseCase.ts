@@ -6,6 +6,8 @@ import ChatInterface from "../../interfaces/ChatInterface";
 class CreateChatUseCase {
   constructor(private chatRepository: ChatInterface) {}
 
+  // input: chat object.
+  // output:created chat.
   execute = async (chat: IChat): Promise<UseCaseResponse> => {
     try {
       const data = await this.chatRepository.createChat(chat);

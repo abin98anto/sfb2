@@ -1,6 +1,7 @@
 import IChat from "../../core/entities/IChat";
 import IMessage from "../../core/entities/IMessage";
 import { MessageInterface } from "../../core/interfaces/MessageInterface";
+import { comments } from "../../shared/constants/comments";
 import ChatModel from "../db/schemas/chatSchema";
 import { MessageModel } from "../db/schemas/messageSchema";
 
@@ -9,7 +10,7 @@ class MessageRepository implements MessageInterface {
     const newMessage = new MessageModel(message);
     const savedMessage = newMessage.save();
 
-    const currentChat = await ChatModel.findOneAndUpdate(
+    await ChatModel.findOneAndUpdate(
       { _id: message.chatId },
       {
         lastMessage: (await savedMessage)._id,
@@ -86,7 +87,7 @@ class MessageRepository implements MessageInterface {
     );
 
     if (!updatedChat) {
-      throw new Error("Chat not found");
+      throw new Error(comments.CHAT_NOT_FOUND);
     }
 
     return updatedChat;

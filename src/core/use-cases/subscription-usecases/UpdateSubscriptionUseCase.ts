@@ -6,6 +6,8 @@ import SubscriptionInterface from "../../interfaces/SubscriptionInterface";
 export default class UpdateSubscriptionUseCase {
   constructor(private subscriptionRepository: SubscriptionInterface) {}
 
+  // input: partial subscription
+  // output: updated subscription
   execute = async (data: Partial<ISubscription>): Promise<UseCaseResponse> => {
     try {
       if (data.name && data._id) {

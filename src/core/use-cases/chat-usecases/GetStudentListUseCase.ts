@@ -5,6 +5,8 @@ import ChatInterface from "../../interfaces/ChatInterface";
 class GetStudentList {
   constructor(private chatRepository: ChatInterface) {}
 
+  // input: tutor id.
+  // output: list of students assigned to the tutor.
   execute = async (tutorId: string): Promise<UseCaseResponse> => {
     try {
       const data = await this.chatRepository.getStudentList(tutorId);

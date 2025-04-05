@@ -4,6 +4,7 @@ import EnrollmentInterface from "../../interfaces/EnrollmentInterface";
 
 class GetAllUseCase {
   constructor(private enrollmentRepository: EnrollmentInterface) {}
+  
   execute = async (): Promise<UseCaseResponse> => {
     try {
       const data = await this.enrollmentRepository.getAll();

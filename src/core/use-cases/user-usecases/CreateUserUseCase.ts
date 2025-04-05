@@ -7,6 +7,8 @@ import { UserInterface } from "../../interfaces/UserInterface";
 class CreateUserUseCase {
   constructor(private userRepository: UserInterface) {}
 
+  // input: user data
+  // ouput: creates new user.
   async execute(userData: IUser): Promise<UseCaseResponse> {
     try {
       const existingUser = await this.userRepository.findByEmail(

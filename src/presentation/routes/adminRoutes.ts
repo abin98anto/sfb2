@@ -37,11 +37,8 @@ const adminController = new AdminController(
   denyTutorUseCase,
   addMoneyToWalletUseCase
 );
-// const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 const authenticate = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 const authorize = AuthMiddleware.authorize([UserRole.ADMIN]);
-
-// adminRouter.use(authenticate, authorize);
 
 adminRouter.get("/users/:role", adminController.getUsersBasedOnRole);
 adminRouter.put(

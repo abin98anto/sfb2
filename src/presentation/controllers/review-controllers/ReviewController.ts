@@ -3,6 +3,7 @@ import CreateReviewUseCase from "../../../core/use-cases/review-usecases/CreateR
 import UpdateReviewUseCase from "../../../core/use-cases/review-usecases/UpdateReviewUseCase";
 import DeleteReviewUseCase from "../../../core/use-cases/review-usecases/DeleteReviewUseCase";
 import GetCourseReviewsUseCase from "../../../core/use-cases/review-usecases/GetCourseReviewsUseCase";
+import { comments } from "../../../shared/constants/comments";
 
 export default class ReviewController {
   constructor(
@@ -18,8 +19,8 @@ export default class ReviewController {
       const result = await this.createReviewUseCase.execute(review);
       res.status(201).json(result);
     } catch (error) {
-      console.log("error in creating review", error);
-      res.status(500).json({ message: "error in creating review", err: error });
+      console.log(comments.REVIEW_ADD_FAIL, error);
+      res.status(500).json({ message: comments.REVIEW_ADD_FAIL, err: error });
     }
   };
 
@@ -29,8 +30,10 @@ export default class ReviewController {
       const result = await this.updateReviewUseCase.execute(review);
       res.status(200).json(result);
     } catch (error) {
-      console.log("error in updating review", error);
-      res.status(500).json({ message: "error in updating review", err: error });
+      console.log(comments.REVIEW_UPDATE_FAIL, error);
+      res
+        .status(500)
+        .json({ message: comments.REVIEW_UPDATE_FAIL, err: error });
     }
   };
 
@@ -40,8 +43,10 @@ export default class ReviewController {
       const result = await this.deleteReviewUseCase.execute(reviewId);
       res.status(200).json(result);
     } catch (error) {
-      console.log("error in deleting review", error);
-      res.status(500).json({ message: "error in deleting review", err: error });
+      console.log(comments.REVIEW_DELETE_FAIL, error);
+      res
+        .status(500)
+        .json({ message: comments.REVIEW_DELETE_FAIL, err: error });
     }
   };
 
@@ -51,10 +56,10 @@ export default class ReviewController {
       const result = await this.getCourseReviewsUseCase.execute(courseId);
       res.status(200).json(result);
     } catch (error) {
-      console.log("error in getting course reviews", error);
+      console.log(comments.REVIEWS_FETCH_FAIL, error);
       res
         .status(500)
-        .json({ message: "error in getting course reviews", err: error });
+        .json({ message: comments.REVIEWS_FETCH_FAIL, err: error });
     }
   };
 }

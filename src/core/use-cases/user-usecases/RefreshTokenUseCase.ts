@@ -11,6 +11,8 @@ export class RefreshTokenUseCase {
     private userRepository: UserRepository
   ) {}
 
+  // input: refresh token.
+  // output: returns new access token
   execute = async (refreshToken: string): Promise<UseCaseResponse> => {
     try {
       if (!refreshToken) {

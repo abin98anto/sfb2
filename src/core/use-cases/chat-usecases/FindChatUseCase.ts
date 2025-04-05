@@ -5,6 +5,8 @@ import { MessageInterface } from "../../interfaces/MessageInterface";
 class FindChatUseCase {
   constructor(private messageRepository: MessageInterface) {}
 
+  // input: chat id.
+  // output: messages of the chat.
   execute = async (chatId: string): Promise<UseCaseResponse> => {
     try {
       const data = await this.messageRepository.getMessagesByChatId(chatId);

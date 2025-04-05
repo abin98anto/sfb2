@@ -5,6 +5,8 @@ import SubscriptionInterface from "../../interfaces/SubscriptionInterface";
 class CheckSubscriptionStatusUseCase {
   constructor(private subscriptionRepository: SubscriptionInterface) {}
 
+  // input: user email.
+  // output: subscription status
   execute = async (email: string): Promise<UseCaseResponse> => {
     try {
       const result = await this.subscriptionRepository.checkUserSubscription(

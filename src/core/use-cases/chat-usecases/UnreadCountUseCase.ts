@@ -1,3 +1,4 @@
+import { comments } from "../../../shared/constants/comments";
 import { MessageInterface } from "../../interfaces/MessageInterface";
 
 class UnreadCountUseCase {
@@ -8,7 +9,7 @@ class UnreadCountUseCase {
       const count = await this.messageRepository.countUnreadMessages(userId);
       return count;
     } catch (error) {
-      console.log("Error in unread count use case", error);
+      console.log(comments.UNREAD_COUNT_FETCH_FAIL, error);
       return 0;
     }
   };

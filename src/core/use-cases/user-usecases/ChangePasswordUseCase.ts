@@ -13,6 +13,8 @@ export interface ChangePasswordProps {
 class ChangePasswordUseCase {
   constructor(private userRepository: UserRepository) {}
 
+  // intput: user id, current password, new password
+  // output: updates user password.
   execute = async (
     user: Partial<IUser>,
     data: ChangePasswordProps

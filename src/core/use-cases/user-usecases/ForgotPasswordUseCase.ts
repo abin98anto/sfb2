@@ -10,6 +10,8 @@ class ForgotPasswordUseCase {
     private nodemailerService: NodemailerInterface
   ) {}
 
+  // input: user email
+  // output: sends otp to change password.
   async execute(email: string): Promise<UseCaseResponse> {
     try {
       const user = await this.userRepository.findByEmail(email);

@@ -14,6 +14,8 @@ export class GoogleAuthUseCase {
     private jwtService: JwtService
   ) {}
 
+  // input: user data
+  // ouput: creates new user using Oauth data.
   async execute(user: IUser): Promise<UseCaseResponse> {
     try {
       (await this.userRepository.findByEmail(user.email!)) ||

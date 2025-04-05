@@ -16,9 +16,7 @@ export class AuthMiddleware {
       next: NextFunction
     ): Promise<void> => {
       try {
-        console.log("authenticating", req.cookies);
         const accessToken = req.cookies["accessToken"];
-        console.log("access token", accessToken);
         if (!accessToken) {
           res.status(401).json({ message: comments.ACCSS_NOT_FOUND });
           return;
@@ -26,7 +24,6 @@ export class AuthMiddleware {
 
         const decoded: JwtData | null =
           jwtService.verifyAccessToken(accessToken);
-        console.log("decoded", decoded);
         if (!decoded?._id) {
           res.status(401).json({ message: comments.JWT_PAYLOAD_INVLD });
           return;
@@ -35,21 +32,17 @@ export class AuthMiddleware {
         const { data } = await getUserDetailsUseCase.execute(
           decoded?._id as string
         );
-        console.log("the user data ", data);
         if (!data) {
           res.status(401).json({ message: comments.USER_NOT_FOUND });
           return;
         }
 
         if (!data.isActive) {
-          console.log("user not active ", data.isActive);
-          res.status(401).json({ message: "user is blocked by admin" });
+          res.status(401).json({ message: comments.USER_BLOCKED });
           return;
         }
-        console.log("user active", data.isActive);
 
         req.user = data;
-        console.log("authenticating done");
         next();
       } catch (error) {
         res.status(401).json({ message: comments.ACCESS_INVLD });
@@ -59,33 +52,17 @@ export class AuthMiddleware {
 
   static authorize(allowedRoles: UserRole[]) {
     return (req: Request, res: Response, next: NextFunction): void => {
-      console.log("authorize");
       if (!req.user) {
-        console.log("no user");
         res.status(401).json({ message: comments.ACCESS_INVLD });
         return;
       }
 
-      // console.log("the user to authorize", req.user);
-      // if (!req.user.isActive) {
-      //   console.log("user is blocked by admin");
-      //   res.status(401).json({ message: "user is blocked by admin" });
-      //   return;
-      // }
-
       const userRole = req.user.role as UserRole;
-      console.log("uesrrole", userRole);
-      console.log("alllowed roles", allowedRoles);
 
       if (!allowedRoles.includes(userRole)) {
-        console.log("not allowed");
-        res
-          .status(403)
-          .json({ message: "Access forbidden: Insufficient permissions" });
+        res.status(403).json({ message: comments.ACCESS_DENIED });
         return;
       }
-
-      console.log("authorizing done");
       next();
     };
   }

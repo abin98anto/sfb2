@@ -1,4 +1,5 @@
 import { UserModel } from "../../../infrastructure/db/schemas/userSchema";
+import { comments } from "../../../shared/constants/comments";
 import IChat from "../../entities/IChat";
 import IEnrollment from "../../entities/IEnrollment";
 import { IUser } from "../../entities/IUser";
@@ -34,7 +35,7 @@ class EnrollUserUseCase {
     }
 
     if (!course?.tutors || course.tutors.length === 0) {
-      throw new Error("No tutors available for this course");
+      throw new Error(comments.TUTORS_UNAVAILABLE);
     }
 
     const tutorStudentCounts = [];
@@ -49,7 +50,7 @@ class EnrollUserUseCase {
     let selectedTutorId;
 
     if (tutorStudentCounts.length === 0) {
-      throw new Error("Failed to retrieve tutor information");
+      throw new Error(comments.TUTOR_INFO_FETCH_FAIL);
     } else {
       tutorStudentCounts.sort((a, b) => a.studentCount - b.studentCount);
       const lowestCount = tutorStudentCounts[0].studentCount;
@@ -89,7 +90,7 @@ class EnrollUserUseCase {
     });
 
     const newEnrollment = await this.enrollmentRepository.add(enrollment);
-    
+
     const tutor = await UserModel.findById(selectedTutorId);
     tutor?.students.push(newEnrollment.userId as string);
     await tutor?.save();

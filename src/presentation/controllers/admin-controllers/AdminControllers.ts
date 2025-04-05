@@ -20,7 +20,6 @@ export class AdminController {
 
   getUsersBasedOnRole = async (req: Request, res: Response) => {
     try {
-      console.log("etting users based on role", req.params);
       const users = await this.getUsersUseCase.execute(
         req.params.role,
         req.query
@@ -93,10 +92,10 @@ export class AdminController {
 
       res.status(200).json(result);
     } catch (error) {
-      console.log("error paying tutors", error);
+      console.log(comments.PAY_TUTOR_FAIL, error);
       res.status(500).json({
         success: false,
-        message: "error adding money to wallet",
+        message: comments.PAY_TUTOR_FAIL,
         err: error,
       });
     }

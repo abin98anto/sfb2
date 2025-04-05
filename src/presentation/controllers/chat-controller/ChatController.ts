@@ -48,17 +48,9 @@ class ChatController {
         message
       );
       if (!result.success || !result.data) {
-        throw new Error("Failed to save message");
+        throw new Error(comments.MSG_SENT_FAIL);
       }
       const savedMessage = result.data;
-
-      // const io = req.app.get("io");
-      // io.to(savedMessage.chatId).emit(comments.IO_RECIEVE_MSG, savedMessage);
-      // console.log("sending notification ", message);
-      // io.to(savedMessage.receiverId).emit(
-      //   comments.IO_MSG_NOTIFICATION,
-      //   savedMessage
-      // );
 
       res.status(200).json({ success: true, data: savedMessage });
     } catch (error) {
@@ -108,7 +100,6 @@ class ChatController {
 
   markAsRead = async (req: Request, res: Response): Promise<void> => {
     try {
-      // console.log("the messages that are resd", req.body);
       const { messageIds } = req.body;
       const result = await this.markAsReadUseCase.execute(messageIds);
       res.status(200).json(result);
@@ -151,10 +142,10 @@ class ChatController {
         data: { unreadCount },
       });
     } catch (error) {
-      console.error("Failed to get unread message count:", error);
+      console.error(comments.MSG_UNREAD_COUNT_FETCH_FAIL, error);
       res.status(500).json({
         success: false,
-        message: "Failed to get unread message count",
+        message: comments.MSG_UNREAD_COUNT_FETCH_FAIL,
       });
     }
   };
@@ -169,10 +160,10 @@ class ChatController {
         data: { lastMessages },
       });
     } catch (error) {
-      console.error("Failed to get last messages:", error);
+      console.error(comments.LAST_MSG_FETCH_FAIL, error);
       res.status(500).json({
         success: false,
-        message: "Failed to get last messages",
+        message: comments.LAST_MSG_FETCH_FAIL,
       });
     }
   };
@@ -189,10 +180,10 @@ class ChatController {
         data: { unreadCount },
       });
     } catch (error) {
-      console.error("Failed to get unread message count:", error);
+      console.error(comments.MSG_UNREAD_COUNT_FETCH_FAIL, error);
       res.status(500).json({
         success: false,
-        message: "Failed to get unread message count",
+        message: comments.MSG_UNREAD_COUNT_FETCH_FAIL,
       });
     }
   };
@@ -206,10 +197,10 @@ class ChatController {
         data,
       });
     } catch (error) {
-      console.error("Failed to clear unread message count:", error);
+      console.error(comments.CLEAR_UNREAD_MSG_COUNT_FAIL, error);
       res.status(500).json({
         success: false,
-        message: "Failed to clear unread message count",
+        message: comments.CLEAR_UNREAD_MSG_COUNT_FAIL,
       });
     }
   };

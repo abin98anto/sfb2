@@ -13,6 +13,8 @@ export class LoginUserUseCase {
     private jwtService: JwtService
   ) {}
 
+  // input: user email, role and password.
+  // output:return access and  refresh tokens.
   execute = async (
     email: string,
     password: string,

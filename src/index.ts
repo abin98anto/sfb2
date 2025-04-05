@@ -70,7 +70,6 @@ subscriptionCronJobs.setupJobs();
 const PORT = 3000;
 connectDB().then(() =>
   server.listen(PORT, "0.0.0.0", () => {
-    // app.listen(PORT, () => {
     console.log(comments.SERVER_SUCC);
   })
 );

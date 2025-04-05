@@ -1,5 +1,6 @@
 import IReview from "../../core/entities/IReview";
 import ReviewInterface from "../../core/interfaces/ReviewInterface";
+import { comments } from "../../shared/constants/comments";
 import ReviewModel from "../db/schemas/ReviewSchema";
 
 export default class ReviewRepository implements ReviewInterface {
@@ -12,7 +13,7 @@ export default class ReviewRepository implements ReviewInterface {
   update = async (review: Partial<IReview>): Promise<IReview | null> => {
     const existingReview = await ReviewModel.findById(review._id);
     if (!existingReview) {
-      throw new Error("Review not found");
+      throw new Error(comments.REVIEW_NOT_FOUND);
     }
     const updatedReview = await ReviewModel.findByIdAndUpdate(
       review._id,

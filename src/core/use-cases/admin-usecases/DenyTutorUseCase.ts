@@ -9,6 +9,8 @@ export default class DenyTutorUseCase {
     private nodemailerService: NodemailerInterface
   ) {}
 
+  // input: user id, message to send.
+  // output: sends rejection mail to tutor applicant and deletes their account.
   execute = async (id: string, message: string): Promise<UseCaseResponse> => {
     try {
       const user = await this.userRepository.findById(id);

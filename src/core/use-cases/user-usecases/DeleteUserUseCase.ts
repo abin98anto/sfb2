@@ -5,6 +5,8 @@ import { UseCaseResponse } from "../../entities/misc/useCaseResponse";
 export class DeleteUserUseCase {
   constructor(private userRepository: UserRepository) {}
 
+  // input: user email
+  // output: deletes user
   async execute(email: string): Promise<UseCaseResponse> {
     try {
       const userExists = await this.userRepository.findByEmail(email);

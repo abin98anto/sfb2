@@ -57,9 +57,7 @@ class EnrollmentController {
 
   getAll = async (req: Request, res: Response): Promise<void> => {
     try {
-      // console.log("all enrollments");
       const result = await this.getAllUseCase.execute();
-      // console.log("the result", result);
       res.status(200).json(result);
     } catch (error) {
       console.log(comments.ENROLL_ALL_FAIL, error);
@@ -88,7 +86,6 @@ class EnrollmentController {
 
   getUserCourses = async (req: Request, res: Response): Promise<void> => {
     try {
-      console.log("getting user courses", req.params.userId);
       const userId = req.params.userId;
       const result = await this.usersCoursesUseCase.execute(userId as string);
       res.status(200).json(result);

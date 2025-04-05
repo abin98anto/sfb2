@@ -5,6 +5,8 @@ import { comments } from "../../../shared/constants/comments";
 class MarkAsReadUseCase {
   constructor(private messageRepository: MessageInterface) {}
 
+  // input: message ids.
+  // output: marks the mesages as read.
   execute = async (messageId: string[]): Promise<UseCaseResponse> => {
     try {
       const data = await this.messageRepository.markAsRead(messageId);

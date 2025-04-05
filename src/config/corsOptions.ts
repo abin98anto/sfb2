@@ -1,6 +1,3 @@
-import { API } from "../shared/constants/API";
-import { comments } from "../shared/constants/comments";
-
 export const corsOptions = {
   origin: ["https://sff2-second.vercel.app"],
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],

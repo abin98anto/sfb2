@@ -5,6 +5,8 @@ import { UserInterface } from "../../interfaces/UserInterface";
 export default class ApproveTutorUseCase {
   constructor(private userRepository: UserInterface) {}
 
+  // input: user id.
+  // output: tutor's is verified is set to true.
   execute = async (id: string): Promise<UseCaseResponse> => {
     try {
       const result = await this.userRepository.update(id, {

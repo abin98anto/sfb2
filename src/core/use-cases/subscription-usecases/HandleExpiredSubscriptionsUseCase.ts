@@ -4,6 +4,8 @@ import SubscriptionInterface from "../../interfaces/SubscriptionInterface";
 class HandleExpiredSubscriptionsUseCase {
   constructor(private subscriptionRepository: SubscriptionInterface) {}
 
+  // input: none
+  // output: removes all expired subscriptions
   async execute() {
     try {
       const currentDate = new Date();

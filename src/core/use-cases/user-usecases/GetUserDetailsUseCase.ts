@@ -6,6 +6,8 @@ import { UserInterface } from "../../interfaces/UserInterface";
 export class GetUserDetailsUseCase {
   constructor(private userRepository: UserInterface) {}
 
+  // input: user id
+  // output: returns user details.
   execute = async (_id: string): Promise<UseCaseResponse> => {
     try {
       const user: IUser | null = await this.userRepository.findById(_id);

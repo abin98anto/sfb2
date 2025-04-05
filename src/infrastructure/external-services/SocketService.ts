@@ -32,14 +32,14 @@ export const initializeSocket = (httpServer: HTTPServer) => {
       socket.join(chatId);
     });
 
-    socket.on("send-message", (data: IMessage) => {
+    socket.on(comments.SND_MSG_IO, (data: IMessage) => {
       io.to(data.senderId)
         .to(data.receiverId)
         .emit(comments.IO_RECIEVE_MSG, data);
     });
 
-    socket.on("msg-read", (data: messageReadData) => {
-      socket.to(data.senderId).emit("msg-read", data);
+    socket.on(comments.MSG_READ_IO, (data: messageReadData) => {
+      socket.to(data.senderId).emit(comments.MSG_READ_IO, data);
     });
 
     socket.on(comments.IO_DISCONNECT, () => {

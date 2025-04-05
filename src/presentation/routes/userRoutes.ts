@@ -61,15 +61,8 @@ const userAuthController = new UserAuthController(
   getUserDetailsUseCase
 );
 
-// const authMiddleware = new AuthMiddleware(jwtService, getUserDetailsUseCase);
-// const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 const authenticate = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 const authorize = AuthMiddleware.authorize([UserRole.USER]);
-
-// just to test if the server is working.
-userRouter.get("/", (req, res) => {
-  res.status(200).json({ message: "Server is working" });
-});
 
 userRouter.post(API.OTP_SENT, userAuthController.sendOTP);
 userRouter.post(API.OTP_VERIFY, userAuthController.verifyOTP);
@@ -77,12 +70,8 @@ userRouter.delete("/delete-user/:email", userAuthController.deleteUser);
 userRouter.post(API.USER_LOGIN, userAuthController.login);
 userRouter.post(API.USER_LOGOUT, authenticate, userAuthController.logout);
 
-// Refresh Access Token routes.
-// userRouter.use(authenticate);
-
 userRouter.post(API.USER_REFRESH, userAuthController.refreshAccessToken);
 
-// Update user details routes.
 userRouter.put(
   API.USER_UPDATE,
   authenticate,
@@ -114,7 +103,6 @@ userRouter.get(
   userAuthController.getBalance
 );
 
-// Google Auth routes.
 userRouter.post("/auth/google", userAuthController.googleSignIn);
 
 export default userRouter;

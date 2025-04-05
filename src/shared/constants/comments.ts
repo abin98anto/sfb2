@@ -170,6 +170,31 @@ export const comments = {
     "Test failed: Expired user was not removed or incorrect user remains.",
   TEST_FAILED_DEFAULT: "Test failed: Subscription not found after processing.",
   TEST_PASSED_DEFAULT: "Test completed.",
-  TEST_ERR:"Error in corn job",
-  MONGO_DISCONNECTED:"MongoDB disconnected",
+  TEST_ERR: "Error in corn job",
+  MONGO_DISCONNECTED: "MongoDB disconnected",
+
+  MONEY_ADD_FAIL: "adding money to wallet failed",
+  LAST_MSG_FETCH_UC_FAIL: "Error fetching last message in use case",
+  UNREAD_COUNT_FETCH_FAIL: "Error in unread count use case",
+
+  TUTORS_UNAVAILABLE: "Tutors are currently unavailable.",
+  TUTOR_INFO_FETCH_FAIL: "Error fetching tutor info",
+
+  REVIEW_CREATE_FAIL: "error in create review use case",
+  REVIEW_NOT_FOUND: "Review not found",
+  CHAT_NOT_FOUND: "Chat not found",
+  PAY_TUTOR_FAIL:"Error in payment for tutor",
+  MSG_UNREAD_COUNT_FETCH_FAIL:"Error in fetching unread message count",
+  LAST_MSG_FETCH_FAIL:"Error in fetching last message",
+  CLEAR_UNREAD_MSG_COUNT_FAIL:"Clear unread message count",
+  REVIEW_ADD_FAIL:"Error in adding review",
+  REVIEW_UPDATE_FAIL:"Error in updating review",
+  REVIEW_DELETE_FAIL:"Error in deleting review",
+  REVIEWS_FETCH_FAIL:"Error in fetching course's reviews",
+  BALANCE_FETCH_FAIL:"Error in fetching balance",
+  USER_BLOCKED:"User is blocked",
+  ACCESS_DENIED:"Access forbidden: Insufficient permissions",
+
+  SND_MSG_IO: "send-message",
+  MSG_READ_IO: "msg-read",
 };

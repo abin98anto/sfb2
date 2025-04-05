@@ -5,6 +5,8 @@ import { UserInterface } from "../../interfaces/UserInterface";
 export default class BlockUsersUseCase {
   constructor(private userRepository: UserInterface) {}
 
+  // input: user id.
+  // output:new values are updated to the user.
   execute = async (id: string): Promise<UseCaseResponse> => {
     try {
       const user = await this.userRepository.findById(id);
