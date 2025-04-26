@@ -48,11 +48,7 @@ orderRouter.get("/", authMiddleware, orderController.getAll);
 orderRouter.post("/add", authMiddleware, orderController.create);
 orderRouter.get("/user/:userId", authMiddleware, orderController.getUserOrders);
 
-orderRouter.post(
-  "/razorpay/create",
-  authMiddleware,
-  razorpayController.createRazorpayOrder
-);
+orderRouter.post("/razorpay/create", razorpayController.createRazorpayOrder);
 
 orderRouter.get(
   "/sub-check/:email",
