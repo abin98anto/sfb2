@@ -236,9 +236,9 @@ export class UserAuthController {
           httpOnly: true,
           secure: true,
           sameSite: "none",
-          maxAge: 24 * 60 * 60 * 1000,
+          maxAge: 30 * 1000,
         })
-        .cookie("userRefresh", refreshToken, {
+        .cookie("refreshToken", refreshToken, {
           httpOnly: true,
           secure: true,
           sameSite: "none",

@@ -29,7 +29,7 @@ export class RefreshTokenUseCase {
         return { success: false, message: comments.USER_NOT_FOUND };
       }
 
-      let payload: JwtData = { _id: user._id, role: user.role as UserRole };
+      const payload: JwtData = { _id: user._id, role: user.role as UserRole };
 
       const newAccessToken = this.jwtService.generateAccessToken(payload);
 
