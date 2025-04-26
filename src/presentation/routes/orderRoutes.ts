@@ -45,7 +45,7 @@ const razorpayController = new RazorpayController();
 const authMiddleware = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 
 orderRouter.get("/", authMiddleware, orderController.getAll);
-orderRouter.post("/add", authMiddleware, orderController.create);
+orderRouter.post("/add", orderController.create);
 orderRouter.get("/user/:userId", authMiddleware, orderController.getUserOrders);
 
 orderRouter.post("/razorpay/create", razorpayController.createRazorpayOrder);
