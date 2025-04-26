@@ -28,7 +28,6 @@ export class GoogleAuthUseCase {
         _id: userData?._id,
         role: userData?.role as UserRole,
       };
-      console.log("in google auth use case", arg);
       const accessToken = this.jwtService.generateAccessToken(arg);
       const refreshToken = this.jwtService.generateRefreshToken(arg);
 
