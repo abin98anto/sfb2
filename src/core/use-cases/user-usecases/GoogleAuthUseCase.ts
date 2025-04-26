@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { JwtService } from "../../../infrastructure/external-services/JwtService";
 import { comments } from "../../../shared/constants/comments";
 import { IUser } from "../../entities/IUser";
@@ -23,11 +24,11 @@ export class GoogleAuthUseCase {
 
       const userData = await this.userRepository.findByEmail(user.email!);
 
-      let arg: JwtData = {
+      const arg: JwtData = {
         _id: userData?._id,
         role: userData?.role as UserRole,
       };
-
+      console.log("in google auth use case", arg);
       const accessToken = this.jwtService.generateAccessToken(arg);
       const refreshToken = this.jwtService.generateRefreshToken(arg);
 

@@ -45,6 +45,7 @@ export class AuthMiddleware {
         req.user = data;
         next();
       } catch (error) {
+        console.log("error in authmiddleware", error);
         res.status(401).json({ message: comments.ACCESS_INVLD });
       }
     };
