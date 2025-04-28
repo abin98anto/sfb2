@@ -40,7 +40,11 @@ const adminController = new AdminController(
 const authenticate = AuthMiddleware.create(jwtService, getUserDetailsUseCase);
 const authorize = AuthMiddleware.authorize([UserRole.ADMIN]);
 
-adminRouter.get("/users/:role", adminController.getUsersBasedOnRole);
+adminRouter.get(
+  "/users/:role",
+  authenticate,
+  adminController.getUsersBasedOnRole
+);
 adminRouter.put(
   "/block/:id",
   authenticate,
@@ -60,6 +64,11 @@ adminRouter.put(
   adminController.denyTutor
 );
 
-adminRouter.put("/add-money", authenticate, authorize, adminController.addMoney);
+adminRouter.put(
+  "/add-money",
+  authenticate,
+  authorize,
+  adminController.addMoney
+);
 
 export default adminRouter;
