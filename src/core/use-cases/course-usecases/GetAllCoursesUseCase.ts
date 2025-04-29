@@ -20,10 +20,11 @@ export class GetAllCoursesUseCase {
         } = params;
 
         const skip = (page - 1) * limit;
-
+        const { isActive } = params;
         const totalCount = await this.courseRepository.getCount(
           search,
-          category
+          category,
+          isActive
         );
         const courses = await this.courseRepository.getPaginated({
           skip,

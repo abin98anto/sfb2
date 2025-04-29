@@ -94,14 +94,22 @@ export class CourseRepository implements CourseInterface {
       ]);
   };
 
-  getCount = async (search: string, category?: string): Promise<number> => {
-    const query: any = {};
+  getCount = async (
+    search: string,
+    category?: string,
+    isActive?: boolean
+  ): Promise<number> => {
+    let query: any = {};
 
     if (search) {
       query.title = { $regex: search, $options: "i" };
     }
     if (category && category !== "All") {
       query.category = category;
+    }
+
+    if (isActive) {
+      query = { ...query, isActive };
     }
 
     return await Course.countDocuments(query);

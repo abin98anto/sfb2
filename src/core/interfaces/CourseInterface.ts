@@ -8,5 +8,9 @@ export interface CourseInterface {
   getAll(): Promise<ICourse[]>;
 
   getPaginated(params: IParams): Promise<ICourse[]>;
-  getCount(search: string, category?: string): Promise<number>;
+  getCount(
+    search: string,
+    category?: string,
+    isActive?: boolean
+  ): Promise<number>;
 }
