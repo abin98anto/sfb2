@@ -4,4 +4,5 @@ export interface PaginationParams {
   search?: string;
   category?: string;
   sort?: string;
+  isActive?: boolean;
 }

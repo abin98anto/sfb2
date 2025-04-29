@@ -69,14 +69,27 @@ export class CourseController {
       const search = (req.query.search as string) || "";
       const category = (req.query.category as string) || "";
       const sort = (req.query.sort as string) || "all";
+      const isActive = req.query.isActive;
 
-      const result = await this.getAllCoursesUseCase.execute({
-        page,
-        limit,
-        search,
-        category,
-        sort,
-      });
+      let result;
+      if (isActive) {
+        result = await this.getAllCoursesUseCase.execute({
+          page,
+          limit,
+          search,
+          category,
+          sort,
+          isActive: true,
+        });
+      } else {
+        result = await this.getAllCoursesUseCase.execute({
+          page,
+          limit,
+          search,
+          category,
+          sort,
+        });
+      }
 
       res.status(200).json(result);
     } catch (error) {
