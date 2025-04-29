@@ -69,6 +69,7 @@ export class CourseController {
       const search = (req.query.search as string) || "";
       const category = (req.query.category as string) || "";
       const sort = (req.query.sort as string) || "all";
+      const isActive = req.query.isActive as string;
 
       const result = await this.getAllCoursesUseCase.execute({
         page,
@@ -76,6 +77,7 @@ export class CourseController {
         search,
         category,
         sort,
+        isActive,
       });
 
       res.status(200).json(result);

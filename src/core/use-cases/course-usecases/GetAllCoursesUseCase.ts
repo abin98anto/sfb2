@@ -14,6 +14,7 @@ export class GetAllCoursesUseCase {
         search = "",
         category = "",
         sort = "all",
+        isActive = "",
       } = params;
 
       const skip = (page - 1) * limit;
@@ -25,6 +26,7 @@ export class GetAllCoursesUseCase {
         search,
         category,
         sort,
+        isActive,
       });
 
       const data = {
