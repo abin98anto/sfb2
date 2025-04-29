@@ -72,7 +72,7 @@ export class CourseController {
       const isActive = req.query.isActive;
 
       let result;
-      if (isActive) {
+      if (isActive === "true") {
         result = await this.getAllCoursesUseCase.execute({
           page,
           limit,
