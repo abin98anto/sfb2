@@ -110,7 +110,7 @@ export class UserAuthController {
             httpOnly: true,
             secure: true,
             sameSite: "none",
-            maxAge: 30 * 1000,
+            maxAge: 15 * 60 * 1000,
           })
           .cookie("refreshToken", result.data.refreshToken, {
             httpOnly: true,
