@@ -4,7 +4,6 @@ interface IParams {
   search?: string;
   category?: string;
   sort?: string;
-  isActive?: string;
 }
 
 export default IParams;
