@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ICourse } from "../../core/entities/ICourse";
 import IParams from "../../core/entities/misc/IParams";
 import { CourseInterface } from "../../core/interfaces/CourseInterface";
@@ -6,7 +7,6 @@ import { Course } from "../db/schemas/courseSchema";
 
 export class CourseRepository implements CourseInterface {
   add = async (course: Partial<ICourse>): Promise<ICourse> => {
-
     const newCourse = new Course(course);
     await newCourse.save();
     return newCourse;
@@ -59,6 +59,7 @@ export class CourseRepository implements CourseInterface {
     search,
     category,
     sort,
+    isActive,
   }: IParams): Promise<ICourse[]> => {
     let query: any = {};
 
@@ -71,6 +72,10 @@ export class CourseRepository implements CourseInterface {
     let sortOrder: any = { createdAt: -1 };
     if (sort === "oldest") {
       sortOrder = { createdAt: 1 };
+    }
+
+    if (isActive) {
+      query = { ...query, isActive };
     }
 
     return await Course.find(query)
@@ -90,7 +95,7 @@ export class CourseRepository implements CourseInterface {
   };
 
   getCount = async (search: string, category?: string): Promise<number> => {
-    let query: any = {};
+    const query: any = {};
 
     if (search) {
       query.title = { $regex: search, $options: "i" };
