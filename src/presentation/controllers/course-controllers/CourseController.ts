@@ -71,6 +71,7 @@ export class CourseController {
       const sort = (req.query.sort as string) || "all";
       const isActive = req.query.isActive;
 
+      console.log("the isavctive", isActive);
       let result;
       if (isActive === "true") {
         result = await this.getAllCoursesUseCase.execute({

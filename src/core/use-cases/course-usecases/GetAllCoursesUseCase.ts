@@ -8,6 +8,7 @@ export class GetAllCoursesUseCase {
 
   execute = async (params: PaginationParams = {}): Promise<UseCaseResponse> => {
     try {
+      console.log("the params in get all courses", params);
       if (params.isActive) {
         const {
           page = 1,
