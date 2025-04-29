@@ -10,6 +10,7 @@ export class GetAllCoursesUseCase {
     try {
       console.log("the params in get all courses", params);
       if (params.isActive) {
+        console.log("active side");
         const {
           page = 1,
           limit = 10,
@@ -43,6 +44,7 @@ export class GetAllCoursesUseCase {
 
         return { success: true, data };
       } else {
+        console.log("inactive sice");
         const {
           page = 1,
           limit = 10,
